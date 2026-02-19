@@ -68,7 +68,7 @@ class PrimaryContainer extends StatelessWidget {
       decoration: BoxDecoration(
         color: color ?? Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(radius ?? 30),
-        border: Border.all(color: AppColors.backgroundsLinesColor, width: 1),
+        border: Border.all(color: AppColors.borderColor, width: 1),
       ),
       child: child,
     );

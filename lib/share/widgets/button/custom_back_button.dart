@@ -12,8 +12,8 @@ class CustomBackButton extends StatelessWidget {
   const CustomBackButton({
     super.key,
     required this.onTap,
-    this.backgroundColor = AppColors.backgroundColor,
-    this.borderColor = AppColors.backgroundsLinesColor,
+    this.backgroundColor = AppColors.iconBg,
+    this.borderColor = AppColors.borderColor,
     this.borderRadius = 23,
     // Default height
     this.icon = const Icon(Icons.arrow_back, size: 24),

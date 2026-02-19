@@ -5,7 +5,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
-
 class EditProfileScreen extends StatefulWidget {
   const EditProfileScreen({super.key});
 
@@ -14,12 +13,11 @@ class EditProfileScreen extends StatefulWidget {
 }
 
 class _EditProfileScreenState extends State<EditProfileScreen> {
-
   final _formKey = GlobalKey<FormState>();
   TextEditingController name = TextEditingController();
   TextEditingController number = TextEditingController();
 
-/*
+  /*
   @override
   void initState() {
     super.initState();
@@ -37,9 +35,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.backgroundColor,
-
-    );
+    return Scaffold();
   }
 }

@@ -51,9 +51,7 @@ class CustomDropdownField<T> extends StatelessWidget {
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(15),
           borderSide: BorderSide(
-            color: hasError
-                ? AppColors.redColor
-                : AppColors.bgSecondaryButtonColor,
+            color: hasError ? AppColors.redColor : AppColors.borderColor,
             width: 1.2,
           ),
         ),
@@ -81,10 +79,7 @@ class CustomDropdownField<T> extends StatelessWidget {
         padding: EdgeInsets.only(right: 8),
       ),
       iconStyleData: const IconStyleData(
-        icon: Icon(
-          Icons.keyboard_arrow_down,
-          color: AppColors.grayTertiaryTextColor,
-        ),
+        icon: Icon(Icons.keyboard_arrow_down, color: AppColors.hintTextColor),
         iconSize: 24,
       ),
       dropdownStyleData: DropdownStyleData(

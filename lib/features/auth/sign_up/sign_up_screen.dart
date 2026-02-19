@@ -62,7 +62,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   AppStrings.signUpTitle.tr,
                   textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: AppColors.grayTextSecondaryColor,
+                    color: AppColors.hintTextColor,
                   ),
                 ),
                 Gap(26),
@@ -135,7 +135,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     Expanded(
                       child: Divider(
                         thickness: 1,
-                        color: AppColors.grayTextSecondaryColor,
+                        color: AppColors.borderColor,
                       ),
                     ),
                     Padding(
@@ -148,7 +148,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     Expanded(
                       child: Divider(
                         thickness: 1,
-                        color: AppColors.grayTextSecondaryColor,
+                        color: AppColors.borderColor,
                       ),
                     ),
                   ],
@@ -166,7 +166,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         borderRadius: BorderRadius.circular(30),
                         border: Border.all(
                           width: 1,
-                          color: AppColors.blueTextColor400,
+                          color: AppColors.borderColor,
                         ),
                       ),
                       child: Assets.icons.google.svg(width: 22),
@@ -177,7 +177,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         borderRadius: BorderRadius.circular(30),
                         border: Border.all(
                           width: 1,
-                          color: AppColors.blueTextColor400,
+                          color: AppColors.borderColor,
                         ),
                       ),
                       child: Assets.icons.facebook.svg(width: 22),
@@ -197,7 +197,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   child: Text(
                     AppStrings.signIn.tr,
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      color: AppColors.greenTextColor,
+                      color: AppColors.priceGreen,
                       fontWeight: FontWeight.w600,
                     ),
                   ),

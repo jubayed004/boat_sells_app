@@ -60,14 +60,14 @@ class _TermsAndConditionsScreenState extends State<TermsAndConditionsScreen> {
                     Text(
                       "Last updated: ${data!.updatedAt!.toLocal().toString().split(' ')[0]}",
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: AppColors.grayTextSecondaryColor,
+                        color: AppColors.hintTextColor,
                       ),
                     ),
                   const SizedBox(height: 16),
                   HtmlWidget(
                     data?.content ?? "",
                     textStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                      color: AppColors.grayTextSecondaryColor,
+                      color: AppColors.hintTextColor,
                       height: 1.5,
                     ),
                   ),

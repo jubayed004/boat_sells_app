@@ -39,7 +39,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
         centerTitle: true,
         title: Text(
           AppStrings.ntsamaela.tr,
-          style: context.headlineSmall.copyWith(color: AppColors.primaryColor),
+          style: context.headlineSmall.copyWith(color: AppColors.primaryBlue),
         ),
       ),
       body: SafeArea(
@@ -65,7 +65,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                     AppStrings.createNewPasswordTitle.tr,
                     textAlign: TextAlign.center,
                     style: context.bodyMedium.copyWith(
-                      color: AppColors.grayTextSecondaryColor,
+                      color: AppColors.hintTextColor,
                     ),
                   ),
                 ),

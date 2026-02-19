@@ -76,7 +76,7 @@ class ErrorCard extends StatelessWidget {
                   "The application has encountered an unknown error.\nPlease try again later.",
               textAlign: TextAlign.center,
               style: theme.textTheme.bodyMedium?.copyWith(
-                color: AppColors.blackMainTextColor,
+                color: AppColors.black,
                 height: 1.4,
               ),
             ),
@@ -84,7 +84,7 @@ class ErrorCard extends StatelessWidget {
             ElevatedButton(
               onPressed: onTap,
               style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.primaryColor,
+                backgroundColor: AppColors.primaryBlue,
                 minimumSize: const Size(140, 44),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),

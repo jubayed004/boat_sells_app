@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
+
 class ForgetPasswordScreen extends StatefulWidget {
   const ForgetPasswordScreen({super.key});
 
@@ -29,7 +30,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
         centerTitle: true,
         title: Text(
           AppStrings.ntsamaela.tr,
-          style: context.headlineSmall.copyWith(color: AppColors.primaryColor),
+          style: context.headlineSmall.copyWith(color: AppColors.primaryBlue),
         ),
       ),
       body: SafeArea(
@@ -55,9 +56,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                   AppStrings.forgotPasswordTitle.tr,
                   textAlign: TextAlign.center,
                   style: context.bodyMedium.copyWith(
-                    color: isDarkMode
-                        ? Colors.white
-                        : AppColors.grayTextSecondaryColor,
+                    color: isDarkMode ? Colors.white : AppColors.hintTextColor,
                     fontSize: 14.sp,
                   ),
                 ),

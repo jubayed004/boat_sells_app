@@ -35,7 +35,7 @@ class SettingsDisclosureItem extends StatelessWidget {
         child: Container(
           padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
           decoration: BoxDecoration(
-            color: isDarkMode ? AppColors.blackMainTextColor : Colors.white,
+            color: isDarkMode ? AppColors.black : Colors.white,
             borderRadius: BorderRadius.circular(12.r),
             boxShadow: [
               BoxShadow(
@@ -60,7 +60,7 @@ class SettingsDisclosureItem extends StatelessWidget {
               Icon(
                 Icons.arrow_forward_ios_rounded,
                 size: 14.r,
-                color: AppColors.grayTextSecondaryColor,
+                color: AppColors.hintTextColor,
               ),
             ],
           ),

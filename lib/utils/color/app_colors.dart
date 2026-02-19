@@ -1,6 +1,7 @@
-import "package:flutter/material.dart";
+import 'package:flutter/material.dart';
 
 class AppColors {
+  // ================= Common Colors =================
   static const Color black = Color(0xFF000000);
   static const Color white = Color(0xFFFFFFFF);
   static const Color redColor = Color(0xFFBF0A30);
@@ -10,26 +11,32 @@ class AppColors {
   static const Color warning = Color(0xFFFF9800);
   static const Color info = Color(0xFF2196F3);
 
-  static const Color primaryColor = Color(0xFF28638B);
-  static const Color secondPrimaryColor = Color(0xFF5E5656);
-  static const Color backgroundColor = Color(0xFFFCFCFC);
-  static const Color navBarColor = Color(0xFFeaeff3);
-  static const Color backgroundsLinesColor = Color(0xFFEBEBEE);
-  static const Color orangeSecondaryAccentColor = Color(0xFFFDBA45);
-  static const Color bgSecondaryButtonColor = Color(0xFFEFF0F1);
-  static const Color linesDarkColor = Color(0xFFCACACB);
+  // ================= Boat For Sell - Brand =================
+  static const Color primaryBlue = Color(0xFF1E6BFF);
+  static const Color primaryBlueDark = Color(0xFF1554CC);
+  static const Color primaryBlueLight = Color(0xFFE8F0FF);
 
-  static const Color blackMainTextColor = Color(0xFF0F243E);
-  static const Color inactiveBackground = Color(0xFFBBBDC4);
-  static const Color grayTextSecondaryColor = Color(0xFF7E8792);
-  static const Color grayTertiaryTextColor = Color(0xFFA3A9B0);
-  static const Color tertiaryTextColor = Color(0xFF939393);
-  static const Color grayTabBgColor = Color(0xFFF7F7F7);
-  static const Color greenTextColor = Color(0xFF0C8A8A);
-  static const Color blueTextColor = Color(0xFF355979);
-  static const Color blueTextColor400 = Color(0xFF5382A2);
-  static const Color blueTextColor200 = Color(0xFF9CB7CA);
-  static const Color appbarTextColor = Color(0xFFE94E6C);
-  static const Color orangeSecondaryAccentColorNormal = Color(0xFFFFD700);
-  static const Color brownColor = Color(0xFFAC7F5E);
+  // ================= Background =================
+  static const Color scaffoldBg = Color(0xFFF5F7FA);
+  static const Color cardBg = Color(0xFFFFFFFF);
+  static const Color sectionBg = Color(0xFFF1F4F9);
+
+  // ================= Text =================
+  static const Color headingText = Color(0xFF0B1B2B);
+  static const Color subHeadingText = Color(0xFF4E5D6C);
+  static const Color hintTextColor = Color(0xFF9AA6B2);
+
+  // ================= Border / Divider =================
+  static const Color borderColor = Color(0xFFE2E8F0);
+  static const Color dividerColor = Color(0xFFEDF2F7);
+
+  // ================= Status =================
+  static const Color favoriteRed = Color(0xFFFF4D4F);
+  static const Color priceGreen = Color(0xFF1ABC9C);
+
+  // ================= Icon Background =================
+  static const Color iconBg = Color(0xFFF0F3F8);
+
+  // ================= Shadow =================
+  static const Color shadowColor = Color(0x14000000);
 }

@@ -12,7 +12,7 @@ class CustomButtonExtra extends StatelessWidget {
     this.title = '',
     this.marginVertical = 0,
     this.marginHorizontal = 0,
-    this.fillColor = AppColors.primaryColor,
+    this.fillColor = AppColors.primaryBlue,
     this.textColor = AppColors.white,
     this.isBorder = false,
     this.fontSize,
@@ -70,7 +70,7 @@ class CustomButtonExtra extends StatelessWidget {
         ),
         child: isLoading
             ? Center(
-                child: CircularProgressIndicator(color: AppColors.primaryColor),
+                child: CircularProgressIndicator(color: AppColors.primaryBlue),
               )
             : Row(
                 mainAxisAlignment: MainAxisAlignment.center,

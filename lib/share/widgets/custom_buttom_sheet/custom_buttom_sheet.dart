@@ -53,9 +53,7 @@ class ConfirmationModalBottomSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
-    final primaryTextColor = isDarkMode
-        ? AppColors.white
-        : AppColors.blackMainTextColor;
+    final primaryTextColor = isDarkMode ? AppColors.white : AppColors.black;
 
     return makeDismissable(
       child: DraggableScrollableSheet(
@@ -88,7 +86,7 @@ class ConfirmationModalBottomSheet extends StatelessWidget {
                   Text(
                     message,
                     style: context.bodyMedium.copyWith(
-                      color: AppColors.grayTextSecondaryColor,
+                      color: AppColors.hintTextColor,
                       height: 1.5,
                     ),
                     textAlign: TextAlign.center,

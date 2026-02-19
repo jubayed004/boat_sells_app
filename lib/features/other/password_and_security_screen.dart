@@ -38,7 +38,7 @@ class PasswordAndSecurityScreen extends StatelessWidget {
             SettingsDisclosureItem(
               title: 'Delete account'.tr,
               icon: Iconsax.trash,
-              itemTextColor: AppColors.appbarTextColor,
+              itemTextColor: AppColors.priceGreen,
               onTap: () {
                 showYesNoModal(
                   context,

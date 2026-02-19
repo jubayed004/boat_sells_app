@@ -12,7 +12,7 @@ class CustomTextField extends StatefulWidget {
     this.focusNode,
     this.keyboardType = TextInputType.text,
     this.textInputAction = TextInputAction.next,
-    this.cursorColor = AppColors.primaryColor,
+    this.cursorColor = AppColors.primaryBlue,
     this.inputTextStyle,
     this.textAlignVertical = TextAlignVertical.center,
     this.textAlign = TextAlign.start,
@@ -152,11 +152,11 @@ class _CustomTextFieldState extends State<CustomTextField> {
                           child: obscureText
                               ? const Icon(
                                   Icons.visibility_off_outlined,
-                                  color: AppColors.primaryColor,
+                                  color: AppColors.primaryBlue,
                                 )
                               : const Icon(
                                   Icons.visibility_outlined,
-                                  color: AppColors.primaryColor,
+                                  color: AppColors.primaryBlue,
                                 ),
                         ),
                       )

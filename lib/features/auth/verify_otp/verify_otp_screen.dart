@@ -53,7 +53,7 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
         centerTitle: true,
         title: Text(
           AppStrings.ntsamaela.tr,
-          style: context.headlineSmall.copyWith(color: AppColors.primaryColor),
+          style: context.headlineSmall.copyWith(color: AppColors.primaryBlue),
         ),
       ),
       body: SafeArea(
@@ -78,9 +78,7 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
                   AppStrings.verifyYourAccountTitle.tr,
                   textAlign: TextAlign.center,
                   style: context.bodyMedium.copyWith(
-                    color: isDarkMode
-                        ? Colors.white
-                        : AppColors.grayTextSecondaryColor,
+                    color: isDarkMode ? Colors.white : AppColors.hintTextColor,
                     fontSize: 14.sp,
                   ),
                 ),
@@ -135,7 +133,7 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
                           child: Text(
                             AppStrings.resendCode.tr,
                             style: context.titleSmall.copyWith(
-                              color: AppColors.greenTextColor,
+                              color: AppColors.priceGreen,
                             ),
                           ),
                         )

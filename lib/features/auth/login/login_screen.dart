@@ -14,6 +14,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
+
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
@@ -52,7 +53,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       Container(
                         height: 199.h,
                         width: double.infinity,
-                        color: AppColors.primaryColor,
+                        color: AppColors.primaryBlue,
                         child: Stack(
                           children: [
                             Align(
@@ -143,7 +144,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               children: [
                                 Expanded(
                                   child: Divider(
-                                    color: AppColors.grayTextSecondaryColor,
+                                    color: AppColors.borderColor,
                                     thickness: 1,
                                   ),
                                 ),
@@ -156,7 +157,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 ),
                                 Expanded(
                                   child: Divider(
-                                    color: AppColors.grayTextSecondaryColor,
+                                    color: AppColors.borderColor,
                                     thickness: 1,
                                   ),
                                 ),
@@ -175,7 +176,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     borderRadius: BorderRadius.circular(30),
                                     border: Border.all(
                                       width: 1,
-                                      color: AppColors.blueTextColor400,
+                                      color: AppColors.borderColor,
                                     ),
                                   ),
                                   child: Assets.icons.google.svg(width: 22),
@@ -186,7 +187,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     borderRadius: BorderRadius.circular(30),
                                     border: Border.all(
                                       width: 1,
-                                      color: AppColors.blueTextColor400,
+                                      color: AppColors.borderColor,
                                     ),
                                   ),
                                   child: Assets.icons.facebook.svg(width: 22),
@@ -220,7 +221,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     ?.copyWith(
                                       color: isDarkMode
                                           ? AppColors.white
-                                          : AppColors.greenTextColor,
+                                          : AppColors.priceGreen,
                                     ),
                               ),
                             ),
@@ -238,7 +239,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     decoration: BoxDecoration(
                       border: Border.all(
                         width: 4,
-                        color: AppColors.primaryColor,
+                        color: AppColors.primaryBlue,
                       ),
                       borderRadius: BorderRadius.circular(8.r),
                       shape: BoxShape.rectangle,

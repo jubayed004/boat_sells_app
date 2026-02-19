@@ -4,138 +4,155 @@ import 'package:flutter/material.dart';
 final ThemeData lightTheme = ThemeData(
   useMaterial3: true,
   brightness: Brightness.light,
-  fontFamily: 'Poppins',
+  fontFamily: 'Outfit',
 
-  scaffoldBackgroundColor: AppColors.backgroundColor,
+  scaffoldBackgroundColor: AppColors.scaffoldBg,
 
   // ================= AppBar =================
   appBarTheme: const AppBarTheme(
-    backgroundColor: AppColors.backgroundColor,
+    backgroundColor: AppColors.scaffoldBg,
     elevation: 0,
     centerTitle: true,
+    iconTheme: IconThemeData(color: AppColors.headingText),
     titleTextStyle: TextStyle(
       fontSize: 18,
-      fontWeight: FontWeight.w800,
-      color: AppColors.primaryColor,
+      fontWeight: FontWeight.w600,
+      color: AppColors.headingText,
     ),
-    iconTheme: IconThemeData(color: AppColors.grayTertiaryTextColor),
   ),
 
-  // ================= Buttons =================
+  // ================= Card =================
+  cardTheme: CardThemeData(
+    color: AppColors.cardBg,
+    elevation: 0,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(16),
+      side: const BorderSide(color: AppColors.borderColor),
+    ),
+  ),
+
+  // ================= Elevated Button =================
   elevatedButtonTheme: ElevatedButtonThemeData(
     style: ElevatedButton.styleFrom(
-      backgroundColor: AppColors.primaryColor,
+      backgroundColor: AppColors.primaryBlue,
       foregroundColor: AppColors.white,
       minimumSize: const Size(double.infinity, 48),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+      textStyle: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
     ),
   ),
 
+  // ================= Outlined Button =================
   outlinedButtonTheme: OutlinedButtonThemeData(
     style: OutlinedButton.styleFrom(
-      foregroundColor: AppColors.primaryColor,
+      foregroundColor: AppColors.primaryBlue,
       minimumSize: const Size(double.infinity, 48),
-      side: const BorderSide(color: AppColors.primaryColor, width: 1.5),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      textStyle: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+      side: const BorderSide(color: AppColors.borderColor, width: 1),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+      textStyle: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
     ),
   ),
 
-  // ================= TextField =================
+  // ================= Input Field =================
   inputDecorationTheme: InputDecorationTheme(
     filled: true,
-    fillColor: AppColors.white,
+    fillColor: AppColors.sectionBg,
     hintStyle: const TextStyle(
       fontSize: 14,
+      color: AppColors.hintTextColor,
       fontWeight: FontWeight.w400,
-      color: AppColors.grayTextSecondaryColor,
     ),
     contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-    border: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(12),
-      borderSide: const BorderSide(color: AppColors.primaryColor),
-    ),
+
     enabledBorder: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(12),
-      borderSide: const BorderSide(color: AppColors.primaryColor),
+      borderRadius: BorderRadius.circular(14),
+      borderSide: const BorderSide(color: AppColors.borderColor),
     ),
+
     focusedBorder: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(12),
-      borderSide: const BorderSide(color: AppColors.primaryColor, width: 2),
+      borderRadius: BorderRadius.circular(14),
+      borderSide: const BorderSide(color: AppColors.primaryBlue, width: 1.5),
     ),
+
     errorBorder: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(12),
+      borderRadius: BorderRadius.circular(14),
       borderSide: const BorderSide(color: AppColors.error),
     ),
+
     focusedErrorBorder: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(12),
-      borderSide: const BorderSide(color: AppColors.error, width: 2),
+      borderRadius: BorderRadius.circular(14),
+      borderSide: const BorderSide(color: AppColors.error, width: 1.5),
     ),
-    errorStyle: const TextStyle(fontSize: 12, color: AppColors.redColor),
   ),
 
+  // ================= Divider =================
+  dividerTheme: const DividerThemeData(
+    color: AppColors.dividerColor,
+    thickness: 1,
+  ),
+
+  // ================= Text =================
   // ================= Text Theme =================
   textTheme: const TextTheme(
     headlineLarge: TextStyle(
       fontSize: 32,
       fontWeight: FontWeight.w800,
-      color: AppColors.blackMainTextColor,
+      color: AppColors.headingText,
     ),
     headlineMedium: TextStyle(
       fontSize: 28,
       fontWeight: FontWeight.w800,
-      color: AppColors.blackMainTextColor,
+      color: AppColors.headingText,
     ),
     headlineSmall: TextStyle(
       fontSize: 24,
       fontWeight: FontWeight.w700,
-      color: AppColors.blackMainTextColor,
+      color: AppColors.headingText,
     ),
     titleLarge: TextStyle(
       fontSize: 18,
       fontWeight: FontWeight.w600,
-      color: AppColors.blackMainTextColor,
+      color: AppColors.headingText,
     ),
     titleMedium: TextStyle(
       fontSize: 16,
       fontWeight: FontWeight.w600,
-      color: AppColors.blackMainTextColor,
+      color: AppColors.headingText,
     ),
     titleSmall: TextStyle(
       fontSize: 14,
       fontWeight: FontWeight.w600,
-      color: AppColors.blackMainTextColor,
+      color: AppColors.headingText,
     ),
     bodyLarge: TextStyle(
       fontSize: 16,
       fontWeight: FontWeight.w500,
-      color: AppColors.blackMainTextColor,
+      color: AppColors.subHeadingText,
     ),
     bodyMedium: TextStyle(
       fontSize: 14,
       fontWeight: FontWeight.w500,
-      color: AppColors.blackMainTextColor,
+      color: AppColors.subHeadingText,
     ),
     bodySmall: TextStyle(
       fontSize: 12,
       fontWeight: FontWeight.w400,
-      color: AppColors.blackMainTextColor,
+      color: AppColors.hintTextColor,
     ),
     labelLarge: TextStyle(
       fontSize: 14,
       fontWeight: FontWeight.w400,
-      color: AppColors.grayTertiaryTextColor,
+      color: AppColors.hintTextColor,
     ),
     labelMedium: TextStyle(
       fontSize: 12,
       fontWeight: FontWeight.w500,
-      color: AppColors.blackMainTextColor,
+      color: AppColors.subHeadingText,
     ),
     labelSmall: TextStyle(
       fontSize: 10,
       fontWeight: FontWeight.w400,
-      color: AppColors.grayTertiaryTextColor,
+      color: AppColors.hintTextColor,
     ),
   ),
 );

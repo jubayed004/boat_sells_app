@@ -37,7 +37,7 @@ class CustomAlignText extends StatelessWidget {
             context.titleSmall.copyWith(
               fontWeight: fontWeight ?? FontWeight.w500,
               fontSize: fontSize,
-              color: AppColors.blackMainTextColor,
+              color: AppColors.black,
             ),
       ),
     );

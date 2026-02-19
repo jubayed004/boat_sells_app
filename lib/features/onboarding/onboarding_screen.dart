@@ -8,7 +8,6 @@ import 'package:boat_sells_app/utils/extension/base_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-
 import 'controller/onboarding_controller.dart';
 
 class OnboardingScreen extends StatelessWidget {
@@ -81,7 +80,7 @@ class OnboardingPageCard extends StatelessWidget {
                           fontSize: 16,
                           // Bigger text for tablets
                           fontWeight: FontWeight.w700,
-                          color: AppColors.greenTextColor,
+                          color: AppColors.priceGreen,
                           textAlign: TextAlign.center,
                         ),
                       ),
@@ -154,8 +153,8 @@ class OnboardingPageCard extends StatelessWidget {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20),
             color: _controller.currentIndex.value == index
-                ? AppColors.primaryColor
-                : AppColors.blueTextColor400,
+                ? AppColors.primaryBlue
+                : AppColors.borderColor,
           ),
         );
       }),

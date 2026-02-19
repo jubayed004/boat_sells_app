@@ -20,7 +20,7 @@ class CustomButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final backgroundColor = isDark ? AppColors.white : AppColors.primaryColor;
+    final backgroundColor = isDark ? AppColors.white : AppColors.primaryBlue;
 
     return Material(
       color: backgroundColor,
