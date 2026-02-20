@@ -1,4 +1,3 @@
-import 'package:boat_sells_app/core/custom_assets/assets.gen.dart';
 import 'package:boat_sells_app/features/auth/controller/auth_controller.dart';
 import 'package:boat_sells_app/share/widgets/button/custom_button.dart';
 import 'package:boat_sells_app/share/widgets/loading/loading_widget.dart';
@@ -85,7 +84,7 @@ class _ActiveOtpScreenState extends State<ActiveOtpScreen> {
                   ),
                 ),
                 Gap(28.h),
-                Assets.icons.otpicon.svg(),
+                //Assets.icons.otpicon.svg(),
 
                 Gap(32.h),
 

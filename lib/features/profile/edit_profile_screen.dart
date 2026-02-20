@@ -1,9 +1,4 @@
-import 'dart:io';
-import 'package:boat_sells_app/utils/color/app_colors.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:gap/gap.dart';
-import 'package:get/get.dart';
 
 class EditProfileScreen extends StatefulWidget {
   const EditProfileScreen({super.key});

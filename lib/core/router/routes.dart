@@ -1,5 +1,8 @@
 import 'package:boat_sells_app/core/router/route_path.dart';
+import 'package:boat_sells_app/features/auth/login/login_screen.dart';
+import 'package:boat_sells_app/features/auth/sign_up/sign_up_screen.dart';
 import 'package:boat_sells_app/features/splash/splash_screen.dart';
+import 'package:boat_sells_app/features/home/home_screen.dart';
 import 'package:boat_sells_app/utils/extension/base_extension.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
@@ -24,7 +27,17 @@ class AppRouter {
           );
         },
       ),
-/*      GoRoute(
+      GoRoute(
+        name: RoutePath.homeScreen,
+        path: RoutePath.homeScreen.addBasePath,
+        pageBuilder: (context, state) {
+          return _buildPageWithAnimation(
+            child: const HomeScreen(),
+            state: state,
+          );
+        },
+      ),
+      /*      GoRoute(
         name: RoutePath.onboardingScreen,
         path: RoutePath.onboardingScreen.addBasePath,
         pageBuilder: (context, state) {
@@ -34,7 +47,7 @@ class AppRouter {
           );
         },
       ),*/
-/*      GoRoute(
+      /*      GoRoute(
         name: RoutePath.vendorSelectionScreen,
         path: RoutePath.vendorSelectionScreen.addBasePath,
         pageBuilder: (context, state) {
@@ -44,7 +57,7 @@ class AppRouter {
           );
         },
       ),*/
-/*      GoRoute(
+      GoRoute(
         name: RoutePath.loginScreen,
         path: RoutePath.loginScreen.addBasePath,
         pageBuilder: (context, state) {
@@ -53,8 +66,8 @@ class AppRouter {
             state: state,
           );
         },
-      ),*/
-/*      GoRoute(
+      ),
+      GoRoute(
         name: RoutePath.signUpScreen,
         path: RoutePath.signUpScreen.addBasePath,
         pageBuilder: (context, state) {
@@ -63,9 +76,9 @@ class AppRouter {
             state: state,
           );
         },
-      ),*/
+      ),
 
-/*      GoRoute(
+      /*      GoRoute(
         name: RoutePath.forgetPasswordScreen,
         path: RoutePath.forgetPasswordScreen.addBasePath,
         pageBuilder: (context, state) {
@@ -75,7 +88,7 @@ class AppRouter {
           );
         },
       ),*/
-/*      GoRoute(
+      /*      GoRoute(
         name: RoutePath.verifyOtpScreen,
         path: RoutePath.verifyOtpScreen.addBasePath,
         pageBuilder: (context, state) {
@@ -93,7 +106,7 @@ class AppRouter {
           );
         },
       ),*/
-/*      GoRoute(
+      /*      GoRoute(
         name: RoutePath.resetPasswordScreen,
         path: RoutePath.resetPasswordScreen.addBasePath,
         pageBuilder: (context, state) {
@@ -104,7 +117,7 @@ class AppRouter {
           );
         },
       ),*/
-/*
+      /*
       GoRoute(
         name: RoutePath.activeOtpScreen,
         path: RoutePath.activeOtpScreen.addBasePath,
@@ -126,7 +139,7 @@ class AppRouter {
       ),
 */
 
-/*      GoRoute(
+      /*      GoRoute(
         name: RoutePath.driverNavScreen,
         path: RoutePath.driverNavScreen.addBasePath,
         pageBuilder: (context, state) {
@@ -145,7 +158,7 @@ class AppRouter {
       //     return _buildPageWithAnimation(child: ProfileScreen(), state: state);
       //   },
       // ),
-/*      GoRoute(
+      /*      GoRoute(
         name: RoutePath.editProfileScreen,
         path: RoutePath.editProfileScreen.addBasePath,
         pageBuilder: (context, state) {
@@ -155,7 +168,7 @@ class AppRouter {
           );
         },
       ),*/
-/*      GoRoute(
+      /*      GoRoute(
         name: RoutePath.professionalInfoEditScreen,
         path: RoutePath.professionalInfoEditScreen.addBasePath,
         pageBuilder: (context, state) {
@@ -178,7 +191,7 @@ class AppRouter {
       ),*/
 
       //=============Setting==========
-/*      GoRoute(
+      /*      GoRoute(
         name: RoutePath.changePasswordScreen,
         path: RoutePath.changePasswordScreen.addBasePath,
         pageBuilder: (context, state) {

@@ -17,28 +17,28 @@ import 'package:vector_graphics/vector_graphics.dart' as _vg;
 class $AssetsFontsGen {
   const $AssetsFontsGen();
 
-  /// File path: assets/fonts/Poppins-Bold.ttf
-  String get poppinsBold => 'assets/fonts/Poppins-Bold.ttf';
+  /// File path: assets/fonts/Outfit-Bold.ttf
+  String get outfitBold => 'assets/fonts/Outfit-Bold.ttf';
 
-  /// File path: assets/fonts/Poppins-ExtraBold.ttf
-  String get poppinsExtraBold => 'assets/fonts/Poppins-ExtraBold.ttf';
+  /// File path: assets/fonts/Outfit-ExtraBold.ttf
+  String get outfitExtraBold => 'assets/fonts/Outfit-ExtraBold.ttf';
 
-  /// File path: assets/fonts/Poppins-Medium.ttf
-  String get poppinsMedium => 'assets/fonts/Poppins-Medium.ttf';
+  /// File path: assets/fonts/Outfit-Medium.ttf
+  String get outfitMedium => 'assets/fonts/Outfit-Medium.ttf';
 
-  /// File path: assets/fonts/Poppins-Regular.ttf
-  String get poppinsRegular => 'assets/fonts/Poppins-Regular.ttf';
+  /// File path: assets/fonts/Outfit-Regular.ttf
+  String get outfitRegular => 'assets/fonts/Outfit-Regular.ttf';
 
-  /// File path: assets/fonts/Poppins-SemiBold.ttf
-  String get poppinsSemiBold => 'assets/fonts/Poppins-SemiBold.ttf';
+  /// File path: assets/fonts/Outfit-SemiBold.ttf
+  String get outfitSemiBold => 'assets/fonts/Outfit-SemiBold.ttf';
 
   /// List of all assets
   List<String> get values => [
-    poppinsBold,
-    poppinsExtraBold,
-    poppinsMedium,
-    poppinsRegular,
-    poppinsSemiBold,
+    outfitBold,
+    outfitExtraBold,
+    outfitMedium,
+    outfitRegular,
+    outfitSemiBold,
   ];
 }
 
@@ -51,73 +51,65 @@ class $AssetsIconsGen {
   /// File path: assets/icons/Vector.svg
   SvgGenImage get vector => const SvgGenImage('assets/icons/Vector.svg');
 
-  /// File path: assets/icons/box.svg
-  SvgGenImage get box => const SvgGenImage('assets/icons/box.svg');
+  /// File path: assets/icons/capacity.svg
+  SvgGenImage get capacity => const SvgGenImage('assets/icons/capacity.svg');
+
+  /// File path: assets/icons/class_logo.svg
+  SvgGenImage get classLogo => const SvgGenImage('assets/icons/class_logo.svg');
+
+  /// File path: assets/icons/engine_hours.svg
+  SvgGenImage get engineHours =>
+      const SvgGenImage('assets/icons/engine_hours.svg');
+
+  /// File path: assets/icons/engine_model.svg
+  SvgGenImage get engineModel =>
+      const SvgGenImage('assets/icons/engine_model.svg');
 
   /// File path: assets/icons/facebook.svg
   SvgGenImage get facebook => const SvgGenImage('assets/icons/facebook.svg');
 
+  /// File path: assets/icons/length.svg
+  SvgGenImage get length => const SvgGenImage('assets/icons/length.svg');
+
+  /// File path: assets/icons/model.svg
+  SvgGenImage get model => const SvgGenImage('assets/icons/model.svg');
+
   /// File path: assets/icons/otpicon.svg
   SvgGenImage get otpicon => const SvgGenImage('assets/icons/otpicon.svg');
 
-  /// File path: assets/icons/slogo.svg
-  SvgGenImage get slogo => const SvgGenImage('assets/icons/slogo.svg');
+  /// File path: assets/icons/total_power.svg
+  SvgGenImage get totalPower =>
+      const SvgGenImage('assets/icons/total_power.svg');
+
+  /// File path: assets/icons/year.svg
+  SvgGenImage get year => const SvgGenImage('assets/icons/year.svg');
 
   /// List of all assets
   List<SvgGenImage> get values => [
     google,
     vector,
-    box,
+    capacity,
+    classLogo,
+    engineHours,
+    engineModel,
     facebook,
+    length,
+    model,
     otpicon,
-    slogo,
+    totalPower,
+    year,
   ];
 }
 
 class $AssetsImagesGen {
   const $AssetsImagesGen();
 
-  /// File path: assets/images/onboardingimagetwo.png
-  AssetGenImage get onboardingimagetwo =>
-      const AssetGenImage('assets/images/onboardingimagetwo.png');
-
-  /// File path: assets/images/onboardingoneimageone.png
-  AssetGenImage get onboardingoneimageone =>
-      const AssetGenImage('assets/images/onboardingoneimageone.png');
-
-  /// File path: assets/images/onbordingimage.png
-  AssetGenImage get onbordingimage =>
-      const AssetGenImage('assets/images/onbordingimage.png');
-
-  /// File path: assets/images/profile.png
-  AssetGenImage get profile => const AssetGenImage('assets/images/profile.png');
-
-  /// File path: assets/images/signimage.png
-  AssetGenImage get signimage =>
-      const AssetGenImage('assets/images/signimage.png');
-
-  /// File path: assets/images/simage.png
-  AssetGenImage get simage => const AssetGenImage('assets/images/simage.png');
-
-  /// File path: assets/images/splashmainlogo.png
-  AssetGenImage get splashmainlogo =>
-      const AssetGenImage('assets/images/splashmainlogo.png');
-
-  /// File path: assets/images/vendorchangeimage.png
-  AssetGenImage get vendorchangeimage =>
-      const AssetGenImage('assets/images/vendorchangeimage.png');
+  /// File path: assets/images/app_logo.png
+  AssetGenImage get appLogo =>
+      const AssetGenImage('assets/images/app_logo.png');
 
   /// List of all assets
-  List<AssetGenImage> get values => [
-    onboardingimagetwo,
-    onboardingoneimageone,
-    onbordingimage,
-    profile,
-    signimage,
-    simage,
-    splashmainlogo,
-    vendorchangeimage,
-  ];
+  List<AssetGenImage> get values => [appLogo];
 }
 
 class $AssetsLanguagesGen {

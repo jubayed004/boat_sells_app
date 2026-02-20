@@ -1,4 +1,3 @@
-import 'package:boat_sells_app/core/custom_assets/assets.gen.dart';
 import 'package:boat_sells_app/core/router/routes.dart';
 import 'package:boat_sells_app/share/widgets/button/custom_button.dart';
 import 'package:boat_sells_app/utils/color/app_colors.dart';
@@ -73,7 +72,7 @@ class ConfirmationModalBottomSheet extends StatelessWidget {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Center(child: Assets.icons.vector.svg()),
+                  //Center(child: Assets.icons.vector.svg()),
                   Gap(24),
                   Text(
                     title,

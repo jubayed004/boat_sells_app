@@ -59,13 +59,13 @@ class _LoginScreenState extends State<LoginScreen> {
                             Align(
                               alignment: Alignment.bottomCenter,
                               child: CustomImage(
-                                imageSrc: Assets.images.simage.path,
+                                imageSrc: Assets.images.appLogo.path,
                               ),
                             ),
                             Positioned(
                               left: 70,
                               bottom: 0,
-                              child: Assets.icons.slogo.svg(width: 60.w),
+                              child: Assets.images.appLogo.image(),
                             ),
                           ],
                         ),
@@ -245,7 +245,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       shape: BoxShape.rectangle,
                       color: AppColors.white,
                     ),
-                    child: Assets.images.splashmainlogo.image(
+                    child: Assets.images.appLogo.image(
                       height: 70.h,
                       width: 70.w,
                     ),
