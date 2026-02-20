@@ -12,7 +12,7 @@ class AppColors {
   static const Color info = Color(0xFF2196F3);
 
   // ================= Boat For Sell - Brand =================
-  static const Color primaryBlue = Color(0xFF1E6BFF);
+  static const Color primaryBlue = Color(0xFF09BDC1);
   static const Color primaryBlueDark = Color(0xFF1554CC);
   static const Color primaryBlueLight = Color(0xFFE8F0FF);
 
