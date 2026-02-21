@@ -101,12 +101,13 @@ class _LoginScreenState extends State<LoginScreen> {
                       isLoading: _auth.signInLoading.value,
                       text: AppStrings.signIn.tr,
                       onTap: () {
-                        if (_formKey.currentState!.validate()) {
-                          _auth.signIn(
-                            email: emailSignIn.text,
-                            password: passwordSignIn.text,
-                          );
-                        }
+                        AppRouter.route.goNamed(RoutePath.navigationPage);
+                        // if (_formKey.currentState!.validate()) {
+                        //   _auth.signIn(
+                        //     email: emailSignIn.text,
+                        //     password: passwordSignIn.text,
+                        //   );
+                        // }
                       },
                     ),
                   ),
@@ -203,9 +204,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
                   /// ----------- Create New Account Button -----------
                   GestureDetector(
-                    onTap: () => AppRouter.route.pushNamed(
-                      RoutePath.vendorSelectionScreen,
-                    ),
+                    onTap: () =>
+                        AppRouter.route.pushNamed(RoutePath.signUpScreen),
                     child: Container(
                       height: 48.h,
                       width: double.infinity,

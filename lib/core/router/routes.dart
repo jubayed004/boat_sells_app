@@ -1,6 +1,14 @@
 import 'package:boat_sells_app/core/router/route_path.dart';
+import 'package:boat_sells_app/features/auth/active/active_otp_screen.dart';
+import 'package:boat_sells_app/features/auth/forget/forget_password_screen.dart';
 import 'package:boat_sells_app/features/auth/login/login_screen.dart';
+import 'package:boat_sells_app/features/auth/reset/reset_password_screen.dart';
 import 'package:boat_sells_app/features/auth/sign_up/sign_up_screen.dart';
+import 'package:boat_sells_app/features/auth/verify_otp/verify_otp_screen.dart';
+import 'package:boat_sells_app/features/details_post/view/details_post_screen.dart';
+import 'package:boat_sells_app/features/nav_bar/navigation_page.dart';
+import 'package:boat_sells_app/features/profile/edit_profile_screen.dart';
+import 'package:boat_sells_app/features/profile/profile_screen.dart';
 import 'package:boat_sells_app/features/splash/splash_screen.dart';
 import 'package:boat_sells_app/features/home/home_screen.dart';
 import 'package:boat_sells_app/utils/extension/base_extension.dart';
@@ -27,36 +35,7 @@ class AppRouter {
           );
         },
       ),
-      GoRoute(
-        name: RoutePath.homeScreen,
-        path: RoutePath.homeScreen.addBasePath,
-        pageBuilder: (context, state) {
-          return _buildPageWithAnimation(
-            child: const HomeScreen(),
-            state: state,
-          );
-        },
-      ),
-      /*      GoRoute(
-        name: RoutePath.onboardingScreen,
-        path: RoutePath.onboardingScreen.addBasePath,
-        pageBuilder: (context, state) {
-          return _buildPageWithAnimation(
-            child: OnboardingScreen(),
-            state: state,
-          );
-        },
-      ),*/
-      /*      GoRoute(
-        name: RoutePath.vendorSelectionScreen,
-        path: RoutePath.vendorSelectionScreen.addBasePath,
-        pageBuilder: (context, state) {
-          return _buildPageWithAnimation(
-            child: const VendorSelectionScreen(),
-            state: state,
-          );
-        },
-      ),*/
+
       GoRoute(
         name: RoutePath.loginScreen,
         path: RoutePath.loginScreen.addBasePath,
@@ -78,7 +57,7 @@ class AppRouter {
         },
       ),
 
-      /*      GoRoute(
+      GoRoute(
         name: RoutePath.forgetPasswordScreen,
         path: RoutePath.forgetPasswordScreen.addBasePath,
         pageBuilder: (context, state) {
@@ -87,8 +66,8 @@ class AppRouter {
             state: state,
           );
         },
-      ),*/
-      /*      GoRoute(
+      ),
+      GoRoute(
         name: RoutePath.verifyOtpScreen,
         path: RoutePath.verifyOtpScreen.addBasePath,
         pageBuilder: (context, state) {
@@ -105,8 +84,8 @@ class AppRouter {
             state: state,
           );
         },
-      ),*/
-      /*      GoRoute(
+      ),
+      GoRoute(
         name: RoutePath.resetPasswordScreen,
         path: RoutePath.resetPasswordScreen.addBasePath,
         pageBuilder: (context, state) {
@@ -116,8 +95,8 @@ class AppRouter {
             state: state,
           );
         },
-      ),*/
-      /*
+      ),
+
       GoRoute(
         name: RoutePath.activeOtpScreen,
         path: RoutePath.activeOtpScreen.addBasePath,
@@ -137,28 +116,24 @@ class AppRouter {
           );
         },
       ),
-*/
 
-      /*      GoRoute(
-        name: RoutePath.driverNavScreen,
-        path: RoutePath.driverNavScreen.addBasePath,
+      GoRoute(
+        name: RoutePath.navigationPage,
+        path: RoutePath.navigationPage.addBasePath,
         pageBuilder: (context, state) {
-          return _buildPageWithAnimation(
-            child: DriverNavScreen(),
-            state: state,
-          );
+          return _buildPageWithAnimation(child: NavigationPage(), state: state);
         },
-      ),*/
+      ),
 
       //=================Profile ===================
-      // GoRoute(
-      //   name: RoutePath.profileScreen,
-      //   path: RoutePath.profileScreen.addBasePath,
-      //   pageBuilder: (context, state) {
-      //     return _buildPageWithAnimation(child: ProfileScreen(), state: state);
-      //   },
-      // ),
-      /*      GoRoute(
+      GoRoute(
+        name: RoutePath.profileScreen,
+        path: RoutePath.profileScreen.addBasePath,
+        pageBuilder: (context, state) {
+          return _buildPageWithAnimation(child: ProfileScreen(), state: state);
+        },
+      ),
+      GoRoute(
         name: RoutePath.editProfileScreen,
         path: RoutePath.editProfileScreen.addBasePath,
         pageBuilder: (context, state) {
@@ -167,28 +142,18 @@ class AppRouter {
             state: state,
           );
         },
-      ),*/
-      /*      GoRoute(
-        name: RoutePath.professionalInfoEditScreen,
-        path: RoutePath.professionalInfoEditScreen.addBasePath,
-        pageBuilder: (context, state) {
-          return _buildPageWithAnimation(
-            child: ProfessionalInfoEditScreen(),
-            state: state,
-          );
-        },
-      ),*/
-      /*
+      ),
+
       GoRoute(
-        name: RoutePath.professionalInfoScreen,
-        path: RoutePath.professionalInfoScreen.addBasePath,
+        name: RoutePath.detailsPostScreen,
+        path: RoutePath.detailsPostScreen.addBasePath,
         pageBuilder: (context, state) {
           return _buildPageWithAnimation(
-            child: ProfessionalInfoScreen(),
+            child: DetailsPostScreen(),
             state: state,
           );
         },
-      ),*/
+      ),
 
       //=============Setting==========
       /*      GoRoute(

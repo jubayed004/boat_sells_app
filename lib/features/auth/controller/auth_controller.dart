@@ -141,9 +141,9 @@ class AuthController extends GetxController {
         );
 
         if (CommonController.to.isUser.value) {
-          AppRouter.route.goNamed(RoutePath.commuterRegistrationScreen);
+          // AppRouter.route.goNamed(RoutePath.commuterRegistrationScreen);
         } else {
-          AppRouter.route.goNamed(RoutePath.parcelOwnerNavScreen, extra: 0);
+          // AppRouter.route.goNamed(RoutePath.parcelOwnerNavScreen, extra: 0);
         }
       } else {
         activeOtpLoadingMethod(false);
@@ -240,16 +240,16 @@ class AuthController extends GetxController {
         await localService.saveIsProfileCompleted(isProfileCompleted);
 
         if (role == "CUSTOMER") {
-          AppRouter.route.goNamed(RoutePath.parcelOwnerNavScreen);
+          // AppRouter.route.goNamed(RoutePath.parcelOwnerNavScreen);
         } else {
           if (status == "PENDING") {
             if (!isProfileCompleted) {
-              AppRouter.route.goNamed(RoutePath.commuterRegistrationScreen);
+              //  AppRouter.route.goNamed(RoutePath.commuterRegistrationScreen);
             } else {
-              AppRouter.route.goNamed(RoutePath.adminApprovalScreen);
+              //  AppRouter.route.goNamed(RoutePath.adminApprovalScreen);
             }
           } else {
-            AppRouter.route.goNamed(RoutePath.driverNavScreen);
+            //AppRouter.route.goNamed(RoutePath.parcelOwnerNavScreen);
           }
         }
       } else {

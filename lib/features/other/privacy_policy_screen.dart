@@ -36,7 +36,7 @@ class _PrivacyPolicyScreenState extends State<PrivacyPolicyScreen> {
       appBar: AppBar(
         scrolledUnderElevation: 0,
         backgroundColor: Colors.transparent,
-        title: Text(AppStrings.privacyPolicy.tr),
+        title: Text("Privacy Policy".tr),
         centerTitle: true,
       ),
       body: Obx(() {

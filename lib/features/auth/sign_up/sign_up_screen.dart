@@ -40,7 +40,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       appBar: AppBar(
         scrolledUnderElevation: 0,
         centerTitle: true,
-        title: Text(AppStrings.ntsamaela.tr),
+        title: Text(AppStrings.signUp.tr),
       ),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -116,13 +116,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     isLoading: _auth.signUpLoading.value,
                     text: AppStrings.signUp.tr,
                     onTap: () {
-                      if (formKey.currentState!.validate()) {
-                        _auth.signUp(
-                          nameSignUp: nameSignUp.text,
-                          emailSignUp: emailSignUp.text,
-                          passwordSignUp: passwordSignUp.text,
-                        );
-                      }
+                      AppRouter.route.pushNamed(RoutePath.activeOtpScreen);
+                      // if (formKey.currentState!.validate()) {
+                      //   _auth.signUp(
+                      //     nameSignUp: nameSignUp.text,
+                      //     emailSignUp: emailSignUp.text,
+                      //     passwordSignUp: passwordSignUp.text,
+                      //   );
+                      // }
                     },
                   ),
                 ),

@@ -1,4 +1,6 @@
 import 'package:boat_sells_app/core/custom_assets/assets.gen.dart';
+import 'package:boat_sells_app/core/router/route_path.dart';
+import 'package:boat_sells_app/core/router/routes.dart';
 import 'package:boat_sells_app/features/auth/controller/auth_controller.dart';
 import 'package:boat_sells_app/share/widgets/button/custom_button.dart';
 import 'package:boat_sells_app/share/widgets/loading/loading_widget.dart';
@@ -52,7 +54,7 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
         scrolledUnderElevation: 0,
         centerTitle: true,
         title: Text(
-          AppStrings.ntsamaela.tr,
+          AppStrings.verifyYourAccount.tr,
           style: context.headlineSmall.copyWith(color: AppColors.primaryBlue),
         ),
       ),
@@ -101,13 +103,14 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
                     isLoading: _auth.resetVerifyOtpLoading.value,
                     text: AppStrings.verifyCode.tr,
                     onTap: () {
-                      if (_formKey.currentState!.validate()) {
-                        _auth.resetVerifyOtp(
-                          otp: verifyOtp.text,
-                          purpose: purpose,
-                          token: widget.token,
-                        );
-                      }
+                      AppRouter.route.pushNamed(RoutePath.resetPasswordScreen);
+                      // if (_formKey.currentState!.validate()) {
+                      //   _auth.resetVerifyOtp(
+                      //     otp: verifyOtp.text,
+                      //     purpose: purpose,
+                      //     token: widget.token,
+                      //   );
+                      // }
                     },
                   ),
                 ),

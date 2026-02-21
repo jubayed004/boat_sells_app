@@ -1,3 +1,5 @@
+import 'package:boat_sells_app/core/router/route_path.dart';
+import 'package:boat_sells_app/core/router/routes.dart';
 import 'package:boat_sells_app/features/auth/controller/auth_controller.dart';
 import 'package:boat_sells_app/helper/validator/text_field_validator.dart';
 import 'package:boat_sells_app/share/widgets/button/custom_button.dart';
@@ -29,7 +31,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
         scrolledUnderElevation: 0,
         centerTitle: true,
         title: Text(
-          AppStrings.ntsamaela.tr,
+          AppStrings.forgotPassword.tr,
           style: context.headlineSmall.copyWith(color: AppColors.primaryBlue),
         ),
       ),
@@ -79,11 +81,12 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                     isLoading: authController.forgotPasswordLoading.value,
                     text: AppStrings.sendCode.tr,
                     onTap: () {
-                      if (_formKey.currentState!.validate()) {
-                        authController.forgotPassword(
-                          email: emailController.text,
-                        );
-                      }
+                      AppRouter.route.pushNamed(RoutePath.verifyOtpScreen);
+                      // if (_formKey.currentState!.validate()) {
+                      //   authController.forgotPassword(
+                      //     email: emailController.text,
+                      //   );
+                      // }
                     },
                   ),
                 ),

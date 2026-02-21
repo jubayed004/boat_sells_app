@@ -1,3 +1,5 @@
+import 'package:boat_sells_app/core/router/route_path.dart';
+import 'package:boat_sells_app/core/router/routes.dart';
 import 'package:boat_sells_app/features/auth/controller/auth_controller.dart';
 import 'package:boat_sells_app/share/widgets/button/custom_button.dart';
 import 'package:boat_sells_app/share/widgets/loading/loading_widget.dart';
@@ -53,7 +55,7 @@ class _ActiveOtpScreenState extends State<ActiveOtpScreen> {
         scrolledUnderElevation: 0,
         centerTitle: true,
         title: Text(
-          AppStrings.ntsamaela.tr,
+          AppStrings.verifyYourAccount.tr,
           style: context.headlineSmall.copyWith(color: AppColors.primaryBlue),
         ),
       ),
@@ -84,8 +86,8 @@ class _ActiveOtpScreenState extends State<ActiveOtpScreen> {
                   ),
                 ),
                 Gap(28.h),
-                //Assets.icons.otpicon.svg(),
 
+                //Assets.icons.otpicon.svg(),
                 Gap(32.h),
 
                 /// ---------- OTP INPUT ----------
@@ -102,11 +104,15 @@ class _ActiveOtpScreenState extends State<ActiveOtpScreen> {
                     isLoading: _auth.activeOtpLoading.value,
                     text: AppStrings.verifyCode.tr,
                     onTap: () {
-                      _auth.activeOtp(
-                        otp: verifyOtp.text,
-                        purpose: purpose,
-                        token: widget.token,
+                      AppRouter.route.pushNamed(
+                        RoutePath.navigationPage,
+                        extra: 0,
                       );
+                      // _auth.activeOtp(
+                      //   otp: verifyOtp.text,
+                      //   purpose: purpose,
+                      //   token: widget.token,
+                      // );
                     },
                   ),
                 ),

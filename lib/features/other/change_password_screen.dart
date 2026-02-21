@@ -98,7 +98,7 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
               Obx(
                 () => CustomButton(
                   isLoading: _otherController.changePasswordLoading.value,
-                  text: AppStrings.update.tr,
+                  text: AppStrings.resetPassword.tr,
                   onTap: () {
                     if (_formKey.currentState!.validate()) {
                       _otherController.changePassword(
