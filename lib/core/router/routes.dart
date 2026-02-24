@@ -5,7 +5,11 @@ import 'package:boat_sells_app/features/auth/login/login_screen.dart';
 import 'package:boat_sells_app/features/auth/reset/reset_password_screen.dart';
 import 'package:boat_sells_app/features/auth/sign_up/sign_up_screen.dart';
 import 'package:boat_sells_app/features/auth/verify_otp/verify_otp_screen.dart';
+import 'package:boat_sells_app/features/chat/chat_screen.dart';
+import 'package:boat_sells_app/features/comments/view/comments_screen.dart';
 import 'package:boat_sells_app/features/details_post/view/details_post_screen.dart';
+import 'package:boat_sells_app/features/details_post/view/view_full_details_screen.dart';
+import 'package:boat_sells_app/features/inbox/inbox_screen.dart';
 import 'package:boat_sells_app/features/nav_bar/navigation_page.dart';
 import 'package:boat_sells_app/features/profile/edit_profile_screen.dart';
 import 'package:boat_sells_app/features/profile/profile_screen.dart';
@@ -154,7 +158,31 @@ class AppRouter {
           );
         },
       ),
+      GoRoute(
+        name: RoutePath.viewFullDetailsScreen,
+        path: RoutePath.viewFullDetailsScreen.addBasePath,
+        pageBuilder: (context, state) {
+          return _buildPageWithAnimation(
+            child: const ViewFullDetailsScreen(),
+            state: state,
+          );
+        },
+      ),
+      GoRoute(
+        name: RoutePath.commentsScreen,
+        path: RoutePath.commentsScreen.addBasePath,
+        pageBuilder: (context, state) {
+          return _buildPageWithAnimation(child: CommentsScreen(), state: state);
+        },
+      ),
 
+      GoRoute(
+        name: RoutePath.inboxScreen,
+        path: RoutePath.inboxScreen.addBasePath,
+        pageBuilder: (context, state) {
+          return _buildPageWithAnimation(child: InboxScreen(), state: state);
+        },
+      ),
       //=============Setting==========
       /*      GoRoute(
         name: RoutePath.changePasswordScreen,

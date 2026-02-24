@@ -1,6 +1,7 @@
 class BoatModel {
   final String id;
   final String imageUrl;
+  final List<String> imageUrls; // multiple images for carousel
   final String sellerName;
   final String sellerAvatar;
   final bool isVerified;
@@ -16,6 +17,7 @@ class BoatModel {
   const BoatModel({
     required this.id,
     required this.imageUrl,
+    this.imageUrls = const [],
     required this.sellerName,
     required this.sellerAvatar,
     this.isVerified = true,
@@ -28,4 +30,7 @@ class BoatModel {
     this.isSaved = false,
     required this.category,
   });
+
+  /// Returns imageUrls if non-empty, else falls back to [imageUrl].
+  List<String> get allImages => imageUrls.isNotEmpty ? imageUrls : [imageUrl];
 }

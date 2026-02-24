@@ -21,7 +21,9 @@ class RoutePath {
   static const String chatListScreen = 'chatListScreen';
   static const String editProfileScreen = 'editProfileScreen';
   static const String profileScreen = 'profileScreen';
-  static const String chatScreen = 'chatScreen';
   static const String navigationPage = 'navigationPage';
   static const String detailsPostScreen = 'detailsPostScreen';
+  static const String viewFullDetailsScreen = 'viewFullDetailsScreen';
+  static const String commentsScreen = 'commentsScreen';
+  static const String inboxScreen = 'inboxScreen';
 }

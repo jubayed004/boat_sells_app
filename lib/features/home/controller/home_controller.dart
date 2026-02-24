@@ -49,6 +49,7 @@ class HomeController extends GetxController {
       return BoatModel(
         id: id.toString(),
         imageUrl: _dummyImages[id % _dummyImages.length],
+        imageUrls: _dummyImages, // all images for carousel
         sellerName: 'Seller $id',
         sellerAvatar: 'https://randomuser.me/api/portraits/thumb/men/$id.jpg',
         title: 'Boat Model $id - Excellence',

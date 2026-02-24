@@ -1,6 +1,8 @@
 import 'package:boat_sells_app/features/home/controller/home_controller.dart';
 import 'package:boat_sells_app/features/home/model/boat_model.dart';
-import 'package:boat_sells_app/features/home/widgets/boat_listing_card.dart';
+import 'package:boat_sells_app/share/widgets/boat_listing_card/boat_listing_card.dart';
+import 'package:boat_sells_app/core/router/route_path.dart';
+import 'package:boat_sells_app/core/router/routes.dart';
 import 'package:boat_sells_app/features/home/widgets/home_app_bar.dart';
 import 'package:boat_sells_app/utils/color/app_colors.dart';
 import 'package:flutter/material.dart';
@@ -35,8 +37,17 @@ class _HomeScreenState extends State<HomeScreen> {
           PagedSliverList<int, BoatModel>(
             pagingController: _homeController.pagingController,
             builderDelegate: PagedChildBuilderDelegate<BoatModel>(
-              itemBuilder: (context, item, index) =>
-                  BoatListingCard(boat: item),
+              itemBuilder: (context, item, index) => BoatListingCard(
+                boat: item,
+                onCardTap: () =>
+                    AppRouter.route.pushNamed(RoutePath.detailsPostScreen),
+                onCommentTap: () =>
+                    AppRouter.route.pushNamed(RoutePath.commentsScreen),
+                imageOnTap: () {
+                  print('image tapped');
+                  // AppRouter.route.pushNamed(RoutePath.detailsPostScreen);
+                },
+              ),
               firstPageProgressIndicatorBuilder: (_) => const Center(
                 child: CircularProgressIndicator(color: AppColors.primaryBlue),
               ),

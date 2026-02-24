@@ -1,5 +1,7 @@
+import 'package:boat_sells_app/core/router/route_path.dart';
+import 'package:boat_sells_app/core/router/routes.dart';
 import 'package:boat_sells_app/features/home/model/boat_model.dart';
-import 'package:boat_sells_app/features/home/widgets/boat_listing_card.dart';
+import 'package:boat_sells_app/share/widgets/boat_listing_card/boat_listing_card.dart';
 import 'package:boat_sells_app/utils/color/app_colors.dart';
 import 'package:boat_sells_app/utils/extension/base_extension.dart';
 import 'package:flutter/material.dart';
@@ -43,7 +45,11 @@ class DetailsPostScreen extends StatelessWidget {
           SliverToBoxAdapter(
             child: Padding(
               padding: EdgeInsets.only(top: 8.h),
-              child: BoatListingCard(boat: displayBoat),
+              child: BoatListingCard(
+                boat: displayBoat,
+                onCommentTap: () =>
+                    AppRouter.route.pushNamed(RoutePath.commentsScreen),
+              ),
             ),
           ),
 
@@ -135,7 +141,9 @@ class DetailsPostScreen extends StatelessWidget {
           children: [
             Expanded(
               child: OutlinedButton(
-                onPressed: () {},
+                onPressed: () {
+                  AppRouter.route.pushNamed(RoutePath.viewFullDetailsScreen);
+                },
                 style: OutlinedButton.styleFrom(
                   padding: EdgeInsets.symmetric(vertical: 14.h),
                   side: BorderSide(color: AppColors.primaryBlue, width: 1.2),
