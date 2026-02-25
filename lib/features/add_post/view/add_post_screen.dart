@@ -1,5 +1,8 @@
+import 'package:boat_sells_app/core/router/routes.dart';
 import 'package:boat_sells_app/features/add_post/controller/add_post_controller.dart';
-import 'package:boat_sells_app/features/add_post/widgets/engine_info_section.dart';
+import 'package:boat_sells_app/features/nav_bar/controller/navigation_controller.dart';
+import 'package:boat_sells_app/features/add_post/widgets/additional_info_section.dart';
+import 'package:boat_sells_app/features/add_post/widgets/engines_expanded_section.dart';
 import 'package:boat_sells_app/features/add_post/widgets/image_picker_row.dart';
 import 'package:boat_sells_app/features/add_post/widgets/more_info_tile.dart';
 import 'package:boat_sells_app/share/widgets/align/custom_align_text.dart';
@@ -21,7 +24,8 @@ class AddPostScreen extends StatefulWidget {
 }
 
 class _AddPostScreenState extends State<AddPostScreen> {
-  final AddPostController _controller = Get.put(AddPostController());
+  final AddPostController _controller = Get.find<AddPostController>();
+  final navController = Get.find<NavigationControllerMain>();
 
   @override
   Widget build(BuildContext context) {
@@ -85,73 +89,71 @@ class _AddPostScreenState extends State<AddPostScreen> {
 
                     // ─── Boat Information ───────────────────────────────────
                     CustomAlignText(text: 'Boat Information'),
-                    Gap(16),
-                    CustomAlignText(
-                      text: 'Boat Type',
-                      style: context.textTheme.bodyLarge,
+                    Gap(16.h),
+                    _buildInlineField(
+                      label: 'Boat Type',
+                      child: ValueListenableBuilder<String?>(
+                        valueListenable: _controller.selectedBoatType,
+                        builder: (context, selectedType, child) {
+                          return CustomDropdownField<String>(
+                            hintText: _controller.boatTypes.first,
+                            value: selectedType,
+                            items: _controller.boatTypes,
+                            onChanged: _controller.setBoatType,
+                          );
+                        },
+                      ),
                     ),
                     Gap(10.h),
-                    ValueListenableBuilder<String?>(
-                      valueListenable: _controller.selectedBoatType,
-                      builder: (context, selectedType, child) {
-                        return CustomDropdownField<String>(
-                          hintText: _controller.boatTypes.first,
-                          value: selectedType,
-                          items: _controller.boatTypes,
-                          onChanged: _controller.setBoatType,
-                        );
-                      },
+                    _buildInlineField(
+                      label: 'Category',
+                      child: ValueListenableBuilder<String?>(
+                        valueListenable: _controller.selectedCategory,
+                        builder: (context, selectedCategory, child) {
+                          return CustomDropdownField<String>(
+                            hintText: _controller.categories.first,
+                            value: selectedCategory,
+                            items: _controller.categories,
+                            onChanged: _controller.setCategory,
+                          );
+                        },
+                      ),
                     ),
                     Gap(10.h),
-                    CustomAlignText(
-                      text: 'Category',
-                      style: context.textTheme.bodyLarge,
+                    _buildInlineField(
+                      label: 'Model',
+                      child: CustomTextField(
+                        controller: _controller.modelController,
+                        hintText: 'Enter Model',
+                      ),
                     ),
                     Gap(10.h),
-                    // Category Dropdown
-                    ValueListenableBuilder<String?>(
-                      valueListenable: _controller.selectedCategory,
-                      builder: (context, selectedCategory, child) {
-                        return CustomDropdownField<String>(
-                          hintText: _controller.categories.first,
-                          value: selectedCategory,
-                          items: _controller.categories,
-                          onChanged: _controller.setCategory,
-                        );
-                      },
+                    _buildInlineField(
+                      label: 'Year',
+                      child: CustomTextField(
+                        controller: _controller.yearController,
+                        hintText: 'Enter Year',
+                        keyboardType: TextInputType.number,
+                      ),
                     ),
                     Gap(10.h),
-                    // Model
-                    CustomTextField(
-                      title: 'Model',
-                      controller: _controller.modelController,
-                      hintText: 'Enter Model',
+                    _buildInlineField(
+                      label: 'Length',
+                      child: CustomTextField(
+                        controller: _controller.lengthController,
+                        hintText: 'Enter Length',
+                        keyboardType: TextInputType.number,
+                      ),
                     ),
                     Gap(10.h),
-                    // Year
-                    CustomTextField(
-                      title: 'Year',
-                      controller: _controller.yearController,
-                      hintText: 'Enter Year',
-                      keyboardType: TextInputType.number,
+                    _buildInlineField(
+                      label: 'People Capacity',
+                      child: CustomTextField(
+                        controller: _controller.capacityController,
+                        hintText: 'Enter People Capacity',
+                        keyboardType: TextInputType.number,
+                      ),
                     ),
-                    Gap(10.h),
-                    // Length
-                    CustomTextField(
-                      title: 'Length',
-                      controller: _controller.lengthController,
-                      hintText: 'Enter Length',
-                      keyboardType: TextInputType.number,
-                    ),
-                    Gap(10.h),
-                    // People Capacity
-                    CustomTextField(
-                      title: 'People Capacity',
-                      controller: _controller.capacityController,
-                      hintText: 'Enter People Capacity',
-                      keyboardType: TextInputType.number,
-                    ),
-
                     Gap(20.h),
 
                     // ─── Description ─────────────────────────────────────────
@@ -164,10 +166,12 @@ class _AddPostScreenState extends State<AddPostScreen> {
                       keyboardType: TextInputType.multiline,
                     ),
                     Gap(20.h),
+
                     // ─── More Information ────────────────────────────────────
                     CustomAlignText(text: 'More Information'),
                     Gap(10.h),
-                    // ─── Engines Information ────────────────────────────────────
+
+                    // ─── Engines Information ─────────────────────────────────
                     ValueListenableBuilder<bool>(
                       valueListenable: _controller.isEnginesExpanded,
                       builder: (context, isExpanded, child) {
@@ -183,90 +187,16 @@ class _AddPostScreenState extends State<AddPostScreen> {
                             ],
                           );
                         }
-
-                        return Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            GestureDetector(
-                              onTap: _controller.toggleEnginesExpanded,
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  CustomAlignText(
-                                    text: 'Engines Information',
-                                    style: TextStyle(
-                                      fontSize: 14.sp,
-                                      fontWeight: FontWeight.w600,
-                                      color: AppColors.subHeadingText,
-                                    ),
-                                  ),
-                                  Icon(
-                                    Icons.keyboard_arrow_up_rounded,
-                                    color: AppColors.subHeadingText,
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Gap(16.h),
-                            ValueListenableBuilder<List<EngineInfoModel>>(
-                              valueListenable: _controller.engines,
-                              builder: (context, engines, child) {
-                                return Column(
-                                  children: [
-                                    for (int i = 0; i < engines.length; i++)
-                                      EngineInfoSection(
-                                        index: i,
-                                        engine: engines[i],
-                                        onRemove: () =>
-                                            _controller.removeEngine(i),
-                                      ),
-                                  ],
-                                );
-                              },
-                            ),
-                            Align(
-                              alignment: Alignment.centerRight,
-                              child: GestureDetector(
-                                onTap: _controller.addEngine,
-                                child: Container(
-                                  padding: EdgeInsets.symmetric(
-                                    horizontal: 16.w,
-                                    vertical: 10.h,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: AppColors.scaffoldBg,
-                                    borderRadius: BorderRadius.circular(8.r),
-                                  ),
-                                  child: Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Icon(
-                                        Icons.add_circle_outline,
-                                        color: AppColors.primaryBlue,
-                                        size: 18.sp,
-                                      ),
-                                      Gap(6.w),
-                                      Text(
-                                        'Add Engine',
-                                        style: TextStyle(
-                                          color: AppColors.subHeadingText,
-                                          fontSize: 14.sp,
-                                          fontWeight: FontWeight.w600,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                            Gap(20.h),
-                          ],
+                        return EnginesExpandedSection(
+                          engines: _controller.engines,
+                          onToggle: _controller.toggleEnginesExpanded,
+                          onAddEngine: _controller.addEngine,
+                          onRemoveEngine: _controller.removeEngine,
                         );
                       },
                     ),
 
-                    // ─── Additional Information ────────────────────────────────────
+                    // ─── Additional Information ──────────────────────────────
                     ValueListenableBuilder<bool>(
                       valueListenable: _controller.isAdditionalInfoExpanded,
                       builder: (context, isExpanded, child) {
@@ -282,152 +212,35 @@ class _AddPostScreenState extends State<AddPostScreen> {
                             ],
                           );
                         }
-
-                        return Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            GestureDetector(
-                              onTap: _controller.toggleAdditionalInfoExpanded,
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  CustomAlignText(
-                                    text: 'Additional Information',
-                                    style: TextStyle(
-                                      fontSize: 14.sp,
-                                      fontWeight: FontWeight.w600,
-                                      color: AppColors.subHeadingText,
-                                    ),
-                                  ),
-                                  Icon(
-                                    Icons.keyboard_arrow_up_rounded,
-                                    color: AppColors.subHeadingText,
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Gap(16.h),
-                            CustomTextField(
-                              title: 'Manufacturer',
-                              controller: _controller.manufacturerController,
-                              hintText: 'Enter Manufacturer',
-                            ),
-                            Gap(10.h),
-                            CustomTextField(
-                              title: 'Bridge Clearance',
-                              controller: _controller.bridgeClearanceController,
-                              hintText: 'Enter Bridge Clearance',
-                            ),
-                            Gap(10.h),
-                            CustomTextField(
-                              title: 'Engine Model',
-                              controller:
-                                  _controller.addInfoEngineModelController,
-                              hintText: 'Enter Engine Model',
-                            ),
-                            Gap(10.h),
-                            CustomTextField(
-                              title: 'Fuel Capacity',
-                              controller: _controller.fuelCapacityController,
-                              hintText: 'Enter Fuel Capacity',
-                              keyboardType: TextInputType.number,
-                            ),
-                            Gap(10.h),
-                            CustomTextField(
-                              title: 'Fresh Water Tank',
-                              controller: _controller.freshWaterTankController,
-                              hintText: 'Enter Fresh Water Tank',
-                              keyboardType: TextInputType.number,
-                            ),
-                            Gap(10.h),
-                            CustomTextField(
-                              title: 'Cruise Speed',
-                              controller: _controller.cruiseSpeedController,
-                              hintText: 'Enter Cruise Speed',
-                              keyboardType: TextInputType.number,
-                            ),
-                            Gap(10.h),
-                            CustomTextField(
-                              title: 'LOA (Overall Length)',
-                              controller: _controller.loaController,
-                              hintText: 'Enter LOA',
-                              keyboardType: TextInputType.number,
-                            ),
-                            Gap(10.h),
-                            CustomTextField(
-                              title: 'Max Speed',
-                              controller: _controller.maxSpeedController,
-                              hintText: 'Enter Max Speed',
-                              keyboardType: TextInputType.number,
-                            ),
-                            Gap(10.h),
-                            CustomTextField(
-                              title: 'Beam',
-                              controller: _controller.beamController,
-                              hintText: 'Enter Beam',
-                              keyboardType: TextInputType.number,
-                            ),
-                            Gap(10.h),
-                            CustomTextField(
-                              title: 'Cabin',
-                              controller: _controller.cabinController,
-                              hintText: 'Enter Cabin',
-                              keyboardType: TextInputType.number,
-                            ),
-                            Gap(10.h),
-                            CustomTextField(
-                              title: 'Draft',
-                              controller: _controller.draftController,
-                              hintText: 'Enter Draft',
-                              keyboardType: TextInputType.number,
-                            ),
-                            Gap(10.h),
-                            CustomTextField(
-                              title: 'Mechanical Equipment',
-                              controller:
-                                  _controller.mechanicalEquipmentController,
-                              hintText: 'Write Here...',
-                              minLines: 3,
-                              maxLines: 5,
-                            ),
-                            Gap(10.h),
-                            CustomTextField(
-                              title: 'Galley Equipment',
-                              controller: _controller.galleyEquipmentController,
-                              hintText: 'Write Here...',
-                              minLines: 3,
-                              maxLines: 5,
-                            ),
-                            Gap(10.h),
-                            CustomTextField(
-                              title: 'Desk & Hull Equipment',
-                              controller:
-                                  _controller.deskHullEquipmentController,
-                              hintText: 'Write Here...',
-                              minLines: 3,
-                              maxLines: 5,
-                            ),
-                            Gap(10.h),
-                            CustomTextField(
-                              title: 'Navigation System',
-                              controller:
-                                  _controller.navigationSystemController,
-                              hintText: 'Write Here...',
-                              minLines: 3,
-                              maxLines: 5,
-                            ),
-                            Gap(10.h),
-                            CustomTextField(
-                              title: 'Additional Equipment',
-                              controller:
-                                  _controller.additionalEquipmentController,
-                              hintText: 'Write Here...',
-                              minLines: 3,
-                              maxLines: 5,
-                            ),
-                            Gap(24.h),
-                          ],
+                        return AdditionalInfoSection(
+                          onToggle: _controller.toggleAdditionalInfoExpanded,
+                          manufacturerController:
+                              _controller.manufacturerController,
+                          bridgeClearanceController:
+                              _controller.bridgeClearanceController,
+                          engineModelController:
+                              _controller.addInfoEngineModelController,
+                          fuelCapacityController:
+                              _controller.fuelCapacityController,
+                          freshWaterTankController:
+                              _controller.freshWaterTankController,
+                          cruiseSpeedController:
+                              _controller.cruiseSpeedController,
+                          loaController: _controller.loaController,
+                          maxSpeedController: _controller.maxSpeedController,
+                          beamController: _controller.beamController,
+                          cabinController: _controller.cabinController,
+                          draftController: _controller.draftController,
+                          mechanicalEquipmentController:
+                              _controller.mechanicalEquipmentController,
+                          galleyEquipmentController:
+                              _controller.galleyEquipmentController,
+                          deskHullEquipmentController:
+                              _controller.deskHullEquipmentController,
+                          navigationSystemController:
+                              _controller.navigationSystemController,
+                          additionalEquipmentController:
+                              _controller.additionalEquipmentController,
                         );
                       },
                     ),
@@ -442,13 +255,32 @@ class _AddPostScreenState extends State<AddPostScreen> {
               child: CustomButton(
                 text: 'Share',
                 onTap: () {
-                  // TODO: Implement post submission
+                  navController.selectedNavIndex.value = 0;
                 },
               ),
             ),
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildInlineField({required String label, required Widget child}) {
+    return Row(
+      children: [
+        SizedBox(
+          width: 120.w,
+          child: CustomAlignText(
+            text: label,
+            style: TextStyle(
+              fontSize: 13.sp,
+              fontWeight: FontWeight.w600,
+              color: AppColors.headingText,
+            ),
+          ),
+        ),
+        Expanded(child: child),
+      ],
     );
   }
 }

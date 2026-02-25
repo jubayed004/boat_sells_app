@@ -18,7 +18,9 @@ class _NavigationPageState extends State<NavigationPage> {
   @override
   void initState() {
     super.initState();
-    _controller.selectedNavIndex.value = widget.index;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _controller.selectedNavIndex.value = widget.index;
+    });
   }
 
   @override

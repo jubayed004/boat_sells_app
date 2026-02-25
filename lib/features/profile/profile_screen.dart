@@ -80,14 +80,25 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             _StatItem(
                               value: '${controller.postCount}',
                               label: 'Posts',
+                              onTap: () {},
                             ),
                             _StatItem(
                               value: '${controller.followersCount}',
                               label: 'Followers',
+                              onTap: () {
+                                AppRouter.route.pushNamed(
+                                  RoutePath.followersScreen,
+                                );
+                              },
                             ),
                             _StatItem(
                               value: '${controller.followingCount}',
                               label: 'Following',
+                              onTap: () {
+                                AppRouter.route.pushNamed(
+                                  RoutePath.followersScreen,
+                                );
+                              },
                             ),
                           ],
                         ),
@@ -197,31 +208,38 @@ class _ProfileScreenState extends State<ProfileScreen> {
 class _StatItem extends StatelessWidget {
   final String value;
   final String label;
-
-  const _StatItem({required this.value, required this.label});
+  final VoidCallback onTap;
+  const _StatItem({
+    required this.value,
+    required this.label,
+    required this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          value,
-          style: context.titleSmall.copyWith(
-            fontWeight: FontWeight.w700,
-            fontSize: 14.sp,
-            color: AppColors.headingText,
+    return GestureDetector(
+      onTap: onTap,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            value,
+            style: context.titleSmall.copyWith(
+              fontWeight: FontWeight.w700,
+              fontSize: 14.sp,
+              color: AppColors.headingText,
+            ),
           ),
-        ),
-        SizedBox(height: 2.h),
-        Text(
-          label,
-          style: context.bodySmall.copyWith(
-            fontSize: 12.sp,
-            color: AppColors.headingText,
+          SizedBox(height: 2.h),
+          Text(
+            label,
+            style: context.bodySmall.copyWith(
+              fontSize: 12.sp,
+              color: AppColors.headingText,
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

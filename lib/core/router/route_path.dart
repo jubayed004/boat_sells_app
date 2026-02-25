@@ -29,4 +29,7 @@ class RoutePath {
   static const String viewFullDetailsScreen = 'viewFullDetailsScreen';
   static const String commentsScreen = 'commentsScreen';
   static const String inboxScreen = 'inboxScreen';
+  static const String notificationScreen = 'notificationScreen';
+  static const String followersScreen = 'followersScreen';
+  static const String savedScreen = 'savedScreen';
 }

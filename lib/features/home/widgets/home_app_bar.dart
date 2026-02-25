@@ -1,4 +1,6 @@
 import 'package:boat_sells_app/core/custom_assets/assets.gen.dart';
+import 'package:boat_sells_app/core/router/route_path.dart';
+import 'package:boat_sells_app/core/router/routes.dart';
 import 'package:boat_sells_app/utils/color/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -26,7 +28,10 @@ class HomeAppBar extends StatelessWidget {
           decoration: BoxDecoration(
             color: Colors.transparent,
             shape: BoxShape.circle,
-            border: Border.all(color: Colors.black.withOpacity(0.2), width: 1),
+            border: Border.all(
+              color: Colors.black.withValues(alpha: 0.2),
+              width: 1,
+            ),
           ),
           child: IconButton(
             padding: EdgeInsets.zero,
@@ -35,7 +40,9 @@ class HomeAppBar extends StatelessWidget {
               color: AppColors.headingText,
               size: 20.sp,
             ),
-            onPressed: () {},
+            onPressed: () {
+              AppRouter.route.pushNamed(RoutePath.notificationScreen);
+            },
           ),
         ),
       ],

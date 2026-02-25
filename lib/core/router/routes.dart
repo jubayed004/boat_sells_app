@@ -8,8 +8,10 @@ import 'package:boat_sells_app/features/auth/verify_otp/verify_otp_screen.dart';
 import 'package:boat_sells_app/features/comments/view/comments_screen.dart';
 import 'package:boat_sells_app/features/details_post/view/details_post_screen.dart';
 import 'package:boat_sells_app/features/details_post/view/view_full_details_screen.dart';
+import 'package:boat_sells_app/features/followers/view/followers_screen.dart';
 import 'package:boat_sells_app/features/inbox/inbox_screen.dart';
 import 'package:boat_sells_app/features/nav_bar/navigation_page.dart';
+import 'package:boat_sells_app/features/notification/view/notification_screen.dart';
 import 'package:boat_sells_app/features/other/change_password_screen.dart';
 import 'package:boat_sells_app/features/other/contact_&_support_screen.dart';
 import 'package:boat_sells_app/features/other/privacy_policy_screen.dart';
@@ -17,6 +19,7 @@ import 'package:boat_sells_app/features/other/terms_and_conditions_screen.dart';
 import 'package:boat_sells_app/features/other_profile/view/other_profile_screen.dart';
 import 'package:boat_sells_app/features/profile/edit_profile_screen.dart';
 import 'package:boat_sells_app/features/profile/profile_screen.dart';
+import 'package:boat_sells_app/features/saved/view/saved_screen.dart';
 import 'package:boat_sells_app/features/settings/view/settings_screen.dart';
 import 'package:boat_sells_app/features/splash/splash_screen.dart';
 import 'package:boat_sells_app/utils/extension/base_extension.dart';
@@ -129,7 +132,11 @@ class AppRouter {
         name: RoutePath.navigationPage,
         path: RoutePath.navigationPage.addBasePath,
         pageBuilder: (context, state) {
-          return _buildPageWithAnimation(child: NavigationPage(), state: state);
+          final index = (state.extra is int) ? state.extra as int : 0;
+          return _buildPageWithAnimation(
+            child: NavigationPage(index: index),
+            state: state,
+          );
         },
       ),
 
@@ -244,6 +251,36 @@ class AppRouter {
         pageBuilder: (context, state) {
           return _buildPageWithAnimation(
             child: const PrivacyPolicyScreen(),
+            state: state,
+          );
+        },
+      ),
+      GoRoute(
+        name: RoutePath.notificationScreen,
+        path: RoutePath.notificationScreen.addBasePath,
+        pageBuilder: (context, state) {
+          return _buildPageWithAnimation(
+            child: const NotificationScreen(),
+            state: state,
+          );
+        },
+      ),
+      GoRoute(
+        name: RoutePath.followersScreen,
+        path: RoutePath.followersScreen.addBasePath,
+        pageBuilder: (context, state) {
+          return _buildPageWithAnimation(
+            child: const FollowersScreen(),
+            state: state,
+          );
+        },
+      ),
+      GoRoute(
+        name: RoutePath.savedScreen,
+        path: RoutePath.savedScreen.addBasePath,
+        pageBuilder: (context, state) {
+          return _buildPageWithAnimation(
+            child: const SavedScreen(),
             state: state,
           );
         },

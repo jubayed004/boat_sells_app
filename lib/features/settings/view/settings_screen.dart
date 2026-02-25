@@ -35,7 +35,7 @@ class SettingsScreen extends StatelessWidget {
                 icon: Icons.bookmark_border_rounded,
                 title: 'Saved',
                 onTap: () {
-                  // Navigate to saved screen if needed
+                  AppRouter.route.pushNamed(RoutePath.savedScreen);
                 },
               ),
               SettingsTile(

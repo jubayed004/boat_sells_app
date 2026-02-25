@@ -64,7 +64,7 @@ class AddPostController extends GetxController {
     lengthController.dispose();
     capacityController.dispose();
     descriptionController.dispose();
-
+    // Additional Information Fields
     manufacturerController.dispose();
     bridgeClearanceController.dispose();
     addInfoEngineModelController.dispose();

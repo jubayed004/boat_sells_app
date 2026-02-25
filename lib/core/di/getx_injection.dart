@@ -1,9 +1,10 @@
+import 'package:boat_sells_app/features/add_post/controller/add_post_controller.dart';
 import 'package:boat_sells_app/features/auth/controller/auth_controller.dart';
 import 'package:boat_sells_app/features/chat/controller/chat_controller.dart';
+import 'package:boat_sells_app/features/followers/controller/followers_controller.dart';
 import 'package:boat_sells_app/features/home/controller/home_controller.dart';
 import 'package:boat_sells_app/features/nav_bar/controller/navigation_controller.dart';
 import 'package:boat_sells_app/features/other/controller/other_controller.dart';
-import 'package:boat_sells_app/features/other_profile/controller/other_profile_controller.dart';
 import 'package:boat_sells_app/features/profile/controller/profile_controller.dart';
 import 'package:boat_sells_app/share/controller/language_controller.dart';
 import 'package:boat_sells_app/utils/common_controller/common_controller.dart';
@@ -21,6 +22,8 @@ void initGetx() {
   Get.lazyPut(() => HomeController(), fenix: true);
   Get.lazyPut(() => ChatController(), fenix: true);
   Get.lazyPut(() => ProfileController(), fenix: true);
+  Get.lazyPut(() => AddPostController(), fenix: true);
+  Get.lazyPut(() => FollowersController(), fenix: true);
   //Chat
   /*  Get.lazyPut(() => ChatController(), fenix: true);
 
