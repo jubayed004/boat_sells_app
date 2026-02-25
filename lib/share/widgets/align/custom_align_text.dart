@@ -1,6 +1,7 @@
 import 'package:boat_sells_app/utils/color/app_colors.dart';
 import 'package:boat_sells_app/utils/extension/base_extension.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CustomAlignText extends StatelessWidget {
   const CustomAlignText({
@@ -35,9 +36,9 @@ class CustomAlignText extends StatelessWidget {
         style:
             style ??
             context.titleSmall.copyWith(
-              fontWeight: fontWeight ?? FontWeight.w500,
-              fontSize: fontSize,
-              color: AppColors.black,
+              fontWeight: fontWeight ?? FontWeight.w600,
+              fontSize: fontSize ?? 14.sp,
+              color: color ?? AppColors.black,
             ),
       ),
     );

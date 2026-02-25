@@ -1,4 +1,3 @@
-
 import 'package:boat_sells_app/core/di/injection.dart';
 import 'package:boat_sells_app/core/router/routes.dart';
 import 'package:boat_sells_app/core/service/datasource/local/local_service.dart';
@@ -9,6 +8,7 @@ import 'package:boat_sells_app/utils/api_urls/api_urls.dart';
 import 'package:boat_sells_app/utils/config/app_config.dart';
 import 'package:boat_sells_app/utils/enum/app_enum.dart';
 import 'package:get/get.dart';
+
 class OtherController extends GetxController {
   final ApiClient apiClient = sl<ApiClient>();
   final LocalService localService = sl<LocalService>();

@@ -5,16 +5,20 @@ import 'package:boat_sells_app/features/auth/login/login_screen.dart';
 import 'package:boat_sells_app/features/auth/reset/reset_password_screen.dart';
 import 'package:boat_sells_app/features/auth/sign_up/sign_up_screen.dart';
 import 'package:boat_sells_app/features/auth/verify_otp/verify_otp_screen.dart';
-import 'package:boat_sells_app/features/chat/chat_screen.dart';
 import 'package:boat_sells_app/features/comments/view/comments_screen.dart';
 import 'package:boat_sells_app/features/details_post/view/details_post_screen.dart';
 import 'package:boat_sells_app/features/details_post/view/view_full_details_screen.dart';
 import 'package:boat_sells_app/features/inbox/inbox_screen.dart';
 import 'package:boat_sells_app/features/nav_bar/navigation_page.dart';
+import 'package:boat_sells_app/features/other/change_password_screen.dart';
+import 'package:boat_sells_app/features/other/contact_&_support_screen.dart';
+import 'package:boat_sells_app/features/other/privacy_policy_screen.dart';
+import 'package:boat_sells_app/features/other/terms_and_conditions_screen.dart';
+import 'package:boat_sells_app/features/other_profile/view/other_profile_screen.dart';
 import 'package:boat_sells_app/features/profile/edit_profile_screen.dart';
 import 'package:boat_sells_app/features/profile/profile_screen.dart';
+import 'package:boat_sells_app/features/settings/view/settings_screen.dart';
 import 'package:boat_sells_app/features/splash/splash_screen.dart';
-import 'package:boat_sells_app/features/home/home_screen.dart';
 import 'package:boat_sells_app/utils/extension/base_extension.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:go_router/go_router.dart';
@@ -183,8 +187,28 @@ class AppRouter {
           return _buildPageWithAnimation(child: InboxScreen(), state: state);
         },
       ),
+      GoRoute(
+        name: RoutePath.otherProfileScreen,
+        path: RoutePath.otherProfileScreen.addBasePath,
+        pageBuilder: (context, state) {
+          return _buildPageWithAnimation(
+            child: const OtherProfileScreen(),
+            state: state,
+          );
+        },
+      ),
+      GoRoute(
+        name: RoutePath.settingsScreen,
+        path: RoutePath.settingsScreen.addBasePath,
+        pageBuilder: (context, state) {
+          return _buildPageWithAnimation(
+            child: const SettingsScreen(),
+            state: state,
+          );
+        },
+      ),
       //=============Setting==========
-      /*      GoRoute(
+      GoRoute(
         name: RoutePath.changePasswordScreen,
         path: RoutePath.changePasswordScreen.addBasePath,
         pageBuilder: (context, state) {
@@ -193,8 +217,37 @@ class AppRouter {
             state: state,
           );
         },
-      ),*/
-
+      ),
+      GoRoute(
+        name: RoutePath.contactAndSupportScreen,
+        path: RoutePath.contactAndSupportScreen.addBasePath,
+        pageBuilder: (context, state) {
+          return _buildPageWithAnimation(
+            child: const ContactAndSupportScreen(),
+            state: state,
+          );
+        },
+      ),
+      GoRoute(
+        name: RoutePath.termsAndConditionsScreen,
+        path: RoutePath.termsAndConditionsScreen.addBasePath,
+        pageBuilder: (context, state) {
+          return _buildPageWithAnimation(
+            child: const TermsAndConditionsScreen(),
+            state: state,
+          );
+        },
+      ),
+      GoRoute(
+        name: RoutePath.privacyPolicyScreen,
+        path: RoutePath.privacyPolicyScreen.addBasePath,
+        pageBuilder: (context, state) {
+          return _buildPageWithAnimation(
+            child: const PrivacyPolicyScreen(),
+            state: state,
+          );
+        },
+      ),
       // GoRoute(
       //   name: RoutePath.bookingsScreen,
       //   path: RoutePath.bookingsScreen.addBasePath,

@@ -45,7 +45,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     AppRouter.route.pushNamed(RoutePath.commentsScreen),
                 imageOnTap: () {
                   print('image tapped');
-                  // AppRouter.route.pushNamed(RoutePath.detailsPostScreen);
+                  AppRouter.route.pushNamed(RoutePath.otherProfileScreen);
                 },
               ),
               firstPageProgressIndicatorBuilder: (_) => const Center(

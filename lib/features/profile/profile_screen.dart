@@ -21,20 +21,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.white,
       appBar: AppBar(
-        backgroundColor: AppColors.white,
-        elevation: 0,
-        scrolledUnderElevation: 0,
-
         actions: [
           IconButton(
-            icon: Icon(
-              Icons.more_vert_rounded,
-              color: AppColors.headingText,
-              size: 24.sp,
-            ),
-            onPressed: () {},
+            icon: Icon(Icons.menu, color: AppColors.headingText, size: 24.sp),
+            onPressed: () {
+              AppRouter.route.pushNamed(RoutePath.settingsScreen);
+            },
           ),
         ],
       ),
@@ -140,18 +133,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     child: SizedBox(
                       height: 40.h,
                       child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: AppColors.primaryBlue,
-                          elevation: 0,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20.r),
-                          ),
-                        ),
                         onPressed: () {
-                          AppRouter.route.pushNamed(RoutePath.inboxScreen);
+                          AppRouter.route.pushNamed(
+                            RoutePath.editProfileScreen,
+                          );
                         },
                         child: Text(
-                          'Chat',
+                          'Edit Profile',
                           style: context.titleSmall.copyWith(
                             color: AppColors.white,
                             fontSize: 14.sp,

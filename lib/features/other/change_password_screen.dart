@@ -1,3 +1,4 @@
+import 'package:boat_sells_app/core/router/routes.dart';
 import 'package:boat_sells_app/features/other/controller/other_controller.dart';
 import 'package:boat_sells_app/helper/validator/text_field_validator.dart';
 import 'package:boat_sells_app/share/widgets/button/custom_button.dart';
@@ -100,14 +101,15 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                   isLoading: _otherController.changePasswordLoading.value,
                   text: AppStrings.resetPassword.tr,
                   onTap: () {
-                    if (_formKey.currentState!.validate()) {
-                      _otherController.changePassword(
-                        body: {
-                          "old_password": _oldPassword.text,
-                          "new_password": _resetPassword.text,
-                        },
-                      );
-                    }
+                    // if (_formKey.currentState!.validate()) {
+                    //   _otherController.changePassword(
+                    //     body: {
+                    //       "old_password": _oldPassword.text,
+                    //       "new_password": _resetPassword.text,
+                    //     },
+                    //   );
+                    // }
+                    AppRouter.route.pop();
                   },
                 ),
               ),

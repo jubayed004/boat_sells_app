@@ -112,6 +112,7 @@ class _BoatListingCardState extends State<BoatListingCard> {
                   child: _SellerChip(
                     name: widget.boat.sellerName,
                     avatarUrl: widget.boat.sellerAvatar,
+                    imageOnTap: widget.imageOnTap,
                   ),
                 ),
 

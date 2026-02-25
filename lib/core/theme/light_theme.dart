@@ -6,12 +6,13 @@ final ThemeData lightTheme = ThemeData(
   brightness: Brightness.light,
   fontFamily: 'Outfit',
 
-  scaffoldBackgroundColor: AppColors.scaffoldBg,
+  scaffoldBackgroundColor: AppColors.white,
 
   // ================= AppBar =================
   appBarTheme: const AppBarTheme(
-    backgroundColor: AppColors.scaffoldBg,
+    backgroundColor: AppColors.white,
     elevation: 0,
+    scrolledUnderElevation: 0,
     centerTitle: true,
     iconTheme: IconThemeData(color: AppColors.headingText),
     titleTextStyle: TextStyle(
