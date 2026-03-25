@@ -129,7 +129,7 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
                           onPressed: () {
                             _auth.resendOtp(
                               email: widget.email,
-                              purpose: purpose,
+                        
                             );
                             _auth.resendCode();
                           },

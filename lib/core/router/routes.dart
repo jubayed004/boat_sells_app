@@ -114,14 +114,12 @@ class AppRouter {
         pageBuilder: (context, state) {
           final args = state.extra as Map<String, dynamic>?;
           final email = args?['email'] as String? ?? '';
-          final isSignUp = args?['isSignUp'] as bool? ?? false;
-          final token = args?['token'] as String?;
+       
 
           return _buildPageWithAnimation(
             child: ActiveOtpScreen(
               email: email,
-              isSignUp: isSignUp,
-              token: token,
+        
             ),
             state: state,
           );

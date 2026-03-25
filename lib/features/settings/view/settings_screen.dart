@@ -1,5 +1,6 @@
 import 'package:boat_sells_app/core/router/route_path.dart';
 import 'package:boat_sells_app/core/router/routes.dart';
+import 'package:boat_sells_app/features/settings/controller/settings_controller.dart';
 import 'package:boat_sells_app/share/widgets/button/custom_button.dart';
 import 'package:boat_sells_app/utils/color/app_colors.dart';
 import 'package:boat_sells_app/utils/extension/base_extension.dart';
@@ -8,8 +9,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
-class SettingsScreen extends StatelessWidget {
+class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
+
+  @override
+  State<SettingsScreen> createState() => _SettingsScreenState();
+}
+
+class _SettingsScreenState extends State<SettingsScreen> {
+  final SettingsController settings = Get.put(SettingsController());
+
+  @override
+  void dispose() {
+    Get.delete<SettingsController>();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -67,7 +81,7 @@ class SettingsScreen extends StatelessWidget {
                     .headingText, // As per design, label is dark text, icon is red
                 showArrow: false,
                 onTap: () {
-                  _showLogoutDialog(context);
+                  _showLogoutDialog(context, settings);
                 },
               ),
             ],
@@ -77,7 +91,7 @@ class SettingsScreen extends StatelessWidget {
     );
   }
 
-  void _showLogoutDialog(BuildContext context) {
+  void _showLogoutDialog(BuildContext context, SettingsController settings) {
     showDialog(
       context: context,
       builder: (context) {
@@ -108,12 +122,15 @@ class SettingsScreen extends StatelessWidget {
                 ),
               ),
             ),
-            CustomButton(
-              text: 'Logout',
-              onTap: () {
-                AppRouter.route.goNamed(RoutePath.loginScreen);
-                //AppRouter.route.offAllNamed(RoutePath.loginScreen);
-              },
+            Obx(
+              () => CustomButton(
+                text: 'Logout',
+                isLoading: settings.logoutLoading.value,
+                onTap: () {
+                  AppRouter.route.pop(); // close dialog
+                  settings.logout();
+                },
+              ),
             ),
           ],
         );

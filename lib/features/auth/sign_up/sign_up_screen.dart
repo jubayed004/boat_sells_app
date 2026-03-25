@@ -116,14 +116,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     isLoading: _auth.signUpLoading.value,
                     text: AppStrings.signUp.tr,
                     onTap: () {
-                      AppRouter.route.pushNamed(RoutePath.activeOtpScreen);
-                      // if (formKey.currentState!.validate()) {
-                      //   _auth.signUp(
-                      //     nameSignUp: nameSignUp.text,
-                      //     emailSignUp: emailSignUp.text,
-                      //     passwordSignUp: passwordSignUp.text,
-                      //   );
-                      // }
+                      if (formKey.currentState!.validate()) {
+                        _auth.signUp(
+                          nameSignUp: nameSignUp.text,
+                          emailSignUp: emailSignUp.text,
+                          passwordSignUp: passwordSignUp.text,
+                        );
+                      }
                     },
                   ),
                 ),

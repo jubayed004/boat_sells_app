@@ -101,13 +101,13 @@ class _LoginScreenState extends State<LoginScreen> {
                       isLoading: _auth.signInLoading.value,
                       text: AppStrings.signIn.tr,
                       onTap: () {
-                        AppRouter.route.goNamed(RoutePath.navigationPage);
-                        // if (_formKey.currentState!.validate()) {
-                        //   _auth.signIn(
-                        //     email: emailSignIn.text,
-                        //     password: passwordSignIn.text,
-                        //   );
-                        // }
+                      //  AppRouter.route.goNamed(RoutePath.navigationPage);
+                        if (_formKey.currentState!.validate()) {
+                          _auth.signIn(
+                            email: emailSignIn.text,
+                            password: passwordSignIn.text,
+                          );
+                        }
                       },
                     ),
                   ),
