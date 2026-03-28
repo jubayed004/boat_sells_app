@@ -1,6 +1,4 @@
 import 'package:boat_sells_app/core/custom_assets/assets.gen.dart';
-import 'package:boat_sells_app/core/router/route_path.dart';
-import 'package:boat_sells_app/core/router/routes.dart';
 import 'package:boat_sells_app/features/auth/controller/auth_controller.dart';
 import 'package:boat_sells_app/share/widgets/button/custom_button.dart';
 import 'package:boat_sells_app/share/widgets/loading/loading_widget.dart';
@@ -14,13 +12,11 @@ import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 
 class VerifyOtpScreen extends StatefulWidget {
-  final String token;
   final String email;
-  final bool isSignUp;
+
   const VerifyOtpScreen({
     super.key,
-    required this.token,
-    required this.isSignUp,
+   
     required this.email,
   });
 
@@ -34,11 +30,7 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
   final AuthController _auth = Get.find<AuthController>();
   late String purpose;
 
-  @override
-  void initState() {
-    purpose = widget.isSignUp ? "REGISTER" : "RESET_PASSWORD";
-    super.initState();
-  }
+
 
   @override
   void dispose() {
@@ -103,14 +95,9 @@ class _VerifyOtpScreenState extends State<VerifyOtpScreen> {
                     isLoading: _auth.resetVerifyOtpLoading.value,
                     text: AppStrings.verifyCode.tr,
                     onTap: () {
-                      AppRouter.route.pushNamed(RoutePath.resetPasswordScreen);
-                      // if (_formKey.currentState!.validate()) {
-                      //   _auth.resetVerifyOtp(
-                      //     otp: verifyOtp.text,
-                      //     purpose: purpose,
-                      //     token: widget.token,
-                      //   );
-                      // }
+                      if (_formKey.currentState!.validate()) {
+                        _auth.resetVerifyOtp(otp: verifyOtp.text,email: widget.email);
+                      }
                     },
                   ),
                 ),

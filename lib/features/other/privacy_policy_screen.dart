@@ -2,7 +2,6 @@ import 'package:boat_sells_app/share/widgets/loading/loading_widget.dart';
 import 'package:boat_sells_app/share/widgets/no_internet/error_card.dart';
 import 'package:boat_sells_app/share/widgets/no_internet/no_data_card.dart';
 import 'package:boat_sells_app/share/widgets/no_internet/no_internet_card.dart';
-import 'package:boat_sells_app/utils/app_strings/app_strings.dart';
 import 'package:boat_sells_app/utils/color/app_colors.dart';
 import 'package:boat_sells_app/utils/enum/app_enum.dart';
 import 'package:flutter/material.dart';

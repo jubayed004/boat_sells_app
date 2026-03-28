@@ -7,7 +7,6 @@ import 'package:boat_sells_app/utils/extension/base_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:iconsax/iconsax.dart';
 
 class DetailsPostScreen extends StatelessWidget {
   final BoatModel? boat;
@@ -131,7 +130,7 @@ class DetailsPostScreen extends StatelessWidget {
           color: AppColors.white,
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.05),
+              color: Colors.black.withValues(alpha: 0.05),
               blurRadius: 10,
               offset: const Offset(0, -4),
             ),

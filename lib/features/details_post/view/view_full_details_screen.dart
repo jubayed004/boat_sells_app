@@ -3,7 +3,6 @@ import 'package:boat_sells_app/utils/color/app_colors.dart';
 import 'package:boat_sells_app/utils/extension/base_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
 
 class ViewFullDetailsScreen extends StatelessWidget {
   const ViewFullDetailsScreen({super.key});
@@ -183,7 +182,7 @@ class ViewFullDetailsScreen extends StatelessWidget {
                       fit: BoxFit.cover,
                       width: double.infinity,
                       height: double.infinity,
-                      errorBuilder: (_, __, ___) => Container(
+                      errorBuilder: (_, _, _) => Container(
                         color: const Color(0xFFE8EFF4),
                         child: Center(
                           child: Icon(

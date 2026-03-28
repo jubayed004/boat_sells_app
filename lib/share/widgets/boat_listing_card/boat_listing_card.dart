@@ -447,34 +447,34 @@ class _SellerChipState extends State<_SellerChip> {
               ],
             ),
           ),
-          SizedBox(width: 8.w),
-          ValueListenableBuilder<bool>(
-            valueListenable: _isFollowing,
-            builder: (context, isFollowing, _) => GestureDetector(
-              onTap: () {
-                _isFollowing.value = !_isFollowing.value;
-              },
-              child: AnimatedContainer(
-                duration: const Duration(milliseconds: 200),
-                padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 4.h),
-                decoration: BoxDecoration(
-                  color: isFollowing ? AppColors.white : AppColors.primaryBlue,
-                  borderRadius: BorderRadius.circular(20.r),
-                  border: isFollowing
-                      ? Border.all(color: AppColors.primaryBlue)
-                      : Border.all(color: Colors.transparent),
-                ),
-                child: Text(
-                  isFollowing ? 'Following'.tr : 'Follow'.tr,
-                  style: context.labelSmall.copyWith(
-                    fontSize: 10.sp,
-                    fontWeight: FontWeight.w700,
-                    color: isFollowing ? AppColors.primaryBlue : Colors.white,
-                  ),
-                ),
-              ),
-            ),
-          ),
+          // SizedBox(width: 8.w),
+          // ValueListenableBuilder<bool>(
+          //   valueListenable: _isFollowing,
+          //   builder: (context, isFollowing, _) => GestureDetector(
+          //     onTap: () {
+          //       _isFollowing.value = !_isFollowing.value;
+          //     },
+          //     child: AnimatedContainer(
+          //       duration: const Duration(milliseconds: 200),
+          //       padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 4.h),
+          //       decoration: BoxDecoration(
+          //         color: isFollowing ? AppColors.white : AppColors.primaryBlue,
+          //         borderRadius: BorderRadius.circular(20.r),
+          //         border: isFollowing
+          //             ? Border.all(color: AppColors.primaryBlue)
+          //             : Border.all(color: Colors.transparent),
+          //       ),
+          //       child: Text(
+          //         isFollowing ? 'Following'.tr : 'Follow'.tr,
+          //         style: context.labelSmall.copyWith(
+          //           fontSize: 10.sp,
+          //           fontWeight: FontWeight.w700,
+          //           color: isFollowing ? AppColors.primaryBlue : Colors.white,
+          //         ),
+          //       ),
+          //     ),
+          //   ),
+          // ),
         ],
       ),
     );

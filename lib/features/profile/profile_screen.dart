@@ -6,7 +6,9 @@ import 'package:boat_sells_app/utils/color/app_colors.dart';
 import 'package:boat_sells_app/utils/extension/base_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:get/get.dart';
+import 'package:share_plus/share_plus.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -31,7 +33,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ),
         ],
       ),
-      body: CustomScrollView(
+      body: Obx(() {
+        if (controller.profileLoading.value) {
+          return Center(child: CircularProgressIndicator(color: AppColors.primaryBlue));
+        }
+        final userData = controller.profile.value.data;
+        return CustomScrollView(
         physics: const BouncingScrollPhysics(),
         slivers: [
           // ── Profile Head (Avatar and Stats) ──
@@ -52,7 +59,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     child: CircleAvatar(
                       radius: 38.r,
                       backgroundColor: AppColors.borderColor,
-                      backgroundImage: NetworkImage(controller.avatarUrl),
+                      backgroundImage: NetworkImage(userData?.avatarUrl ?? controller.avatarUrl),
                     ),
                   ),
                   SizedBox(width: 20.w),
@@ -64,44 +71,51 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       children: [
                         // Name
                         Text(
-                          controller.userName,
+                          userData?.name ?? controller.userName,
                           style: context.titleMedium.copyWith(
                             fontWeight: FontWeight.w700,
                             fontSize: 16.sp,
                             color: AppColors.headingText,
                           ),
                         ),
-                        SizedBox(height: 12.h),
-
-                        // Stats Row
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            _StatItem(
-                              value: '${controller.postCount}',
-                              label: 'Posts',
-                              onTap: () {},
-                            ),
-                            _StatItem(
-                              value: '${controller.followersCount}',
-                              label: 'Followers',
-                              onTap: () {
-                                AppRouter.route.pushNamed(
-                                  RoutePath.followersScreen,
-                                );
-                              },
-                            ),
-                            _StatItem(
-                              value: '${controller.followingCount}',
-                              label: 'Following',
-                              onTap: () {
-                                AppRouter.route.pushNamed(
-                                  RoutePath.followersScreen,
-                                );
-                              },
-                            ),
-                          ],
+                        Gap(5.h),
+                        Text(
+                          userData?.phone ?? "N/A",
+                          style: context.bodyMedium.copyWith(
+                            fontSize: 12.sp,
+                            color: AppColors.headingText,
+                          ),
                         ),
+                        SizedBox(height: 12.h),
+                        // Stats Row
+                        // Row(
+                        //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        //   children: [
+                        //     _StatItem(
+                        //       value: '${controller.postCount}',
+                        //       label: 'Posts',
+                        //       onTap: () {},
+                        //     ),
+                        //     // _StatItem(
+                        //     //   value: '${controller.followersCount}',
+                        //     //   label: 'Followers',
+                        //     //   onTap: () {
+                        //     //     AppRouter.route.pushNamed(
+                        //     //       RoutePath.followersScreen,
+                        //     //     );
+                        //     //   },
+                        //     // ),
+                        //     // _StatItem(
+                        //     //   value: '${controller.followingCount}',
+                        //     //   label: 'Following',
+                        //     //   onTap: () {
+                        //     //     AppRouter.route.pushNamed(
+                        //     //       RoutePath.followersScreen,
+                        //     //     );
+                        //     //   },
+                        //     // ),
+                        //   ],
+                        // ),
                       ],
                     ),
                   ),
@@ -115,7 +129,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
               child: Text(
-                controller.bio,
+                userData?.bio ?? controller.bio,
                 style: context.bodySmall.copyWith(
                   fontSize: 12.sp,
                   height: 1.4,
@@ -189,6 +203,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     AppRouter.route.pushNamed(RoutePath.detailsPostScreen),
                 onCommentTap: () =>
                     AppRouter.route.pushNamed(RoutePath.commentsScreen),
+                onShareTap: () {
+                  final boat = controller.userPosts[index];
+                  SharePlus.instance.share(
+                    ShareParams(text: 'Check out this boat: ${boat.title} for \$${boat.price} on Boat Sells App!'),
+                  );
+                },
+             
               );
             }, childCount: controller.userPosts.length),
           ),
@@ -196,7 +217,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
           // Bottom padding
           SliverToBoxAdapter(child: SizedBox(height: 30.h)),
         ],
-      ),
+      );
+      }),
     );
   }
 }

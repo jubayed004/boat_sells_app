@@ -1,5 +1,3 @@
-import 'package:boat_sells_app/core/router/route_path.dart';
-import 'package:boat_sells_app/core/router/routes.dart';
 import 'package:boat_sells_app/features/auth/controller/auth_controller.dart';
 import 'package:boat_sells_app/helper/validator/text_field_validator.dart';
 import 'package:boat_sells_app/share/widgets/button/custom_button.dart';
@@ -103,13 +101,12 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                     text: AppStrings.resetPassword.tr,
                     isLoading: _auth.resetPasswordLoading.value,
                     onTap: () {
-                      AppRouter.route.goNamed(RoutePath.loginScreen);
-                      // if (_formKey.currentState!.validate()) {
-                      //   _auth.resetPassword(
-                      //     password: _resetPassword.text,
-                      //     token: widget.token,
-                      //   );
-                      // }
+                      if (_formKey.currentState!.validate()) {
+                        _auth.resetPassword(
+                          password: _resetPassword.text,
+                          token: widget.token,
+                        );
+                      }
                     },
                   ),
                 ),

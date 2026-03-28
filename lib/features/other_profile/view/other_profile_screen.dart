@@ -6,7 +6,6 @@ import 'package:boat_sells_app/features/profile/widgets/social_circle.dart';
 import 'package:boat_sells_app/helper/toast/toast_helper.dart';
 import 'package:boat_sells_app/share/widgets/boat_listing_card/boat_listing_card.dart';
 import 'package:boat_sells_app/share/widgets/button/custom_button.dart';
-import 'package:boat_sells_app/share/widgets/dialog/custom_dialog.dart';
 import 'package:boat_sells_app/utils/color/app_colors.dart';
 import 'package:boat_sells_app/utils/extension/base_extension.dart';
 import 'package:flutter/material.dart';

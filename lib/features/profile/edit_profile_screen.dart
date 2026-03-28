@@ -1,11 +1,16 @@
 import 'package:boat_sells_app/core/router/routes.dart';
+import 'package:boat_sells_app/features/profile/controller/profile_controller.dart';
 import 'package:boat_sells_app/share/widgets/button/custom_button.dart';
+import 'package:boat_sells_app/share/widgets/network_image/custom_network_image.dart';
 import 'package:boat_sells_app/share/widgets/text_field/custom_text_field.dart';
 import 'package:boat_sells_app/utils/color/app_colors.dart';
 import 'package:boat_sells_app/utils/extension/base_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'dart:io';
+import 'package:boat_sells_app/core/custom_assets/assets.gen.dart';
 import 'package:get/get.dart';
+import 'package:iconsax/iconsax.dart';
 
 class EditProfileScreen extends StatefulWidget {
   const EditProfileScreen({super.key});
@@ -16,26 +21,31 @@ class EditProfileScreen extends StatefulWidget {
 
 class _EditProfileScreenState extends State<EditProfileScreen> {
   final _formKey = GlobalKey<FormState>();
+  final ProfileController _profileController = Get.find<ProfileController>();
+  late final TextEditingController _nameController;
+  late final TextEditingController _phoneController;
+  late final TextEditingController _bioController;
+  late final TextEditingController _fbController;
+  late final TextEditingController _igController;
+  late final TextEditingController _twitterController;
 
-  final TextEditingController _nameController = TextEditingController(
-    text: 'Elowyn Starcrest',
-  );
-  final TextEditingController _phoneController = TextEditingController(
-    text: '1231 131321321',
-  );
-  final TextEditingController _bioController = TextEditingController(
-    text:
-        'A Wanderer Born Under A Rare Celestial Alignment, Elowyn Channels Ancient Starlight To Heal, Protect, And Uncover Forgotten Magic.',
-  );
-  final TextEditingController _fbController = TextEditingController(
-    text: 'https://www.facebook.com',
-  );
-  final TextEditingController _igController = TextEditingController(
-    text: 'https://www.instagram.com',
-  );
-  final TextEditingController _twitterController = TextEditingController(
-    text: 'https://www.twitter.com',
-  );
+  @override
+  void initState() {
+    super.initState();
+    final data = _profileController.profile.value.data;
+    _nameController = TextEditingController(text: data?.name ?? '');
+    _phoneController = TextEditingController(text: data?.phone ?? '');
+    _bioController = TextEditingController(text: data?.bio ?? '');
+    _fbController = TextEditingController(
+      text: data?.socialLinks?.facebook?.toString() ?? '',
+    );
+    _igController = TextEditingController(
+      text: data?.socialLinks?.instagram?.toString() ?? '',
+    );
+    _twitterController = TextEditingController(
+      text: data?.socialLinks?.twitter?.toString() ?? '',
+    );
+  }
 
   @override
   void dispose() {
@@ -66,45 +76,97 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     children: [
                       // ── Profile Photo Editor ──
                       Center(
-                        child: Column(
+                        child: Stack(
                           children: [
-                            GestureDetector(
-                              onTap: () {
-                                // TODO: Handle image picking
-                              },
-                              child: Container(
-                                width: 90.r,
-                                height: 90.r,
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: const Color(0xFFD9D9D9),
-                                  image: const DecorationImage(
-                                    image: NetworkImage(
-                                      'https://randomuser.me/api/portraits/women/44.jpg',
-                                    ), // Dummy current image
-                                    fit: BoxFit.cover,
-                                    colorFilter: ColorFilter.mode(
-                                      Colors.white54,
-                                      BlendMode.lighten,
-                                    ), // Gives it that faded look
-                                  ),
-                                ),
-                                child: Center(
-                                  child: Icon(
-                                    Icons.image_outlined,
-                                    color: Colors.white,
-                                    size: 32.sp,
-                                  ),
+                            Container(
+                              height: 120.h,
+                              width: 120.w,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                border: Border.all(
+                                  color: AppColors.primaryBlue.withOpacity(0.2),
+                                  width: 4,
                                 ),
                               ),
+                              child: ClipOval(
+                                child: Obx(() {
+                                  if (_profileController.selectedImage.value !=
+                                      null) {
+                                    return Image.file(
+                                      File(
+                                        _profileController
+                                                .selectedImage
+                                                .value
+                                                ?.path ??
+                                            "",
+                                      ),
+                                      fit: BoxFit.cover,
+                                    );
+                                  } else if (_profileController
+                                              .profile
+                                              .value
+                                              .data
+                                              ?.avatarUrl !=
+                                          null &&
+                                      _profileController
+                                          .profile
+                                          .value
+                                          .data!
+                                          .avatarUrl!
+                                          .isNotEmpty) {
+                                    return CustomNetworkImage(
+                                      imageUrl:
+                                          _profileController
+                                              .profile
+                                              .value
+                                              .data
+                                              ?.avatarUrl ??
+                                          "",
+                                      fit: BoxFit.cover,
+                                    );
+                                  } else {
+                                    return Container(
+                                      color: AppColors.priceGreen.withOpacity(
+                                        0.1,
+                                      ),
+                                      padding: EdgeInsets.all(20),
+                                      child: Icon(Iconsax.user, size: 50),
+                                    );
+                                  }
+                                }),
+                              ),
                             ),
-                            SizedBox(height: 12.h),
-                            Text(
-                              'Edit Photo',
-                              style: context.bodySmall.copyWith(
-                                fontSize: 13.sp,
-                                fontWeight: FontWeight.w500,
-                                color: AppColors.headingText,
+                            Positioned(
+                              bottom: 0,
+                              right: 0,
+                              child: GestureDetector(
+                                onTap: () {
+                                  _profileController.pickImage();
+                                },
+                                child: Container(
+                                  height: 36,
+                                  width: 36,
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: AppColors.priceGreen,
+                                    border: Border.all(
+                                      color: Colors.white,
+                                      width: 2,
+                                    ),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.black.withOpacity(0.2),
+                                        blurRadius: 4,
+                                        offset: Offset(0, 2),
+                                      ),
+                                    ],
+                                  ),
+                                  child: Icon(
+                                    Iconsax.camera,
+                                    color: Colors.white,
+                                    size: 18,
+                                  ),
+                                ),
                               ),
                             ),
                           ],
@@ -158,11 +220,27 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             // ── Update Button (Fixed Bottom) ──
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
-              child: CustomButton(
-                onTap: () {
-                  AppRouter.route.pop();
-                },
-                text: 'Update',
+              child: Obx(
+                () => CustomButton(
+                  isLoading: _profileController.updateProfileLoading.value,
+                  onTap: () {
+                    final body = {
+                      'name': _nameController.text,
+                      'phone': _phoneController.text,
+                      'bio': _bioController.text,
+                      "socialLinks": {
+                        "facebook": _fbController.text,
+                        "instagram": _igController.text,
+                        "twitter": _twitterController.text,
+                      },
+                    };
+                    if (_formKey.currentState!.validate()) {
+                      _formKey.currentState!.save();
+                      _profileController.updateProfile(body: body);
+                    }
+                  },
+                  text: 'Update',
+                ),
               ),
             ),
           ],

@@ -5,14 +5,14 @@ class ApiUrls {
   static String socketUrl({required String id}) => 'http://13.50.247.46?id=$id';
   static String login() => '$base/auth/login';
   static String register() => '$base/auth/register';
-  static String verifyOtp() => '$base/auth/verify-otp';
+  static String activeVerifyOtp() => '$base/auth/verify-otp';
   static String resendOtp() => '$base/auth/resend-otp';
   static String forgotPassword() => '$base/auth/forgot-password';
   static String verifyResetOtp() => '$base/auth/verify-reset-otp';
   static String resetPassword() => '$base/auth/reset-password';
   // =========== Customer Api Urls ===========
-  static String getProfile() => '$base/v1/user/get-me';
-  static String updateProfile() => '$base/v1/user/update-me';
+  static String getProfile() => '$base/users/me';
+  static String updateProfile() => '$base/users/update-profile';
 
 
   //============== Settting===================

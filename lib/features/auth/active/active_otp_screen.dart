@@ -1,5 +1,3 @@
-import 'package:boat_sells_app/core/router/route_path.dart';
-import 'package:boat_sells_app/core/router/routes.dart';
 import 'package:boat_sells_app/features/auth/controller/auth_controller.dart';
 import 'package:boat_sells_app/share/widgets/button/custom_button.dart';
 import 'package:boat_sells_app/share/widgets/loading/loading_widget.dart';
@@ -94,11 +92,12 @@ class _ActiveOtpScreenState extends State<ActiveOtpScreen> {
                     isLoading: _auth.activeOtpLoading.value,
                     text: AppStrings.verifyCode.tr,
                     onTap: () {
-                
-                      _auth.activeOtp(
-                        otp: verifyOtp.text,
-                        email: widget.email,
-                      );
+                      if (_formKey.currentState!.validate()) {
+                        _auth.activeOtp(
+                          email: widget.email,
+                          otp: verifyOtp.text,
+                        );
+                      }
                     },
                   ),
                 ),

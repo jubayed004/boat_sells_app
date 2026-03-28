@@ -1,4 +1,3 @@
-import 'package:boat_sells_app/core/router/routes.dart';
 import 'package:boat_sells_app/features/add_post/controller/add_post_controller.dart';
 import 'package:boat_sells_app/features/nav_bar/controller/navigation_controller.dart';
 import 'package:boat_sells_app/features/add_post/widgets/additional_info_section.dart';

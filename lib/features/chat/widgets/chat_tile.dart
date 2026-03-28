@@ -1,5 +1,4 @@
 import 'package:boat_sells_app/features/chat/model/chat_model.dart';
-import 'package:boat_sells_app/features/inbox/model/inbox_model.dart';
 import 'package:boat_sells_app/utils/color/app_colors.dart';
 import 'package:boat_sells_app/utils/extension/base_extension.dart';
 import 'package:flutter/material.dart';

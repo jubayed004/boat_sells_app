@@ -83,13 +83,9 @@ class AppRouter {
         path: RoutePath.verifyOtpScreen.addBasePath,
         pageBuilder: (context, state) {
           final args = state.extra as Map<String, dynamic>?;
-          final token = args?['token'] as String? ?? '';
           final email = args?['email'] as String? ?? '';
-          final isSignUp = args?['isSignUp'] as bool? ?? false;
           return _buildPageWithAnimation(
             child: VerifyOtpScreen(
-              token: token,
-              isSignUp: isSignUp,
               email: email,
             ),
             state: state,

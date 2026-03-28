@@ -200,18 +200,28 @@ class ApiClient {
       final data = error.response?.data ?? {};
 
       if (statusCode == 401) {
-        try {
-          await localService.logOut();
-          AppRouter.route.goNamed(RoutePath.loginScreen);
-        } catch (_) {}
-        return Response(
-          requestOptions: requestOptions,
-          statusCode: 401,
-          data: {
-            'success': false,
-            'message': 'Session expired. Please login again.',
-          },
-        );
+        final isAuthRoute = requestOptions.path.contains('/auth/login') ||
+            requestOptions.path.contains('/auth/verify-otp') ||
+            requestOptions.path.contains('/auth/reset-password') ||
+            requestOptions.path.contains('/auth/forgot-password') ||
+            requestOptions.path.contains('/auth/register') ||
+            requestOptions.path.contains('/auth/verify-reset-otp') ||
+            requestOptions.path.contains('/auth/resend-otp');
+
+        if (!isAuthRoute) {
+          try {
+            await localService.logOut();
+            AppRouter.route.goNamed(RoutePath.loginScreen);
+          } catch (_) {}
+          return Response(
+            requestOptions: requestOptions,
+            statusCode: 401,
+            data: {
+              'success': false,
+              'message': 'Session expired. Please login again.',
+            },
+          );
+        }
       }
 
       if ({

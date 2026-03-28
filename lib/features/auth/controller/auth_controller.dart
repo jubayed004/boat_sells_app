@@ -6,7 +6,6 @@ import 'package:boat_sells_app/core/service/datasource/local/local_service.dart'
 import 'package:boat_sells_app/core/service/datasource/remote/api_client.dart';
 import 'package:boat_sells_app/helper/toast/toast_helper.dart';
 import 'package:boat_sells_app/utils/api_urls/api_urls.dart';
-import 'package:boat_sells_app/utils/common_controller/common_controller.dart';
 import 'package:boat_sells_app/utils/config/app_config.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -57,71 +56,65 @@ class AuthController extends GetxController {
     required String emailSignUp,
     required String passwordSignUp,
   }) async {
-    signUpLoadingMethod(true);
-    final body = {
-      "name": nameSignUp.trim(),
-      "email": emailSignUp.trim(),
-      "password": passwordSignUp.trim(),
-      "role": "USER",
-    };
-
-    AppConfig.logger.i(body);
-
-    final response = await apiClient.post(url: ApiUrls.register(), body: body);
-
-    AppConfig.logger.i(response.data);
-
-    if (response.statusCode == 200) {
-      signUpLoadingMethod(false);
-
-      AppToast.success(
-        message: response.data?['message'].toString() ?? "Success",
-      );
-
-      // final token = response.data?['data']?['accessToken'] as String?;
-
-      // if (token != null) {
-      //   await localService.saveToken(token: token);
-      // }
-
+    try {
+      signUpLoadingMethod(true);
       final body = {
-        "email": emailSignUp,
+        "name": nameSignUp.trim(),
+        "email": emailSignUp.trim(),
+        "password": passwordSignUp.trim(),
+        "role": "USER",
       };
 
-      AppRouter.route.pushNamed(RoutePath.activeOtpScreen, extra: body);
-    } else {
-      signUpLoadingMethod(false);
-      AppToast.error(message: response.data?['message'].toString() ?? "Error");
-    }
-    // try {
+      AppConfig.logger.i(body);
 
-    // } catch (err) {
-    //   signUpLoadingMethod(false);
-    //   AppConfig.logger.e(err);
-    //   AppToast.error(message: "Something went wrong");
-    // }
+      final response = await apiClient.post(url: ApiUrls.register(), body: body);
+
+      AppConfig.logger.i(response.data);
+
+      if (response.statusCode == 200) {
+        signUpLoadingMethod(false);
+
+        AppToast.success(
+          message: response.data?['message'].toString() ?? "Success",
+        );
+
+        // final token = response.data?['data']?['accessToken'] as String?;
+
+        // if (token != null) {
+        //   await localService.saveToken(token: token);
+        // }
+
+        final body = {"email": emailSignUp};
+
+        AppRouter.route.pushNamed(RoutePath.activeOtpScreen, extra: body);
+      } else {
+        signUpLoadingMethod(false);
+        AppToast.error(
+          message: response.data?['message'].toString() ?? "Error",
+        );
+      }
+    } catch (err) {
+      signUpLoadingMethod(false);
+      AppConfig.logger.e(err);
+      AppToast.error(message: "Something went wrong");
+    }
   }
 
   // ===================== Verify OTP Section ===============
   RxBool activeOtpLoading = false.obs;
   bool activeOtpLoadingMethod(bool status) => activeOtpLoading.value = status;
 
-  Future<void> activeOtp({
-    required String otp,
-    required String email,
-    String? token,
-  }) async {
+  Future<void> activeOtp({required String otp, required String email}) async {
     AppConfig.logger.i("otp $otp");
     try {
-      activeOtpLoadingMethod(true); 
+      activeOtpLoadingMethod(true);
       final body = {"email": email.trim(), "otp": otp.trim()};
 
       AppConfig.logger.i(body);
 
       final response = await apiClient.post(
-        url: ApiUrls.verifyOtp(),
+        url: ApiUrls.activeVerifyOtp(),
         body: body,
-
       );
 
       AppConfig.logger.i(response.data);
@@ -132,11 +125,7 @@ class AuthController extends GetxController {
         AppToast.success(
           message: response.data?["message"].toString() ?? "Success",
         );
-AppRouter.route.pushNamed(
-                        RoutePath.navigationPage,
-                        extra: 0,
-                      );
-         
+        AppRouter.route.pushNamed(RoutePath.navigationPage, extra: 0);
       } else {
         activeOtpLoadingMethod(false);
         AppToast.error(
@@ -155,12 +144,10 @@ AppRouter.route.pushNamed(
   RxBool resendOtpLoading = false.obs;
   bool resendOtpLoadingMethod(bool status) => resendOtpLoading.value = status;
 
-  Future<void> resendOtp({
-    required String email,
-  }) async {
+  Future<void> resendOtp({required String email}) async {
     try {
       resendOtpLoadingMethod(true);
-      final body = {"email": email.trim(),};
+      final body = {"email": email.trim()};
 
       AppConfig.logger.i(body);
 
@@ -217,7 +204,6 @@ AppRouter.route.pushNamed(
         final refreshToken = data['refreshToken']?.toString() ?? "";
         final userId = data['user']['_id']?.toString() ?? "";
         final role = data['user']['role']?.toString() ?? "";
-  
 
         await localService.saveUserdata(
           token: token,
@@ -225,9 +211,7 @@ AppRouter.route.pushNamed(
           id: userId,
           role: role,
         );
-    AppRouter.route.goNamed(RoutePath.navigationPage);
-
-  
+        AppRouter.route.goNamed(RoutePath.navigationPage);
       } else {
         signInLoadingMethod(false);
         AppToast.error(
@@ -268,11 +252,7 @@ AppRouter.route.pushNamed(
               response.data?["message"].toString() ??
               "Forgot Password Successful",
         );
-        final body = {
-          "email": email,
-          "isSignUp": false,
-          "token": response.data?["data"]["resetToken"],
-        };
+        final body = {"email": email};
         AppRouter.route.goNamed(RoutePath.verifyOtpScreen, extra: body);
       } else {
         forgotPasswordLoadingMethod(false);
@@ -295,20 +275,18 @@ AppRouter.route.pushNamed(
       resetVerifyOtpLoading.value = status;
   Future<void> resetVerifyOtp({
     required String otp,
-    required String purpose,
-    required String token,
+    required String email,
   }) async {
     try {
       resetVerifyOtpLoadingMethod(true);
 
-      final body = {"otp": otp.trim(), "purpose": purpose};
+      final body = {"email": email, "otp": otp.trim()};
 
       AppConfig.logger.i(body);
 
       final response = await apiClient.post(
-        url: ApiUrls.verifyOtp(),
+        url: ApiUrls.verifyResetOtp(),
         body: body,
-        token: token,
       );
 
       AppConfig.logger.i(response.data);
@@ -319,6 +297,9 @@ AppRouter.route.pushNamed(
           message:
               response.data?["message"].toString() ?? "Verify OTP Successful",
         );
+        final data = response.data['data'];
+        final token = data['resetToken']?.toString() ?? "";
+
         AppRouter.route.goNamed(RoutePath.resetPasswordScreen, extra: token);
       } else {
         resetVerifyOtpLoadingMethod(false);
@@ -345,14 +326,13 @@ AppRouter.route.pushNamed(
     try {
       resetPasswordLoadingMethod(true);
 
-      final body = {"new_password": password.trim()};
+      final body = {"newPassword": password.trim(), "resetToken": token};
 
       AppConfig.logger.i(body);
 
       final response = await apiClient.post(
         url: ApiUrls.resetPassword(),
         body: body,
-        token: token,
       );
 
       AppConfig.logger.i(response.data);
