@@ -9,14 +9,14 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 class DetailsPostScreen extends StatelessWidget {
-  final BoatModel? boat;
+  final BoatItem? boat;
 
   const DetailsPostScreen({super.key, this.boat});
 
   @override
   Widget build(BuildContext context) {
     // If no boat is provided via arguments or constructor, use a fallback demo boat
-    final displayBoat = boat ?? (Get.arguments as BoatModel?) ?? _demoBoat;
+    final displayBoat = boat ?? (Get.arguments as BoatItem?) ?? _demoBoat;
 
     return Scaffold(
       backgroundColor: AppColors.white,
@@ -213,17 +213,14 @@ class _OverviewItem {
 }
 
 // Fallback demo boat for testing the screen independently
-final BoatModel _demoBoat = BoatModel(
+final BoatItem _demoBoat = BoatItem(
   id: '1',
-  imageUrl:
-      'https://images.unsplash.com/photo-1567899378494-47b22a2ae96a?w=800',
-  sellerName: 'Ivy Marlowe',
-  sellerAvatar: 'https://randomuser.me/api/portraits/women/44.jpg',
-  title: '2027 Mazu Yachts 112DS',
-  price: 12000.00,
+  media: [Media(url: 'https://images.unsplash.com/photo-1567899378494-47b22a2ae96a?w=800')],
+  user: User(name: 'Ivy Marlowe', avatarUrl: 'https://randomuser.me/api/portraits/women/44.jpg'),
+  displayTitle: '2027 Mazu Yachts 112DS',
+  price: 12000,
   location: 'New York',
-  likes: 136,
-  comments: 136,
-  shares: 136,
-  category: 'Yacht',
+  likesCount: 136,
+  commentsCount: 136,
+  shareCount: 136,
 );

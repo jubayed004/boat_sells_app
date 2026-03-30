@@ -3,11 +3,12 @@ import 'package:boat_sells_app/share/widgets/network_image/custom_network_image.
 import 'package:boat_sells_app/utils/color/app_colors.dart';
 import 'package:boat_sells_app/utils/extension/base_extension.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get_utils/src/extensions/internacionalization.dart';
+import 'package:video_player/video_player.dart';
 
 class BoatListingCard extends StatefulWidget {
-  final BoatModel boat;
+  final BoatItem boat;
 
   /// Called when the info section (title/price) is tapped
   final VoidCallback? onCardTap;
@@ -43,8 +44,8 @@ class _BoatListingCardState extends State<BoatListingCard> {
   @override
   void initState() {
     super.initState();
-    _isSaved = ValueNotifier(widget.boat.isSaved);
-    _isLiked = ValueNotifier(false);
+    _isSaved = ValueNotifier(widget.boat.isSaved ?? false);
+    _isLiked = ValueNotifier(widget.boat.isLiked ?? false);
     _pageController = PageController();
   }
 
@@ -57,11 +58,19 @@ class _BoatListingCardState extends State<BoatListingCard> {
   }
 
   void _openImageDialog(int initialIndex) {
+    final currentMedia = widget.boat.media;
+    if (currentMedia == null || currentMedia.isEmpty) return;
+    final item = currentMedia[initialIndex];
+    if (item.type == 'video') return; // don't open dialog for video
     showDialog(
       context: context,
       barrierColor: Colors.black87,
       builder: (_) => _ImageCarouselDialog(
-        images: widget.boat.allImages,
+        images: currentMedia
+            .where((m) => m.type != 'video')
+            .map((m) => m.url ?? '')
+            .where((u) => u.isNotEmpty)
+            .toList(),
         initialIndex: initialIndex,
       ),
     );
@@ -69,7 +78,7 @@ class _BoatListingCardState extends State<BoatListingCard> {
 
   @override
   Widget build(BuildContext context) {
-    final images = widget.boat.allImages;
+    final mediaItems = widget.boat.media ?? [];
 
     return Container(
       margin: EdgeInsets.fromLTRB(14.w, 0, 14.w, 16.h),
@@ -81,28 +90,39 @@ class _BoatListingCardState extends State<BoatListingCard> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // ===================== IMAGE SECTION =====================
+          // ===================== IMAGE/VIDEO SECTION =====================
           ClipRRect(
             borderRadius: BorderRadius.vertical(top: Radius.circular(16.r)),
             child: Stack(
               children: [
                 // ── Carousel PageView ──
-                GestureDetector(
-                  onTap: () => _openImageDialog(_currentPage),
-                  child: SizedBox(
-                    height: 210.h,
-                    child: PageView.builder(
-                      controller: _pageController,
-                      itemCount: images.length,
-                      onPageChanged: (i) => setState(() => _currentPage = i),
-                      itemBuilder: (_, i) => CustomNetworkImage(
-                        imageUrl: images[i],
-                        height: 210.h,
-                        width: double.infinity,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
+                SizedBox(
+                  height: 210.h,
+                  child: mediaItems.isEmpty
+                      ? Container(
+                          color: AppColors.borderColor,
+                          child: Icon(Icons.directions_boat, size: 48.sp, color: AppColors.hintTextColor),
+                        )
+                      : PageView.builder(
+                          controller: _pageController,
+                          itemCount: mediaItems.length,
+                          onPageChanged: (i) => setState(() => _currentPage = i),
+                          itemBuilder: (_, i) {
+                            final item = mediaItems[i];
+                            if (item.type == 'video') {
+                              return _VideoPlayerItem(videoUrl: item.url ?? '');
+                            }
+                            return GestureDetector(
+                              onTap: () => _openImageDialog(i),
+                              child: CustomNetworkImage(
+                                imageUrl: item.url ?? '',
+                                height: 210.h,
+                                width: double.infinity,
+                                fit: BoxFit.cover,
+                              ),
+                            );
+                          },
+                        ),
                 ),
 
                 // ── Seller chip (top-left) ──
@@ -110,21 +130,22 @@ class _BoatListingCardState extends State<BoatListingCard> {
                   top: 10.h,
                   left: 10.w,
                   child: _SellerChip(
-                    name: widget.boat.sellerName,
-                    avatarUrl: widget.boat.sellerAvatar,
+                    name: widget.boat.user?.name ?? '',
+                    avatarUrl: widget.boat.user?.avatarUrl ?? '',
                     imageOnTap: widget.imageOnTap,
                   ),
                 ),
 
                 // ── Carousel dots (bottom-right) ──
-                Positioned(
-                  bottom: 10.h,
-                  right: 10.w,
-                  child: _CarouselDots(
-                    total: images.length,
-                    active: _currentPage,
+                if (mediaItems.length > 1)
+                  Positioned(
+                    bottom: 10.h,
+                    right: 10.w,
+                    child: _CarouselDots(
+                      total: mediaItems.length,
+                      active: _currentPage,
+                    ),
                   ),
-                ),
               ],
             ),
           ),
@@ -141,7 +162,7 @@ class _BoatListingCardState extends State<BoatListingCard> {
                   // Title
                   Expanded(
                     child: Text(
-                      widget.boat.title,
+                      widget.boat.displayTitle ?? '',
                       style: context.titleSmall.copyWith(
                         fontSize: 14.sp,
                         fontWeight: FontWeight.w600,
@@ -154,7 +175,7 @@ class _BoatListingCardState extends State<BoatListingCard> {
                   SizedBox(width: 6.w),
                   // Location
                   Text(
-                    widget.boat.location,
+                    widget.boat.location ?? '',
                     style: context.bodySmall.copyWith(
                       fontSize: 11.sp,
                       color: AppColors.hintTextColor,
@@ -169,7 +190,7 @@ class _BoatListingCardState extends State<BoatListingCard> {
           Padding(
             padding: EdgeInsets.fromLTRB(14.w, 0, 14.w, 10.h),
             child: Text(
-              '\$ ${_formatPrice(widget.boat.price)}',
+              '\$ ${_formatPrice((widget.boat.price ?? 0).toDouble())}',
               style: context.bodyMedium.copyWith(
                 fontSize: 14.sp,
                 fontWeight: FontWeight.w700,
@@ -199,7 +220,7 @@ class _BoatListingCardState extends State<BoatListingCard> {
                     icon: isLiked
                         ? Icons.favorite_rounded
                         : Icons.favorite_border_rounded,
-                    count: widget.boat.likes + (isLiked ? 1 : 0),
+                    count: (widget.boat.likesCount ?? 0) + (isLiked ? 1 : 0) - ((widget.boat.isLiked ?? false) ? 1 : 0),
                     color: isLiked
                         ? AppColors.favoriteRed
                         : AppColors.subHeadingText,
@@ -210,7 +231,7 @@ class _BoatListingCardState extends State<BoatListingCard> {
                 // Comment
                 _IconCountButton(
                   icon: Icons.chat_bubble_outline_rounded,
-                  count: widget.boat.comments,
+                  count: widget.boat.commentsCount ?? 0,
                   color: AppColors.subHeadingText,
                   onTap: () => widget.onCommentTap?.call(),
                 ),
@@ -218,7 +239,7 @@ class _BoatListingCardState extends State<BoatListingCard> {
                 // Share
                 _IconCountButton(
                   icon: Icons.send_rounded,
-                  count: widget.boat.shares,
+                  count: widget.boat.shareCount ?? 0,
                   color: AppColors.subHeadingText,
                   onTap: () => widget.onShareTap?.call(),
                 ),
@@ -262,6 +283,139 @@ class _BoatListingCardState extends State<BoatListingCard> {
       (m) => '${m[1]},',
     );
     return '$wholeFormatted$decimals';
+  }
+}
+
+// ─────────────────────────────────────────
+//  Inline video player item
+// ─────────────────────────────────────────
+class _VideoPlayerItem extends StatefulWidget {
+  final String videoUrl;
+  const _VideoPlayerItem({required this.videoUrl});
+
+  @override
+  State<_VideoPlayerItem> createState() => _VideoPlayerItemState();
+}
+
+class _VideoPlayerItemState extends State<_VideoPlayerItem> {
+  VideoPlayerController? _ctrl; // nullable until cache + init is done
+
+  @override
+  void initState() {
+    super.initState();
+    _initVideo();
+  }
+
+  /// Downloads video to local cache on first play;
+  /// subsequent plays use the cached file — no network hit.
+  Future<void> _initVideo() async {
+    try {
+      // DefaultCacheManager caches the file on disk automatically.
+      // cached_network_image already uses this same cache manager.
+      final file = await DefaultCacheManager().getSingleFile(widget.videoUrl);
+      final ctrl = VideoPlayerController.file(file);
+      await ctrl.initialize();
+      if (mounted) setState(() => _ctrl = ctrl); // only ONE setState, just to attach controller
+    } catch (e) {
+      debugPrint('Video cache/init error: $e');
+    }
+  }
+
+  @override
+  void dispose() {
+    _ctrl?.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // ── Still fetching/caching file ──
+    if (_ctrl == null) {
+      return Container(
+        color: Colors.black,
+        child: const Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              CircularProgressIndicator(color: Colors.white, strokeWidth: 2),
+              SizedBox(height: 8),
+              Text('Loading video...', style: TextStyle(color: Colors.white54, fontSize: 11)),
+            ],
+          ),
+        ),
+      );
+    }
+
+    return GestureDetector(
+      onTap: () {
+        if (!_ctrl!.value.isInitialized) return;
+        _ctrl!.value.isPlaying ? _ctrl!.pause() : _ctrl!.play();
+        // No setState — ValueListenableBuilder handles all UI updates
+      },
+      child: Container(
+        color: Colors.black,
+        child: ValueListenableBuilder<VideoPlayerValue>(
+          valueListenable: _ctrl!,
+          builder: (_, value, __) {
+            return Stack(
+              alignment: Alignment.center,
+              children: [
+                // ── Video ──
+                AspectRatio(
+                  aspectRatio: value.aspectRatio,
+                  child: VideoPlayer(_ctrl!),
+                ),
+
+                // ── Buffering spinner ──
+                if (value.isBuffering)
+                  const CircularProgressIndicator(color: Colors.white, strokeWidth: 2),
+
+                // ── Play/pause overlay ──
+                if (!value.isBuffering)
+                  AnimatedOpacity(
+                    opacity: value.isPlaying ? 0.0 : 1.0,
+                    duration: const Duration(milliseconds: 300),
+                    child: Container(
+                      width: 48,
+                      height: 48,
+                      decoration: const BoxDecoration(
+                        color: Colors.black45,
+                        shape: BoxShape.circle,
+                      ),
+                      child: Icon(
+                        value.isPlaying ? Icons.pause_rounded : Icons.play_arrow_rounded,
+                        color: Colors.white,
+                        size: 32,
+                      ),
+                    ),
+                  ),
+
+                // ── VIDEO badge ──
+                Positioned(
+                  top: 8,
+                  right: 8,
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                    decoration: BoxDecoration(
+                      color: Colors.black54,
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: const Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(Icons.videocam_rounded, color: Colors.white, size: 14),
+                        SizedBox(width: 4),
+                        Text('VIDEO', style: TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.w700)),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            );
+          },
+        ),
+      ),
+    );
   }
 }
 

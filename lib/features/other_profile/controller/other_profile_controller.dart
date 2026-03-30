@@ -19,7 +19,7 @@ class OtherProfileController extends GetxController {
   }
 
   // To test the empty state, you can clear this list or set it to false
-  final RxList<BoatModel> userPosts = <BoatModel>[].obs;
+  final RxList<BoatItem> userPosts = <BoatItem>[].obs;
 
   @override
   void onInit() {
@@ -27,39 +27,32 @@ class OtherProfileController extends GetxController {
 
     // Simulate fetching data to see the post list
     userPosts.assignAll([
-      BoatModel(
+      BoatItem(
         id: 'p3',
-        imageUrl: 'https://images.unsplash.com/photo-1544253106-96de23c4a2bf',
-        imageUrls: [
-          'https://images.unsplash.com/photo-1544253106-96de23c4a2bf',
-          'https://images.unsplash.com/photo-1567899378494-47b22a2ae96a',
+        media: [
+          Media(url: 'https://images.unsplash.com/photo-1544253106-96de23c4a2bf'),
+          Media(url: 'https://images.unsplash.com/photo-1567899378494-47b22a2ae96a'),
         ],
-        sellerName: userName,
-        sellerAvatar: avatarUrl,
-        title: '2027 Mazu Yachts 112DS',
+        user: User(name: userName, avatarUrl: avatarUrl),
+        displayTitle: '2027 Mazu Yachts 112DS',
         location: 'New York',
-        price: 12000.00,
-        likes: 136,
-        comments: 136,
-        shares: 136,
-        category: 'Yacht',
+        price: 12000,
+        likesCount: 136,
+        commentsCount: 136,
+        shareCount: 136,
       ),
-      BoatModel(
+      BoatItem(
         id: 'p4',
-        imageUrl:
-            'https://images.unsplash.com/photo-1567899378494-47b22a2ae96a',
-        imageUrls: [
-          'https://images.unsplash.com/photo-1567899378494-47b22a2ae96a',
+        media: [
+          Media(url: 'https://images.unsplash.com/photo-1567899378494-47b22a2ae96a'),
         ],
-        sellerName: userName,
-        sellerAvatar: avatarUrl,
-        title: '2028 Ocean Explorer',
+        user: User(name: userName, avatarUrl: avatarUrl),
+        displayTitle: '2028 Ocean Explorer',
         location: 'Miami',
-        price: 15000.00,
-        likes: 245,
-        comments: 89,
-        shares: 32,
-        category: 'Yacht',
+        price: 15000,
+        likesCount: 245,
+        commentsCount: 89,
+        shareCount: 32,
       ),
     ]);
   }

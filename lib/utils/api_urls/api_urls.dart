@@ -14,6 +14,8 @@ class ApiUrls {
   static String getProfile() => '$base/users/me';
   static String updateProfile() => '$base/users/update-profile';
 
+// Home Screen
+static String getBoats({required int page}) => '$base/posts/feed?limit=10&page=$page';
 
   //============== Settting===================
 

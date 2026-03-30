@@ -18,7 +18,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final HomeController _homeController = Get.put(HomeController());
+  final _homeController = Get.find<HomeController>();
 
   @override
   Widget build(BuildContext context) {
@@ -34,9 +34,9 @@ class _HomeScreenState extends State<HomeScreen> {
           SliverToBoxAdapter(child: SizedBox(height: 16.h)),
 
           // ---- Boat cards paginated list ----
-          PagedSliverList<int, BoatModel>(
+          PagedSliverList<int, BoatItem>(
             pagingController: _homeController.pagingController,
-            builderDelegate: PagedChildBuilderDelegate<BoatModel>(
+            builderDelegate: PagedChildBuilderDelegate<BoatItem>(
               itemBuilder: (context, item, index) => BoatListingCard(
                 boat: item,
                 onCardTap: () =>

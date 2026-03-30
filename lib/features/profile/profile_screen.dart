@@ -206,7 +206,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 onShareTap: () {
                   final boat = controller.userPosts[index];
                   SharePlus.instance.share(
-                    ShareParams(text: 'Check out this boat: ${boat.title} for \$${boat.price} on Boat Sells App!'),
+                    ShareParams(text: 'Check out this boat: ${boat.displayTitle} for \$${boat.price} on Boat Sells App!'),
                   );
                 },
              
