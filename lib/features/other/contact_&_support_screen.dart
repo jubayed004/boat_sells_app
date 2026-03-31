@@ -1,3 +1,4 @@
+import 'package:boat_sells_app/features/other/controller/other_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
@@ -15,6 +16,8 @@ class ContactAndSupportScreen extends StatefulWidget {
 }
 
 class _ContactAndSupportScreenState extends State<ContactAndSupportScreen> {
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final OtherController controller = Get.put(OtherController());
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _messageController = TextEditingController();
@@ -35,45 +38,57 @@ class _ContactAndSupportScreenState extends State<ContactAndSupportScreen> {
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
-          child: Column(
-            children: [
-              Expanded(
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      Gap(10.h),
-                      CustomTextField(
-                        hintText: "Enter Your Name",
-                        controller: _nameController,
-                        keyboardType: TextInputType.name,
-                      ),
-                      Gap(16.h),
-                      CustomTextField(
-                        hintText: "Enter Email Address",
-                        controller: _emailController,
-                        keyboardType: TextInputType.emailAddress,
-                      ),
-                      Gap(16.h),
-                      CustomTextField(
-                        hintText: "Write here...",
-                        controller: _messageController,
-                        maxLines: 6,
-                        minLines: 6,
-                        keyboardType: TextInputType.multiline,
-                        textInputAction: TextInputAction.newline,
-                      ),
-                    ],
+          child: Form(
+            key: _formKey,
+            child: Column(
+              children: [
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        Gap(10.h),
+                        CustomTextField(
+                          hintText: "Enter Your Name",
+                          controller: _nameController,
+                          keyboardType: TextInputType.name,
+                        ),
+                        Gap(16.h),
+                        CustomTextField(
+                          hintText: "Enter Email Address",
+                          controller: _emailController,
+                          keyboardType: TextInputType.emailAddress,
+                        ),
+                        Gap(16.h),
+                        CustomTextField(
+                          hintText: "Write here...",
+                          controller: _messageController,
+                          maxLines: 6,
+                          minLines: 6,
+                          keyboardType: TextInputType.multiline,
+                          textInputAction: TextInputAction.newline,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-              CustomButton(
-                text: "Submit",
-                onTap: () {
-                  // TODO: Implement submit logic
-                  AppRouter.route.pop();
-                },
-              ),
-            ],
+                Obx(
+                  () => CustomButton(
+                    isLoading: controller.contactAndSupportLoading.value,
+                    text: "Submit",
+                    onTap: () {
+                    final body = {
+                      "name": _nameController.text,
+                      "email": _emailController.text,
+                      "message": _messageController.text,
+                    };
+                      if (_formKey.currentState!.validate()) {
+                        controller.contactAndSupport(body: body);
+                      }
+                    },
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

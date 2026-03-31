@@ -3,19 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 
-class NotificationItem {
-  final String name;
-  final String action;
-  final String time;
-  final String? avatarUrl;
-
-  const NotificationItem({
-    required this.name,
-    required this.action,
-    required this.time,
-    this.avatarUrl,
-  });
-}
+import 'package:boat_sells_app/features/notification/model/notification_model.dart';
 
 class NotificationTile extends StatelessWidget {
   final NotificationItem item;
@@ -45,10 +33,10 @@ class NotificationTile extends StatelessWidget {
           CircleAvatar(
             radius: 24.r,
             backgroundColor: AppColors.iconBg,
-            backgroundImage: item.avatarUrl != null
-                ? NetworkImage(item.avatarUrl!)
+            backgroundImage: item.user?.avatarUrl != null
+                ? NetworkImage(item.user!.avatarUrl!)
                 : null,
-            child: item.avatarUrl == null
+            child: item.user?.avatarUrl == null
                 ? Icon(
                     Icons.person,
                     color: AppColors.subHeadingText,
@@ -65,15 +53,15 @@ class NotificationTile extends StatelessWidget {
                 style: TextStyle(fontSize: 13.sp, color: AppColors.headingText),
                 children: [
                   TextSpan(
-                    text: '${item.name} ',
+                    text: '${item.user?.name ?? 'Someone'} ',
                     style: const TextStyle(fontWeight: FontWeight.w600),
                   ),
                   TextSpan(
-                    text: item.action,
+                    text: 'interacted with your post',
                     style: const TextStyle(fontWeight: FontWeight.w400),
                   ),
                   TextSpan(
-                    text: '  ${item.time}',
+                    text: item.createdAt != null ? '  ${item.createdAt!.day}/${item.createdAt!.month}' : '',
                     style: TextStyle(
                       fontSize: 11.sp,
                       color: AppColors.hintTextColor,

@@ -54,21 +54,22 @@ class OtherController extends GetxController {
     }
   }
 
-  /// ============================= GET FAQ =====================================
-  final RxList<dynamic> faqData = [].obs;
-  final Rx<ApiStatus> faqLoading = ApiStatus.completed.obs;
-  void faqLoadingMethod(ApiStatus status) => faqLoading.value = status;
+  /// ============================= Contact And Support =====================================
+  
+  final RxBool contactAndSupportLoading = false.obs;
+  void contactAndSupportLoadingMethod(bool loading) => contactAndSupportLoading.value = loading;
 
-  Future<void> getFaq() async {
-    faqLoadingMethod(ApiStatus.loading);
-    var response = await apiClient.get(url: ApiUrls.faq());
-    if (response.statusCode == 200) {
-      faqData.value = response.data['data'] ?? [];
-      faqLoadingMethod(ApiStatus.completed);
+  Future<void> contactAndSupport({required Map<String, dynamic> body}) async {
+    contactAndSupportLoadingMethod(true);
+    var response = await apiClient.post(url: ApiUrls.contactAndSupport(),body: body);
+    AppConfig.logger.d(response.data);
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      contactAndSupportLoadingMethod(false);
       AppToast.success(message: response.data['message']);
+      AppRouter.route.pop();
     } else {
-      AppToast.error(message: response.data['message']);
-      faqLoadingMethod(ApiStatus.error);
+      AppConfig.logger.e(response.data['message']);
+      contactAndSupportLoadingMethod(false);
     }
   }
 
@@ -79,7 +80,7 @@ class OtherController extends GetxController {
 
   Future<void> changePassword({required Map<String, dynamic> body}) async {
     changePasswordLoadingMethod(true);
-    var response = await apiClient.post(
+    var response = await apiClient.patch(
       url: ApiUrls.changePassword(),
       body: body,
     );

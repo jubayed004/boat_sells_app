@@ -45,7 +45,14 @@ class HomeController extends GetxController {
       AppConfig.logger.e(error);
       pagingController.error = error;
     }
-  }
+  } 
+
+
+
+
+
+
+  
 
   @override
   void onClose() {

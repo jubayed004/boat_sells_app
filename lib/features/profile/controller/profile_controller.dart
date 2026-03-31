@@ -6,6 +6,7 @@ import 'package:boat_sells_app/core/router/routes.dart';
 import 'package:boat_sells_app/core/service/datasource/local/local_service.dart';
 import 'package:boat_sells_app/core/service/datasource/remote/api_client.dart';
 import 'package:boat_sells_app/features/profile/model/profile_model.dart';
+import 'package:boat_sells_app/features/profile/model/user_all_post_model.dart';
 import 'package:boat_sells_app/helper/toast/toast_helper.dart';
 import 'package:boat_sells_app/utils/api_urls/api_urls.dart';
 import 'package:boat_sells_app/utils/config/app_config.dart';
@@ -13,46 +14,9 @@ import 'package:boat_sells_app/utils/multipart/multipart_body.dart';
 import 'package:get/get.dart';
 import 'package:boat_sells_app/features/home/model/boat_model.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 class ProfileController extends GetxController {
-  final String userName = 'Ivy Marlowe';
-  final String avatarUrl = 'https://randomuser.me/api/portraits/women/44.jpg';
-  final int postCount = 3;
-  final int followersCount = 114;
-  final int followingCount = 37;
-  final String bio =
-      'A Wanderer Born Under A Rare Celestial Alignment, Elowyn Channels Ancient Starlight To Heal, Protect, And Uncover Forgotten Magic.';
-
-  final List<BoatItem> userPosts = [
-    BoatItem(
-      id: 'p1',
-      media: [
-        Media(url: 'https://images.unsplash.com/photo-1569263979104-865ab7cd8d13'),
-        Media(url: 'https://images.unsplash.com/photo-1544253106-96de23c4a2bf'),
-      ],
-      user: User(name: 'Ivy Marlowe', avatarUrl: 'https://randomuser.me/api/portraits/women/44.jpg'),
-      displayTitle: '2027 Mazu Yachts 112DS',
-      location: 'New York',
-      price: 12000,
-      likesCount: 136,
-      commentsCount: 136,
-      shareCount: 136,
-    ),
-    BoatItem(
-      id: 'p2',
-      media: [
-        Media(url: 'https://images.unsplash.com/photo-1544253106-96de23c4a2bf'),
-        Media(url: 'https://images.unsplash.com/photo-1569263979104-865ab7cd8d13'),
-      ],
-      user: User(name: 'Ivy Marlowe', avatarUrl: 'https://randomuser.me/api/portraits/women/44.jpg'),
-      displayTitle: '2027 Mazu Yachts 112DS',
-      location: 'New York',
-      price: 12000,
-      likesCount: 136,
-      commentsCount: 136,
-      shareCount: 136,
-    ),
-  ];
   final ImagePicker _imagePicker = ImagePicker();
   final ApiClient apiClient = sl();
   final LocalService localService = sl();
@@ -154,7 +118,50 @@ class ProfileController extends GetxController {
       AppConfig.logger.e(e.toString());
     }
   }
+ 
 
+
+  final PagingController<int, BoatItem> pagingController =
+      PagingController(firstPageKey: 1);
+
+  @override
+  void onInit() {
+    super.onInit();
+    pagingController.addPageRequestListener((pageKey) {
+      fetchUserAllPost(pageKey);
+    });
+  }
+
+  Future<void> fetchUserAllPost(int pageKey) async {
+    try {
+      final response = await apiClient.get(
+        url: ApiUrls.getUserAllPost(page: pageKey),
+      );
+      AppConfig.logger.d(response.data);
+      if (response.statusCode == 200) {
+        final userAllPostModel = UserAllPostModel.fromJson(response.data);
+        final newItems = userAllPostModel.data ?? [];
+        final isLastPage = newItems.length < 10;
+        if (isLastPage) {
+          pagingController.appendLastPage(newItems);
+        } else {
+          final nextPageKey = pageKey + 1;
+          pagingController.appendPage(newItems, nextPageKey);
+        }
+      } else {
+        pagingController.error = response.data['message'];
+      }
+    } catch (error) {
+      AppConfig.logger.e(error);
+      pagingController.error = error;
+    }
+  }
+
+  @override
+  void onClose() {
+    pagingController.dispose();
+    super.onClose();
+  }
   @override
   void onReady() {
     super.onReady();

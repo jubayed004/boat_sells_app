@@ -193,6 +193,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         controller: _bioController,
                         hintText: 'Bio',
                         maxLines: 4,
+                        minLines: 4,
+                        keyboardType: TextInputType.multiline,
+                        textInputAction: TextInputAction.newline,
                       ),
                       SizedBox(height: 16.h),
                       CustomTextField(

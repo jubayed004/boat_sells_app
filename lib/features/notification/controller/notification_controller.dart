@@ -1,37 +1,36 @@
 import 'package:boat_sells_app/core/di/injection.dart';
 import 'package:boat_sells_app/core/service/datasource/local/local_service.dart';
 import 'package:boat_sells_app/core/service/datasource/remote/api_client.dart';
-import 'package:boat_sells_app/features/home/model/boat_model.dart';
-import 'package:boat_sells_app/features/saved/model/saved_model.dart';
+import 'package:boat_sells_app/features/notification/model/notification_model.dart';
 import 'package:boat_sells_app/utils/api_urls/api_urls.dart';
 import 'package:boat_sells_app/utils/config/app_config.dart';
 import 'package:get/get.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
-class SavedController extends GetxController {
+class NotificationController extends GetxController {
    final ApiClient apiClient = sl();
   final LocalService localService = sl();
   
-  final PagingController<int, BoatItem> pagingController =
+  final PagingController<int, NotificationItem> pagingController =
       PagingController(firstPageKey: 1);
 
   @override
   void onInit() {
     super.onInit();
     pagingController.addPageRequestListener((pageKey) {
-      fetchPage(pageKey);
+      getNotification(pageKey);
     });
   }
 
-  Future<void> fetchPage(int pageKey) async {
+  Future<void> getNotification(int pageKey) async {
     try {
       final response = await apiClient.get(
-        url: ApiUrls.getSavedBoats(page: pageKey),
+        url: ApiUrls.getNotifications(page: pageKey),
       );
       AppConfig.logger.d(response.data);
       if (response.statusCode == 200) {
-        final savedModel = SavedModel.fromJson(response.data);
-        final newItems = savedModel.data ?? [];
+        final notificationModel = NotificationsModel.fromJson(response.data);
+        final newItems = notificationModel.data ?? [];
         final isLastPage = newItems.length < 10;
         if (isLastPage) {
           pagingController.appendLastPage(newItems);
@@ -52,12 +51,5 @@ class SavedController extends GetxController {
   void onClose() {
     pagingController.dispose();
     super.onClose();
-  }
-  /// Remove a boat from saved list
-  void removeSaved(String id) {
-    final currentList = pagingController.itemList;
-    if (currentList != null) {
-      pagingController.itemList = currentList.where((b) => b.id != id).toList();
-    }
   }
 }

@@ -101,15 +101,14 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                   isLoading: _otherController.changePasswordLoading.value,
                   text: AppStrings.resetPassword.tr,
                   onTap: () {
-                    // if (_formKey.currentState!.validate()) {
-                    //   _otherController.changePassword(
-                    //     body: {
-                    //       "old_password": _oldPassword.text,
-                    //       "new_password": _resetPassword.text,
-                    //     },
-                    //   );
-                    // }
-                    AppRouter.route.pop();
+                    if (_formKey.currentState!.validate()) {
+                      _otherController.changePassword(
+                        body: {
+                          "oldPassword": _oldPassword.text,
+                          "newPassword": _resetPassword.text,
+                        },
+                      );
+                    }
                   },
                 ),
               ),

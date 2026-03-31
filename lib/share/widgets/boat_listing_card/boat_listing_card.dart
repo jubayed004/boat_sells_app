@@ -1,10 +1,12 @@
 import 'package:boat_sells_app/features/home/model/boat_model.dart';
 import 'package:boat_sells_app/share/widgets/network_image/custom_network_image.dart';
 import 'package:boat_sells_app/utils/color/app_colors.dart';
+import 'package:boat_sells_app/utils/common_controller/common_controller.dart';
 import 'package:boat_sells_app/utils/extension/base_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:video_player/video_player.dart';
 
 class BoatListingCard extends StatefulWidget {
@@ -16,11 +18,14 @@ class BoatListingCard extends StatefulWidget {
   /// Called when the comment icon is tapped
   final VoidCallback? onCommentTap;
 
-  /// Called when the share icon is tapped
+  /// Called when the share icon is tapped (e.g. to open share sheet)
   final VoidCallback? onShareTap;
 
   /// Called when the image is tapped
   final VoidCallback? imageOnTap;
+
+  /// Called when the user removes the bookmark (unsaves)
+  final VoidCallback? onUnsaved;
 
   const BoatListingCard({
     super.key,
@@ -29,6 +34,7 @@ class BoatListingCard extends StatefulWidget {
     this.onCommentTap,
     this.onShareTap,
     this.imageOnTap,
+    this.onUnsaved,
   });
 
   @override
@@ -40,6 +46,8 @@ class _BoatListingCardState extends State<BoatListingCard> {
   late final ValueNotifier<bool> _isLiked;
   late final PageController _pageController;
   int _currentPage = 0;
+
+  final _commonController = Get.find<CommonController>();
 
   @override
   void initState() {
@@ -224,7 +232,12 @@ class _BoatListingCardState extends State<BoatListingCard> {
                     color: isLiked
                         ? AppColors.favoriteRed
                         : AppColors.subHeadingText,
-                    onTap: () => _isLiked.value = !_isLiked.value,
+                    onTap: () {
+                      // Optimistic UI toggle
+                      _isLiked.value = !_isLiked.value;
+                      // Call API
+                      _commonController.likePost(postId: widget.boat.id ?? '');
+                    },
                   ),
                 ),
                 SizedBox(width: 18.w),
@@ -241,14 +254,29 @@ class _BoatListingCardState extends State<BoatListingCard> {
                   icon: Icons.send_rounded,
                   count: widget.boat.shareCount ?? 0,
                   color: AppColors.subHeadingText,
-                  onTap: () => widget.onShareTap?.call(),
+                  onTap: () {
+                    // Call share API to increment the count
+                    _commonController.sharePost(postId: widget.boat.id ?? '');
+                    // Then call the parent's share action (open share sheet)
+                    widget.onShareTap?.call();
+                  },
                 ),
                 const Spacer(),
                 // Bookmark
                 ValueListenableBuilder<bool>(
                   valueListenable: _isSaved,
                   builder: (context, isSaved, _) => GestureDetector(
-                    onTap: () => _isSaved.value = !_isSaved.value,
+                    onTap: () {
+                      final willBeSaved = !_isSaved.value;
+                      // Optimistic UI toggle
+                      _isSaved.value = willBeSaved;
+                      // Call save API
+                      _commonController.savedPost(postId: widget.boat.id ?? '');
+                      // Notify parent when user removes the bookmark
+                      if (!willBeSaved) {
+                        widget.onUnsaved?.call();
+                      }
+                    },
                     behavior: HitTestBehavior.opaque,
                     child: AnimatedSwitcher(
                       duration: const Duration(milliseconds: 250),

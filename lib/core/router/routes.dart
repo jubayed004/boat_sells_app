@@ -177,7 +177,8 @@ class AppRouter {
         name: RoutePath.commentsScreen,
         path: RoutePath.commentsScreen.addBasePath,
         pageBuilder: (context, state) {
-          return _buildPageWithAnimation(child: CommentsScreen(), state: state);
+          final postId = state.extra as String? ?? '';
+          return _buildPageWithAnimation(child: CommentsScreen(postId: postId,), state: state);
         },
       ),
 
@@ -274,7 +275,7 @@ class AppRouter {
         path: RoutePath.savedScreen.addBasePath,
         pageBuilder: (context, state) {
           return _buildPageWithAnimation(
-            child: const SavedScreen(),
+            child: SavedScreen(),
             state: state,
           );
         },

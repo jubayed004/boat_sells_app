@@ -16,13 +16,23 @@ class ApiUrls {
 
 // Home Screen
 static String getBoats({required int page}) => '$base/posts/feed?limit=10&page=$page';
-
+static String getSavedBoats({required int page}) => '$base/saved?limit=10&page=$page'; 
+static String savePost({required String id}) => '$base/saved/$id';
+static String sharePost({required String id}) => '$base/posts/$id/share';
+static String likePost({required String id}) => '$base/posts/$id/like';
+static String getNotifications({required int page}) => '$base/notifications?page=$page&limit=10';
+// Profile Screen
+static String getUserAllPost({required int page}) => '$base/posts/me?limit=10&page=$page';
   //============== Settting===================
 
-  static String changePassword() => '$base/v1/auth/change-password';
-  static String termsConditions() => '$base/v1/settings/terms/get';
-  static String privacyPolicy() => '$base/v1/settings/privacy/get';
-  static String faq() => '$base/v1/settings/faq/get-all';
+  static String changePassword() => '$base/users/change-password';
+  static String termsConditions() => '$base/legal-content/terms-and-conditions';
+  static String privacyPolicy() => '$base/legal-content/privacy-policy';
+  static String contactAndSupport() => '$base/contact';
   static String logout() => '$base/auth/logout';
+ 
+//============== Comment==============
+static String getComments ({required String postId}) => '$base/comments?postId=$postId';
+static String addComment () => '$base/comments';
 
 }
