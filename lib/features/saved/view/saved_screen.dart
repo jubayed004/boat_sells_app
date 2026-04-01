@@ -2,6 +2,7 @@ import 'package:boat_sells_app/core/router/route_path.dart';
 import 'package:boat_sells_app/core/router/routes.dart';
 import 'package:boat_sells_app/features/saved/controller/saved_controller.dart';
 import 'package:boat_sells_app/share/widgets/boat_listing_card/boat_listing_card.dart';
+import 'package:boat_sells_app/share/widgets/boat_listing_card/boat_listing_shimmer_card.dart';
 import 'package:boat_sells_app/utils/color/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -73,14 +74,16 @@ class _SavedScreenState extends State<SavedScreen> {
                   onCardTap: () =>
                       AppRouter.route.pushNamed(RoutePath.detailsPostScreen),
                   onCommentTap: () =>
-                      AppRouter.route.pushNamed(RoutePath.commentsScreen),
+                      AppRouter.route.pushNamed(RoutePath.commentsScreen, extra: boat.id),
                   imageOnTap: () =>
                       AppRouter.route.pushNamed(RoutePath.otherProfileScreen),
                   onUnsaved: () => controller.removeSaved(boat.id ?? ''),
                 ),
-                firstPageProgressIndicatorBuilder: (_) => const Padding(
-                  padding: EdgeInsets.all(50.0),
-                  child: Center(child: CircularProgressIndicator()),
+                firstPageProgressIndicatorBuilder: (_) => Column(
+                  children: List.generate(
+                    3,
+                    (_) => const BoatListingShimmerCard(),
+                  ),
                 ),
                 noItemsFoundIndicatorBuilder: (_) => NoDataCard(
                   onTap: () => controller.pagingController.refresh(),

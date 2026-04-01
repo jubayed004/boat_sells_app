@@ -24,25 +24,5 @@ void initGetx() {
   Get.lazyPut(() => ProfileController(), fenix: true);
   Get.lazyPut(() => AddPostController(), fenix: true);
   Get.lazyPut(() => FollowersController(), fenix: true);
-  //Chat
-  /*  Get.lazyPut(() => ChatController(), fenix: true);
 
-  //Driver
-  Get.lazyPut(() => TrackParcelController(), fenix: true);
-  //Parcel Owner
-  Get.lazyPut(() => MyParcelController(), fenix: true);
-  Get.lazyPut(() => RefundController(), fenix: true);
-
-  //Profile
-  Get.lazyPut(() => ProfileController(), fenix: true);
-  Get.lazyPut(() => NavigationControllerMain(), fenix: true);
-
-  //Parcel Owner Home
-  Get.lazyPut(() => ParcelOwnerHomeController(), fenix: true);
-
-  //Driver
-  Get.lazyPut(() => ParcelController(), fenix: true);
-
-  //Driver Home
-  Get.lazyPut(() => DriverHomeController(), fenix: true);*/
 }

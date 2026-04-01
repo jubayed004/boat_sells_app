@@ -1,6 +1,7 @@
 import 'package:boat_sells_app/features/home/controller/home_controller.dart';
 import 'package:boat_sells_app/features/home/model/boat_model.dart';
 import 'package:boat_sells_app/share/widgets/boat_listing_card/boat_listing_card.dart';
+import 'package:boat_sells_app/share/widgets/boat_listing_card/boat_listing_shimmer_card.dart';
 import 'package:boat_sells_app/core/router/route_path.dart';
 import 'package:boat_sells_app/core/router/routes.dart';
 import 'package:boat_sells_app/features/home/widgets/home_app_bar.dart';
@@ -50,7 +51,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 itemBuilder: (context, item, index) => BoatListingCard(
                   boat: item,
                   onCardTap: () =>
-                      AppRouter.route.pushNamed(RoutePath.detailsPostScreen),
+                      AppRouter.route.pushNamed(RoutePath.detailsPostScreen,extra: item.id),
                   onCommentTap: () =>
                       AppRouter.route.pushNamed(RoutePath.commentsScreen,extra: item.id),
                   onShareTap: () {
@@ -64,8 +65,11 @@ class _HomeScreenState extends State<HomeScreen> {
                     AppRouter.route.pushNamed(RoutePath.otherProfileScreen);
                   },
                 ),
-                firstPageProgressIndicatorBuilder: (_) => const Center(
-                  child: CircularProgressIndicator(color: AppColors.primaryBlue),
+                firstPageProgressIndicatorBuilder: (_) => Column(
+                  children: List.generate(
+                    3,
+                    (index) => const BoatListingShimmerCard(),
+                  ),
                 ),
                 newPageProgressIndicatorBuilder: (_) => Padding(
                   padding: EdgeInsets.symmetric(vertical: 16.h),

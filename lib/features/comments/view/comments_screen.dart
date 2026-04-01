@@ -1,6 +1,6 @@
 import 'package:boat_sells_app/features/comments/controller/comments_controller.dart';
 import 'package:boat_sells_app/features/comments/widgets/comment_item.dart';
-import 'package:boat_sells_app/share/widgets/loading/loading_widget.dart';
+import 'package:boat_sells_app/features/comments/widgets/comment_shimmer_item.dart';
 import 'package:boat_sells_app/share/widgets/no_internet/error_card.dart';
 import 'package:boat_sells_app/share/widgets/no_internet/no_data_card.dart';
 import 'package:boat_sells_app/share/widgets/no_internet/no_internet_card.dart';
@@ -13,7 +13,7 @@ import 'package:get/get.dart';
 
 class CommentsScreen extends StatefulWidget {
   final String postId;
-  CommentsScreen({super.key, required this.postId});
+  const CommentsScreen({super.key, required this.postId});
 
   @override
   State<CommentsScreen> createState() => _CommentsScreenState();
@@ -58,8 +58,23 @@ class _CommentsScreenState extends State<CommentsScreen> {
           // ── Comments List ──────────────────────────────────────
           Expanded(
             child: Obx(() {
+              final comments = controller.comment.value.data ?? [];
               return switch (controller.status.value) {
-                ApiStatus.loading => const LoadingWidget(),
+                ApiStatus.loading => CustomScrollView(
+                  physics: const NeverScrollableScrollPhysics(),
+                  slivers: [
+                    SliverPadding(
+                      padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 16.h),
+                      sliver: SliverList.separated(
+                        itemCount: 8,
+                        separatorBuilder: (_, _) => SizedBox(height: 24.h),
+                        itemBuilder: (context, index) {
+                          return const CommentShimmerItem();
+                        },
+                      ),
+                    ),
+                  ],
+                ),
                 ApiStatus.internetError => NoInternetCard(
                     onTap: () => controller.getComments(postId: widget.postId),
                   ),
@@ -73,11 +88,8 @@ class _CommentsScreenState extends State<CommentsScreen> {
                     icon: Icons.chat_bubble_outline_rounded,
                     iconColor: AppColors.primaryBlue,
                   ),
-                ApiStatus.completed => Builder(
-                    builder: (context) {
-                      final comments = controller.comment.value.data ?? [];
-                      return RefreshIndicator(
-                        onRefresh: () => controller.getComments(postId: widget.postId),
+                ApiStatus.completed => RefreshIndicator(
+                        onRefresh: () => controller.getComments(postId: widget.postId, isRefresh: true),
                         child: CustomScrollView(
                           physics: const AlwaysScrollableScrollPhysics(),
                           slivers: [
@@ -85,7 +97,7 @@ class _CommentsScreenState extends State<CommentsScreen> {
                               padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 16.h),
                               sliver: SliverList.separated(
                                 itemCount: comments.length,
-                                separatorBuilder: (_, __) => SizedBox(height: 24.h),
+                                separatorBuilder: (_, _) => SizedBox(height: 24.h),
                                 itemBuilder: (context, index) {
                                   return CommentItemWidget(comment: comments[index]);
                                 },
@@ -93,9 +105,7 @@ class _CommentsScreenState extends State<CommentsScreen> {
                             ),
                           ],
                         ),
-                      );
-                    },
-                  ),
+                      ),
               };
             }),
           ),

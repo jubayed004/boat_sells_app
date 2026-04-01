@@ -20,6 +20,9 @@ static String getSavedBoats({required int page}) => '$base/saved?limit=10&page=$
 static String savePost({required String id}) => '$base/saved/$id';
 static String sharePost({required String id}) => '$base/posts/$id/share';
 static String likePost({required String id}) => '$base/posts/$id/like';
+static String getDetailsPost({required String postId}) => '$base/posts/$postId';
+
+//notification
 static String getNotifications({required int page}) => '$base/notifications?page=$page&limit=10';
 // Profile Screen
 static String getUserAllPost({required int page}) => '$base/posts/me?limit=10&page=$page';

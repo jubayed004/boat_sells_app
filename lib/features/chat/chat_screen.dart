@@ -58,7 +58,7 @@ class _ChatScreenState extends State<ChatScreen> {
               child: ListView.separated(
                 physics: const BouncingScrollPhysics(),
                 itemCount: controller.dummyChatList.length,
-                separatorBuilder: (_, __) => Divider(
+                separatorBuilder: (_, _) => Divider(
                   height: 1,
                   thickness: 1,
                   color: AppColors.dividerColor,

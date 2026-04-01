@@ -25,7 +25,7 @@ class UserList extends StatelessWidget {
     return ListView.separated(
       padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
       itemCount: items.length,
-      separatorBuilder: (_, __) =>
+      separatorBuilder: (_, _) =>
           Divider(height: 1, thickness: 1, color: AppColors.dividerColor),
       itemBuilder: (_, i) => UserRow(item: items[i]),
     );

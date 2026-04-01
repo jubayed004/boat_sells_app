@@ -20,10 +20,12 @@ class CommentsController extends GetxController {
   Rx<ApiStatus> status = ApiStatus.loading.obs;
   final Rx<CommentModel> comment = CommentModel().obs;
 
-  Future<void> getComments({required String postId}) async {
+  Future<void> getComments({required String postId, bool isRefresh = false}) async {
     try {
       AppConfig.logger.i("Get Comments Method Called");
-      status.value = ApiStatus.loading;
+      if (!isRefresh) {
+        status.value = ApiStatus.loading;
+      }
       final response = await apiClient.get(url: ApiUrls.getComments(postId: postId));
       AppConfig.logger.i(response.data);
       if (response.statusCode == 200) {
@@ -83,7 +85,7 @@ class CommentsController extends GetxController {
         commentTextController.clear();
         cancelReply();
         // Refresh comment list
-        await getComments(postId: _currentPostId!);
+        await getComments(postId: _currentPostId!, isRefresh: true);
         addCommentLoading.value = false;
       } else {
         addCommentLoading.value = false;

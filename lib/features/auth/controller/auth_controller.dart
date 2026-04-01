@@ -67,7 +67,10 @@ class AuthController extends GetxController {
 
       AppConfig.logger.i(body);
 
-      final response = await apiClient.post(url: ApiUrls.register(), body: body);
+      final response = await apiClient.post(
+        url: ApiUrls.register(),
+        body: body,
+      );
 
       AppConfig.logger.i(response.data);
 

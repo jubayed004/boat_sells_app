@@ -12,7 +12,22 @@ static CommonController get to => Get.find();
     final ApiClient apiClient = sl();
   final LocalService localService = sl();  
 
-    // Saved Post Section
+  // ── Global count registry (real-time updates for BoatListingCard) ──────
+  /// postId → comment count delta (added on each successful comment)
+  final RxMap<String, int> commentCounts = <String, int>{}.obs;
+
+  /// postId → share count delta (added on each successful share)
+  final RxMap<String, int> shareCounts = <String, int>{}.obs;
+
+  void incrementCommentCount(String postId) {
+    commentCounts[postId] = (commentCounts[postId] ?? 0) + 1;
+  }
+
+  void incrementShareCount(String postId) {
+    shareCounts[postId] = (shareCounts[postId] ?? 0) + 1;
+  }
+
+  // Saved Post Section
   RxBool savedPostLoading = false.obs;
   bool savedPostLoadingMethod(bool status) => savedPostLoading.value = status;
 
@@ -75,6 +90,8 @@ static CommonController get to => Get.find();
       AppConfig.logger.i(response.data);
       if (response.statusCode == 201) {
         sharePostLoadingMethod(false);
+        // Increment share count in real-time registry
+        incrementShareCount(postId);
         AppToast.success( message: response.data?['message'].toString() ?? "Success",);
       } else {
         sharePostLoadingMethod(false);

@@ -60,8 +60,9 @@ class TextFieldValidator {
       final trimmed = value?.trim() ?? '';
       if (trimmed.isEmpty) return "OTP is required";
       if (trimmed.length != 6) return "OTP must be 6 digits";
-      if (!RegExp(r'^[0-9]{6}$').hasMatch(trimmed))
+      if (!RegExp(r'^[0-9]{6}$').hasMatch(trimmed)) {
         return "OTP must contain only numbers";
+      }
       return null;
     };
   }

@@ -272,7 +272,7 @@ class _OtherProfileScreenState extends State<OtherProfileScreen> {
                     onCardTap: () =>
                         AppRouter.route.pushNamed(RoutePath.detailsPostScreen),
                     onCommentTap: () =>
-                        AppRouter.route.pushNamed(RoutePath.commentsScreen),
+                        AppRouter.route.pushNamed(RoutePath.commentsScreen, extra: controller.userPosts[index].id),
                   );
                 }, childCount: controller.userPosts.length),
               ),

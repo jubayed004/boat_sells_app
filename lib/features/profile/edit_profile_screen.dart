@@ -1,14 +1,11 @@
-import 'package:boat_sells_app/core/router/routes.dart';
 import 'package:boat_sells_app/features/profile/controller/profile_controller.dart';
 import 'package:boat_sells_app/share/widgets/button/custom_button.dart';
 import 'package:boat_sells_app/share/widgets/network_image/custom_network_image.dart';
 import 'package:boat_sells_app/share/widgets/text_field/custom_text_field.dart';
 import 'package:boat_sells_app/utils/color/app_colors.dart';
-import 'package:boat_sells_app/utils/extension/base_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'dart:io';
-import 'package:boat_sells_app/core/custom_assets/assets.gen.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 
@@ -84,7 +81,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
                                 border: Border.all(
-                                  color: AppColors.primaryBlue.withOpacity(0.2),
+                                  color: AppColors.primaryBlue.withValues(alpha: 0.2),
                                   width: 4,
                                 ),
                               ),
@@ -126,9 +123,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                     );
                                   } else {
                                     return Container(
-                                      color: AppColors.priceGreen.withOpacity(
-                                        0.1,
-                                      ),
+                                      color: AppColors.priceGreen.withValues(alpha: 0.1),
                                       padding: EdgeInsets.all(20),
                                       child: Icon(Iconsax.user, size: 50),
                                     );
@@ -155,7 +150,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                     ),
                                     boxShadow: [
                                       BoxShadow(
-                                        color: Colors.black.withOpacity(0.2),
+                                        color: Colors.black.withValues(alpha: 0.2),
                                         blurRadius: 4,
                                         offset: Offset(0, 2),
                                       ),

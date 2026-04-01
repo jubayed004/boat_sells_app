@@ -157,8 +157,9 @@ class AppRouter {
         name: RoutePath.detailsPostScreen,
         path: RoutePath.detailsPostScreen.addBasePath,
         pageBuilder: (context, state) {
+          final postId = state.extra as String? ?? '';
           return _buildPageWithAnimation(
-            child: DetailsPostScreen(),
+            child: DetailsPostScreen(postId: postId),
             state: state,
           );
         },

@@ -8,6 +8,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:boat_sells_app/helper/toast/toast_helper.dart';
 import 'package:boat_sells_app/features/profile/controller/profile_controller.dart';
 import 'package:boat_sells_app/share/widgets/boat_listing_card/boat_listing_card.dart';
+import 'package:boat_sells_app/share/widgets/boat_listing_card/boat_listing_shimmer_card.dart';
 import 'package:boat_sells_app/utils/color/app_colors.dart';
 import 'package:boat_sells_app/utils/extension/base_extension.dart';
 import 'package:flutter/material.dart';
@@ -238,7 +239,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   onCardTap: () =>
                       AppRouter.route.pushNamed(RoutePath.detailsPostScreen),
                   onCommentTap: () =>
-                      AppRouter.route.pushNamed(RoutePath.commentsScreen),
+                      AppRouter.route.pushNamed(RoutePath.commentsScreen, extra: boat.id),
                   onShareTap: () {
                     SharePlus.instance.share(
                       ShareParams(
@@ -248,9 +249,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     );
                   },
                 ),
-                firstPageProgressIndicatorBuilder: (_) => const Padding(
-                  padding: EdgeInsets.all(50.0),
-                  child: Center(child: CircularProgressIndicator()),
+                firstPageProgressIndicatorBuilder: (_) => Column(
+                  children: List.generate(
+                    3,
+                    (_) => const BoatListingShimmerCard(),
+                  ),
                 ),
                 noItemsFoundIndicatorBuilder: (_) => Padding(
                   padding: EdgeInsets.only(top: 40.h),

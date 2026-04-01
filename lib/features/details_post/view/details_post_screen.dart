@@ -2,22 +2,42 @@ import 'package:boat_sells_app/core/router/route_path.dart';
 import 'package:boat_sells_app/core/router/routes.dart';
 import 'package:boat_sells_app/features/home/model/boat_model.dart';
 import 'package:boat_sells_app/share/widgets/boat_listing_card/boat_listing_card.dart';
+import 'package:boat_sells_app/share/widgets/boat_listing_card/boat_listing_shimmer_card.dart';
 import 'package:boat_sells_app/utils/color/app_colors.dart';
 import 'package:boat_sells_app/utils/extension/base_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
-class DetailsPostScreen extends StatelessWidget {
-  final BoatItem? boat;
+import 'package:boat_sells_app/features/details_post/controller/details_post_controller.dart';
 
-  const DetailsPostScreen({super.key, this.boat});
+class DetailsPostScreen extends StatefulWidget {
+  final String? postId;
+
+  const DetailsPostScreen({super.key, this.postId});
 
   @override
-  Widget build(BuildContext context) {
-    // If no boat is provided via arguments or constructor, use a fallback demo boat
-    final displayBoat = boat ?? (Get.arguments as BoatItem?) ?? _demoBoat;
+  State<DetailsPostScreen> createState() => _DetailsPostScreenState();
+}
 
+class _DetailsPostScreenState extends State<DetailsPostScreen> {
+
+  final controller = Get.put(DetailsPostController());
+  @override
+  void initState() {
+    super.initState();
+    
+    if (widget.postId != null) {
+      controller.getDetailsPost(postId: widget.postId!);
+    }
+  }
+@override
+void dispose() {
+  Get.delete<DetailsPostController>();
+  super.dispose();
+}
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.white,
       appBar: AppBar(
@@ -44,11 +64,26 @@ class DetailsPostScreen extends StatelessWidget {
           SliverToBoxAdapter(
             child: Padding(
               padding: EdgeInsets.only(top: 8.h),
-              child: BoatListingCard(
-                boat: displayBoat,
-                onCommentTap: () =>
-                    AppRouter.route.pushNamed(RoutePath.commentsScreen),
-              ),
+              child: Obx(() {
+                if (controller.detailsPostLoading.value) {
+                  return const BoatListingShimmerCard();
+                }
+
+                final data = controller.detailsPost.value.data;
+                final BoatItem boatToShow;
+                if (data != null) {
+                  boatToShow = BoatItem.fromJson(data.toJson());
+                } else {
+                  // Fallback
+                  boatToShow = _demoBoat;
+                }
+
+                return BoatListingCard(
+                  boat: boatToShow,
+                  onCommentTap: () =>
+                      AppRouter.route.pushNamed(RoutePath.commentsScreen, extra: boatToShow.id),
+                );
+              }),
             ),
           ),
 
