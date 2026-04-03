@@ -25,6 +25,7 @@ class AddPostScreen extends StatefulWidget {
 class _AddPostScreenState extends State<AddPostScreen> {
   final AddPostController _controller = Get.find<AddPostController>();
   final navController = Get.find<NavigationControllerMain>();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +33,9 @@ class _AddPostScreenState extends State<AddPostScreen> {
       backgroundColor: AppColors.white,
       appBar: AppBar(title: Text('Create Post'.tr)),
       body: SafeArea(
-        child: Column(
+        child: Form(
+          key: _formKey,
+          child: Column(
           children: [
             Expanded(
               child: SingleChildScrollView(
@@ -249,19 +252,22 @@ class _AddPostScreenState extends State<AddPostScreen> {
             ),
 
             // ─── Share Button ─────────────────────────────────────────────
-            Padding(
+            Padding(      
               padding: EdgeInsets.fromLTRB(16.w, 0, 16.w, 16.h),
-              child: CustomButton(
+              child: Obx(() => CustomButton(
+                isLoading: _controller.addPostLoading.value,
                 text: 'Share',
                 onTap: () {
-                  navController.selectedNavIndex.value = 0;
+                  if (_formKey.currentState!.validate()) {
+                    _controller.addPost();
+                  }
                 },
               ),
-            ),
+          )),
           ],
         ),
       ),
-    );
+    ));
   }
 
   Widget _buildInlineField({required String label, required Widget child}) {

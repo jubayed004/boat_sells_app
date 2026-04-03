@@ -21,6 +21,8 @@ static String savePost({required String id}) => '$base/saved/$id';
 static String sharePost({required String id}) => '$base/posts/$id/share';
 static String likePost({required String id}) => '$base/posts/$id/like';
 static String getDetailsPost({required String postId}) => '$base/posts/$postId';
+//add post
+static String addPost() => '$base/posts';
 
 //notification
 static String getNotifications({required int page}) => '$base/notifications?page=$page&limit=10';

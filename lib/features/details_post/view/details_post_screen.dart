@@ -10,6 +10,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 import 'package:boat_sells_app/features/details_post/controller/details_post_controller.dart';
+import 'package:boat_sells_app/features/details_post/widgets/overview_shimmer.dart';
 
 class DetailsPostScreen extends StatefulWidget {
   final String? postId;
@@ -102,20 +103,27 @@ void dispose() {
           ),
 
           // ── Overview Grid ──
-          SliverPadding(
-            padding: EdgeInsets.symmetric(horizontal: 20.w),
-            sliver: SliverGrid.builder(
-              itemCount: _overviewSpecs.length,
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                mainAxisSpacing: 24.h,
-                crossAxisSpacing: 16.w,
-                childAspectRatio:
-                    3.5, // Controls the height of grid items relative to width
-              ),
-              itemBuilder: (context, index) {
-                final spec = _overviewSpecs[index];
-                return Row(
+          Obx(() {
+            final specs = _currentOverviewSpecs;
+            
+            if (controller.detailsPostLoading.value || specs.isEmpty) {
+              return const OverviewShimmer();
+            }
+
+            return SliverPadding(
+              padding: EdgeInsets.symmetric(horizontal: 20.w),
+              sliver: SliverGrid.builder(
+                itemCount: specs.length,
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  mainAxisSpacing: 24.h,
+                  crossAxisSpacing: 16.w,
+                  childAspectRatio:
+                      3.5, // Controls the height of grid items relative to width
+                ),
+                itemBuilder: (context, index) {
+                  final spec = specs[index];
+                  return Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Icon(spec.icon, color: AppColors.primaryBlue, size: 28.sp),
@@ -151,8 +159,9 @@ void dispose() {
                   ],
                 );
               },
-            ),
-          ),
+              ),
+            );
+          }),
 
           // ── Bottom Padding ──
           SliverToBoxAdapter(child: SizedBox(height: 24.h)),
@@ -225,21 +234,68 @@ void dispose() {
     
   }
 
-  // --- Dummy Overview Data reflecting the screenshot ---
-  final List<_OverviewItem> _overviewSpecs = const [
-    _OverviewItem(Icons.settings_outlined, 'Engine Model', 'CF02X'),
-    _OverviewItem(Icons.public, 'Total Power', '2020'), // World/analytics icon
-    _OverviewItem(Icons.timer_outlined, 'Engine(S) Hours', '120'),
-    _OverviewItem(Icons.sailing_rounded, 'Class', 'Motor Yacht'),
-    _OverviewItem(Icons.straighten_rounded, 'Length', '2020'),
-    _OverviewItem(Icons.calendar_month_outlined, 'Year', '2020'),
-    _OverviewItem(
-      Icons.directions_boat_filled_outlined,
-      'Model',
-      'Motor Yachtsdel',
-    ),
-    _OverviewItem(Icons.groups_outlined, 'Capacity', '75'),
-  ];
+  List<_OverviewItem> get _currentOverviewSpecs {
+    final data = controller.detailsPost.value.data;
+    if (data == null) return [];
+
+    final boatInfo = data.boatInfo;
+    final boatAdditional = data.boatAdditional;
+    final engine = data.boatEngine?.engines?.isNotEmpty == true 
+        ? data.boatEngine!.engines!.first 
+        : null;
+
+    int totalHp = 0;
+    if (data.boatEngine?.engines != null) {
+      for (var e in data.boatEngine!.engines!) {
+        totalHp += e.horsePower ?? 0;
+      }
+    }
+
+    return [
+      _OverviewItem(
+        Icons.settings_outlined, 
+        'Engine Model', 
+        engine?.engineModel ?? boatAdditional?.engineModel ?? 'N/A'
+      ),
+      _OverviewItem(
+        Icons.public, 
+        'Total Power', 
+        totalHp > 0 ? '$totalHp' : 'N/A'
+      ),
+      _OverviewItem(
+        Icons.timer_outlined, 
+        'Engine(S) Hours', 
+        engine?.engineHours?.toString() ?? 'N/A'
+      ),
+      _OverviewItem(
+        Icons.sailing_rounded, 
+        'Class', 
+        boatInfo?.category ?? boatInfo?.boatType ?? 'N/A'
+      ),
+      _OverviewItem(
+        Icons.straighten_rounded, 
+        'Length', 
+        boatInfo?.length?.toString() ?? 'N/A'
+      ),
+      _OverviewItem(
+        Icons.calendar_month_outlined, 
+        'Year', 
+        boatInfo?.year?.toString() ?? 'N/A'
+      ),
+      _OverviewItem(
+        Icons.directions_boat_filled_outlined, 
+        'Model', 
+        boatInfo?.model ?? 'N/A'
+      ),
+      _OverviewItem(
+        Icons.groups_outlined, 
+        'Capacity', 
+        boatInfo?.peopleCapacity?.toString() ?? 'N/A'
+      ),
+    ];
+  }
+
+
 }
 
 class _OverviewItem {

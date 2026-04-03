@@ -42,6 +42,13 @@ class ImagePickerRow extends StatelessWidget {
           ),
           // Selected images
           ...List.generate(images.length, (index) {
+            final file = images[index];
+            final pathLower = file.path.toLowerCase();
+            final isVideo = pathLower.endsWith('.mp4') || 
+                pathLower.endsWith('.mov') || 
+                pathLower.endsWith('.avi') || 
+                pathLower.endsWith('.mkv');
+
             return Stack(
               children: [
                 Container(
@@ -50,11 +57,21 @@ class ImagePickerRow extends StatelessWidget {
                   margin: EdgeInsets.only(right: 10.w),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(8.r),
-                    image: DecorationImage(
-                      image: FileImage(images[index]),
+                     color: isVideo ? AppColors.headingText.withAlpha(25) : null,
+                    image: isVideo ? null : DecorationImage(
+                      image: FileImage(file),
                       fit: BoxFit.cover,
                     ),
                   ),
+                  child: isVideo 
+                      ? Center(
+                          child: Icon(
+                            Icons.play_circle_outline, 
+                            size: 36.sp, 
+                            color: AppColors.headingText.withAlpha(150),
+                          ),
+                        )
+                      : null,
                 ),
                 Positioned(
                   top: 4.h,
