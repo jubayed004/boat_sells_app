@@ -259,6 +259,9 @@ class _AddPostScreenState extends State<AddPostScreen> {
                 text: 'Share',
                 onTap: () {
                   if (_formKey.currentState!.validate()) {
+
+
+                    
                     _controller.addPost();
                   }
                 },
