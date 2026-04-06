@@ -198,50 +198,49 @@ class AddPostController extends GetxController {
   final addPostLoading = false.obs;
   bool loadingAddPostMethod(bool status) => addPostLoading.value = status;
   Future<void> addPost() async {
-    final body = {
-      "title": titleController.text,
-      "location": locationController.text,
-      "price": priceController.text,
-      "capacity": capacityController.text,
-      "boat_info": {
-        "boatType": selectedBoatType.value,
-        "category": selectedCategory.value,
-        "hullMaterial": hullMaterialController.text,
-        "length": int.tryParse(lengthController.text) ?? 0,
-        "year": int.tryParse(yearController.text) ?? 0,
-        "model": modelController.text,
-        "peopleCapacity": int.tryParse(capacityController.text) ?? 0,
-        "description": descriptionController.text,
-      },
-      "boat_engine_info": {
-       "engines": engines.value.map((e) => {
-        "engineType": e.typeController.text,
-        "fuelType": e.fuelController.text,
-        "engineMake": e.makeController.text,
-        "engineModel": e.modelController.text,
-        "horsePower": int.tryParse(e.powerController.text) ?? 0,
-        "engineHours": int.tryParse(e.hoursController.text) ?? 0,
-       }).toList()
-      },
-      "boat_additional_info": {
-        "manufacturer": manufacturerController.text,
-        "engineModel": addInfoEngineModelController.text,
-        "fuelCapacity": int.tryParse(fuelCapacityController.text) ?? 0,
-        "freshWaterTank": int.tryParse(freshWaterTankController.text) ?? 0,
-        "additionalEquipment": additionalEquipmentController.text,
-        "beam": int.tryParse(beamController.text) ?? 0,
-        "bridgeClearance": int.tryParse(bridgeClearanceController.text) ?? 0,
-        "cabin": int.tryParse(cabinController.text) ?? 0,
-        "cruiseSpeed": int.tryParse(cruiseSpeedController.text) ?? 0,
-        "deckHullEquipment": deskHullEquipmentController.text,
-        "draft": int.tryParse(draftController.text) ?? 0,
-        "galleyEquipment": galleyEquipmentController.text,
-        "loa": int.tryParse(loaController.text) ?? 0,
-        "maxSpeed": int.tryParse(maxSpeedController.text) ?? 0,
-        "mechanicalEquipment": mechanicalEquipmentController.text,
-        "navigationSystem": navigationSystemController.text,
-      }
-    };  
+ final body = {
+  "title": titleController.text,
+  "location": locationController.text,
+  "price": int.tryParse(priceController.text) ?? 0, // ❌ parse to number
+  "boat_info": {
+    "boatType": selectedBoatType.value,
+    "category": selectedCategory.value,
+    "hullMaterial": hullMaterialController.text,
+    "length": int.tryParse(lengthController.text) ?? 0,
+    "year": int.tryParse(yearController.text) ?? 0,
+    "model": modelController.text,
+    "peopleCapacity": int.tryParse(capacityController.text) ?? 0, // ✅ use this inside boat_info
+    "description": descriptionController.text,
+  },
+  "boat_engine_info": {
+    "engines": engines.value.map((e) => {
+      "engineType": e.typeController.text,
+      "fuelType": e.fuelController.text,
+      "engineMake": e.makeController.text,
+      "engineModel": e.modelController.text,
+      "horsePower": int.tryParse(e.powerController.text) ?? 0,
+      "engineHours": int.tryParse(e.hoursController.text) ?? 0,
+    }).toList()
+  },
+  "boat_additional_info": {
+    "manufacturer": manufacturerController.text,
+    "engineModel": addInfoEngineModelController.text,
+    "fuelCapacity": int.tryParse(fuelCapacityController.text) ?? 0,
+    "freshWaterTank": int.tryParse(freshWaterTankController.text) ?? 0,
+    "additionalEquipment": additionalEquipmentController.text,
+    "beam": int.tryParse(beamController.text) ?? 0,
+    "bridgeClearance": int.tryParse(bridgeClearanceController.text) ?? 0,
+    "cabin": int.tryParse(cabinController.text) ?? 0,
+    "cruiseSpeed": int.tryParse(cruiseSpeedController.text) ?? 0,
+    "deckHullEquipment": deskHullEquipmentController.text,
+    "draft": int.tryParse(draftController.text) ?? 0,
+    "galleyEquipment": galleyEquipmentController.text,
+    "loa": int.tryParse(loaController.text) ?? 0,
+    "maxSpeed": int.tryParse(maxSpeedController.text) ?? 0,
+    "mechanicalEquipment": mechanicalEquipmentController.text,
+    "navigationSystem": navigationSystemController.text,
+  }
+};
     loadingAddPostMethod(true);
     final token = await localService.getToken();
     try {

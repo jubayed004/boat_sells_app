@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:boat_sells_app/core/router/route_path.dart';
 import 'package:boat_sells_app/core/router/routes.dart';
@@ -158,7 +159,14 @@ class ApiClient {
     try {
       final headers = await _headers(token: token, isJson: false);
       final formMap = <String, dynamic>{};
-      fields?.forEach((k, v) => formMap[k] = v);
+      fields?.forEach((k, v) {
+        // Nested Maps and Lists must be JSON-encoded for multipart form data
+        if (v is Map || v is List) {
+          formMap[k] = jsonEncode(v);
+        } else {
+          formMap[k] = v;
+        }
+      });
 
       for (final file in files) {
         final mimeType =
