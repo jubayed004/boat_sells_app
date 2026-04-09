@@ -69,7 +69,7 @@ class _BoatListingCardState extends State<BoatListingCard> {
     final currentMedia = widget.boat.media;
     if (currentMedia == null || currentMedia.isEmpty) return;
     final item = currentMedia[initialIndex];
-    if (item.type == 'video') return; // don't open dialog for video
+    if (item.type == 'video') return; 
     showDialog(
       context: context,
       barrierColor: Colors.black87,
@@ -87,7 +87,8 @@ class _BoatListingCardState extends State<BoatListingCard> {
   @override
   Widget build(BuildContext context) {
     final mediaItems = widget.boat.media ?? [];
-
+print("widget.boat.user?.name ${widget.boat.user?.name}");
+ print("widget.boat.displayTitle ${widget.boat.displayTitle}");
     return Container(
       margin: EdgeInsets.fromLTRB(14.w, 0, 14.w, 16.h),
       decoration: BoxDecoration(
@@ -108,6 +109,7 @@ class _BoatListingCardState extends State<BoatListingCard> {
                   height: 210.h,
                   child: mediaItems.isEmpty
                       ? Container(
+                          width: double.infinity,
                           color: AppColors.borderColor,
                           child: Icon(Icons.directions_boat, size: 48.sp, color: AppColors.hintTextColor),
                         )
@@ -138,6 +140,7 @@ class _BoatListingCardState extends State<BoatListingCard> {
                   top: 10.h,
                   left: 10.w,
                   child: _SellerChip(
+                    
                     name: widget.boat.user?.name ?? '',
                     avatarUrl: widget.boat.user?.avatarUrl ?? '',
                     imageOnTap: widget.imageOnTap,
@@ -231,17 +234,18 @@ class _BoatListingCardState extends State<BoatListingCard> {
                     count: (widget.boat.likesCount ?? 0) + (isLiked ? 1 : 0) - ((widget.boat.isLiked ?? false) ? 1 : 0),
                     color: isLiked
                         ? AppColors.favoriteRed
+                      
                         : AppColors.subHeadingText,
                     onTap: () {
-                      // Optimistic UI toggle
+                  
                       _isLiked.value = !_isLiked.value;
-                      // Call API
+                 
                       _commonController.likePost(postId: widget.boat.id ?? '');
                     },
                   ),
                 ),
                 SizedBox(width: 18.w),
-                // Comment
+            
                 _IconCountButton(
                   icon: Icons.chat_bubble_outline_rounded,
                   count: widget.boat.commentsCount ?? 0,
@@ -249,30 +253,30 @@ class _BoatListingCardState extends State<BoatListingCard> {
                   onTap: () => widget.onCommentTap?.call(),
                 ),
                 SizedBox(width: 18.w),
-                // Share
+             
                 _IconCountButton(
                   icon: Icons.send_rounded,
                   count: widget.boat.shareCount ?? 0,
                   color: AppColors.subHeadingText,
                   onTap: () {
-                    // Call share API to increment the count
+                    
                     _commonController.sharePost(postId: widget.boat.id ?? '');
-                    // Then call the parent's share action (open share sheet)
+                    
                     widget.onShareTap?.call();
                   },
                 ),
                 const Spacer(),
-                // Bookmark
+
                 ValueListenableBuilder<bool>(
                   valueListenable: _isSaved,
                   builder: (context, isSaved, _) => GestureDetector(
                     onTap: () {
                       final willBeSaved = !_isSaved.value;
-                      // Optimistic UI toggle
+                    
                       _isSaved.value = willBeSaved;
-                      // Call save API
+                
                       _commonController.savedPost(postId: widget.boat.id ?? '');
-                      // Notify parent when user removes the bookmark
+              
                       if (!willBeSaved) {
                         widget.onUnsaved?.call();
                       }
@@ -334,16 +338,14 @@ class _VideoPlayerItemState extends State<_VideoPlayerItem> {
     _initVideo();
   }
 
-  /// Downloads video to local cache on first play;
-  /// subsequent plays use the cached file — no network hit.
+
   Future<void> _initVideo() async {
     try {
-      // DefaultCacheManager caches the file on disk automatically.
-      // cached_network_image already uses this same cache manager.
+
       final file = await DefaultCacheManager().getSingleFile(widget.videoUrl);
       final ctrl = VideoPlayerController.file(file);
       await ctrl.initialize();
-      if (mounted) setState(() => _ctrl = ctrl); // only ONE setState, just to attach controller
+      if (mounted) setState(() => _ctrl = ctrl); 
     } catch (e) {
       debugPrint('Video cache/init error: $e');
     }
@@ -357,7 +359,7 @@ class _VideoPlayerItemState extends State<_VideoPlayerItem> {
 
   @override
   Widget build(BuildContext context) {
-    // ── Still fetching/caching file ──
+
     if (_ctrl == null) {
       return Container(
         color: Colors.black,
@@ -378,7 +380,7 @@ class _VideoPlayerItemState extends State<_VideoPlayerItem> {
       onTap: () {
         if (!_ctrl!.value.isInitialized) return;
         _ctrl!.value.isPlaying ? _ctrl!.pause() : _ctrl!.play();
-        // No setState — ValueListenableBuilder handles all UI updates
+      
       },
       child: Container(
         color: Colors.black,
@@ -388,17 +390,16 @@ class _VideoPlayerItemState extends State<_VideoPlayerItem> {
             return Stack(
               alignment: Alignment.center,
               children: [
-                // ── Video ──
+        
                 AspectRatio(
                   aspectRatio: value.aspectRatio,
                   child: VideoPlayer(_ctrl!),
                 ),
 
-                // ── Buffering spinner ──
+              
                 if (value.isBuffering)
                   const CircularProgressIndicator(color: Colors.white, strokeWidth: 2),
 
-                // ── Play/pause overlay ──
                 if (!value.isBuffering)
                   AnimatedOpacity(
                     opacity: value.isPlaying ? 0.0 : 1.0,
@@ -418,7 +419,7 @@ class _VideoPlayerItemState extends State<_VideoPlayerItem> {
                     ),
                   ),
 
-                // ── VIDEO badge ──
+
                 Positioned(
                   top: 8,
                   right: 8,
@@ -491,19 +492,19 @@ class _ImageCarouselDialogState extends State<_ImageCarouselDialog> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              // ── Header: dots + close ──
+       
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 14.w, vertical: 12.h),
                 child: Row(
                   children: [
-                    // dots
+            
                     Expanded(
                       child: _CarouselDots(
                         total: widget.images.length,
                         active: _current,
                       ),
                     ),
-                    // close button
+           
                     GestureDetector(
                       onTap: () => Navigator.of(context).pop(),
                       child: Container(
@@ -523,7 +524,7 @@ class _ImageCarouselDialogState extends State<_ImageCarouselDialog> {
                 ),
               ),
 
-              // ── PageView of images ──
+       
               SizedBox(
                 height: 320.h,
                 child: PageView.builder(
@@ -545,7 +546,7 @@ class _ImageCarouselDialogState extends State<_ImageCarouselDialog> {
                 ),
               ),
 
-              // ── Image counter label ──
+        
               Padding(
                 padding: EdgeInsets.only(top: 10.h, bottom: 14.h),
                 child: Text(
@@ -612,10 +613,17 @@ class _SellerChipState extends State<_SellerChip> {
             onTap: widget.imageOnTap,
             child: Row(
               children: [
-                CircleAvatar(
-                  radius: 13.r,
+                CustomNetworkImage(
+                  imageUrl: widget.avatarUrl,
+                  height: 26.r,
+                  width: 26.r,
+                  boxShape: BoxShape.circle,
                   backgroundColor: const Color(0xFFE8EFF4),
-                  backgroundImage: NetworkImage(widget.avatarUrl),
+                  errorWidget: Icon(
+                    Icons.person,
+                    color: AppColors.subHeadingText,
+                    size: 13.sp,
+                  ),
                 ),
                 SizedBox(width: 6.w),
                 Text(

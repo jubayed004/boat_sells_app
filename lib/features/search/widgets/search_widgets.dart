@@ -3,6 +3,9 @@ import 'package:boat_sells_app/utils/color/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+// ──────────────────────────────────────────────────────────────────────────────
+// Search photo grid item (kept for potential photo-grid view, currently unused)
+// ──────────────────────────────────────────────────────────────────────────────
 class SearchPhotoGridItem extends StatelessWidget {
   final String imageUrl;
   final VoidCallback? onTap;
@@ -25,8 +28,33 @@ class SearchPhotoGridItem extends StatelessWidget {
   }
 }
 
+// ──────────────────────────────────────────────────────────────────────────────
+// Filter Bottom Sheet
+// ──────────────────────────────────────────────────────────────────────────────
+
+/// Called when the user taps "Apply Filter".
+/// [boatType]  – selected type ('All' means no filter)
+/// [minPrice]  – min price as string (empty = no filter)
+/// [maxPrice]  – max price as string (empty = no filter)
+typedef OnFilterApplied = void Function({
+  required String boatType,
+  required String minPrice,
+  required String maxPrice,
+});
+
 class SearchFilterBottomSheet extends StatefulWidget {
-  const SearchFilterBottomSheet({super.key});
+  final String initialBoatType;
+  final double initialMinPrice;
+  final double initialMaxPrice;
+  final OnFilterApplied onApply;
+
+  const SearchFilterBottomSheet({
+    super.key,
+    this.initialBoatType = 'All',
+    this.initialMinPrice = 0,
+    this.initialMaxPrice = 500000,
+    required this.onApply,
+  });
 
   @override
   State<SearchFilterBottomSheet> createState() =>
@@ -34,8 +62,8 @@ class SearchFilterBottomSheet extends StatefulWidget {
 }
 
 class _SearchFilterBottomSheetState extends State<SearchFilterBottomSheet> {
-  String _selectedBoatType = 'All';
-  RangeValues _priceRange = const RangeValues(0, 500000);
+  late String _selectedBoatType;
+  late RangeValues _priceRange;
 
   final List<String> _boatTypes = [
     'All',
@@ -44,7 +72,42 @@ class _SearchFilterBottomSheetState extends State<SearchFilterBottomSheet> {
     'Yacht',
     'Ferry',
     'Speedboat',
+    'Sail', 'Motor', 'Speed', 'Fishing', 'Yacht'
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedBoatType = widget.initialBoatType;
+    _priceRange = RangeValues(widget.initialMinPrice, widget.initialMaxPrice);
+  }
+
+  String _formatPrice(double value) {
+    return value
+        .toInt()
+        .toString()
+        .replaceAllMapped(RegExp(r'(\d)(?=(\d{3})+$)'), (m) => '${m[1]},');
+  }
+
+  void _applyFilter() {
+    final isAllType = _selectedBoatType == 'All';
+    final isFullRange =
+        _priceRange.start == 0 && _priceRange.end == 500000;
+
+    widget.onApply(
+      boatType: isAllType ? '' : _selectedBoatType,
+      minPrice: isFullRange ? '' : _priceRange.start.toInt().toString(),
+      maxPrice: isFullRange ? '' : _priceRange.end.toInt().toString(),
+    );
+    Navigator.pop(context);
+  }
+
+  void _resetFilter() {
+    setState(() {
+      _selectedBoatType = 'All';
+      _priceRange = const RangeValues(0, 500000);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -58,7 +121,7 @@ class _SearchFilterBottomSheetState extends State<SearchFilterBottomSheet> {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Handle bar
+          // ── Handle bar ──────────────────────────────────────────────────
           Center(
             child: Container(
               width: 40.w,
@@ -71,18 +134,34 @@ class _SearchFilterBottomSheetState extends State<SearchFilterBottomSheet> {
           ),
           SizedBox(height: 20.h),
 
-          // Title
-          Text(
-            'Filter',
-            style: TextStyle(
-              fontSize: 18.sp,
-              fontWeight: FontWeight.w700,
-              color: AppColors.headingText,
-            ),
+          // ── Header ──────────────────────────────────────────────────────
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Filter',
+                style: TextStyle(
+                  fontSize: 18.sp,
+                  fontWeight: FontWeight.w700,
+                  color: AppColors.headingText,
+                ),
+              ),
+              GestureDetector(
+                onTap: _resetFilter,
+                child: Text(
+                  'Reset',
+                  style: TextStyle(
+                    fontSize: 13.sp,
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.primaryBlue,
+                  ),
+                ),
+              ),
+            ],
           ),
           SizedBox(height: 16.h),
 
-          // Boat Type
+          // ── Boat Type ───────────────────────────────────────────────────
           Text(
             'Boat Type',
             style: TextStyle(
@@ -132,7 +211,7 @@ class _SearchFilterBottomSheetState extends State<SearchFilterBottomSheet> {
           ),
           SizedBox(height: 20.h),
 
-          // Price Range
+          // ── Price Range ─────────────────────────────────────────────────
           Text(
             'Price Range',
             style: TextStyle(
@@ -146,14 +225,14 @@ class _SearchFilterBottomSheetState extends State<SearchFilterBottomSheet> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                '\$${_priceRange.start.toInt().toString().replaceAllMapped(RegExp(r'(\d)(?=(\d{3})+$)'), (m) => '${m[1]},')}',
+                '\$${_formatPrice(_priceRange.start)}',
                 style: TextStyle(
                   fontSize: 12.sp,
                   color: AppColors.subHeadingText,
                 ),
               ),
               Text(
-                '\$${_priceRange.end.toInt().toString().replaceAllMapped(RegExp(r'(\d)(?=(\d{3})+$)'), (m) => '${m[1]},')}',
+                '\$${_formatPrice(_priceRange.end)}',
                 style: TextStyle(
                   fontSize: 12.sp,
                   color: AppColors.subHeadingText,
@@ -181,12 +260,12 @@ class _SearchFilterBottomSheetState extends State<SearchFilterBottomSheet> {
           ),
           SizedBox(height: 20.h),
 
-          // Apply button
+          // ── Apply button ────────────────────────────────────────────────
           SizedBox(
             width: double.infinity,
             height: 50.h,
             child: ElevatedButton(
-              onPressed: () => Navigator.pop(context),
+              onPressed: _applyFilter,
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppColors.primaryBlue,
                 shape: RoundedRectangleBorder(

@@ -158,13 +158,14 @@ class ApiClient {
 
     try {
       final headers = await _headers(token: token, isJson: false);
-      final formMap = <String, dynamic>{};
+      final formData = FormData();
+
       fields?.forEach((k, v) {
         // Nested Maps and Lists must be JSON-encoded for multipart form data
         if (v is Map || v is List) {
-          formMap[k] = jsonEncode(v);
+          formData.fields.add(MapEntry(k, jsonEncode(v)));
         } else {
-          formMap[k] = v;
+          formData.fields.add(MapEntry(k, v.toString()));
         }
       });
 
@@ -172,14 +173,13 @@ class ApiClient {
         final mimeType =
             lookupMimeType(file.file.path) ?? 'application/octet-stream';
         final split = mimeType.split('/');
-        formMap[file.fieldKey] = await MultipartFile.fromFile(
+        final multipartFile = await MultipartFile.fromFile(
           file.file.path,
           filename: file.file.uri.pathSegments.last,
           contentType: MediaType(split[0], split[1]),
         );
+        formData.files.add(MapEntry(file.fieldKey, multipartFile));
       }
-
-      final formData = FormData.fromMap(formMap);
       final response = await dio.request(
         url,
         data: formData,

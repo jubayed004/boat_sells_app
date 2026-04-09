@@ -141,6 +141,19 @@ class TextFieldValidator {
     };
   }
 
+  static String? Function(String?) year({String label = "Year", int minYear = 1900}) {
+    return (value) {
+      final trimmed = value?.trim() ?? '';
+      if (trimmed.isEmpty) return "$label is required";
+
+      final year = int.tryParse(trimmed);
+      if (year == null) return "Enter a valid year";
+      if (year < minYear) return "$label must be >= $minYear";
+
+      return null;
+    };
+  }
+
   static String? Function(String?) address() {
     return (value) {
       final trimmed = value?.trim() ?? '';

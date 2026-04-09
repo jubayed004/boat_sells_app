@@ -50,6 +50,43 @@ class _ProfileScreenState extends State<ProfileScreen> {
     controller.getProfile();
   }
 
+  /// The backend's /posts/me endpoint returns empty strings for the
+  /// embedded user object. Patch them with the current profile data.
+  BoatItem _patchBoatUser(BoatItem boat) {
+    final profileData = controller.profile.value.data;
+    if (profileData == null) return boat;
+
+    final currentUser = boat.user;
+    final needsPatch =
+        (currentUser?.name?.isEmpty ?? true) ||
+        (currentUser?.avatarUrl?.isEmpty ?? true);
+
+    if (!needsPatch) return boat;
+
+    return BoatItem(
+      id: boat.id,
+      user: User(
+        id: currentUser?.id ?? profileData.id,
+        name: currentUser?.name?.isNotEmpty == true
+            ? currentUser!.name
+            : profileData.name,
+        avatarUrl: currentUser?.avatarUrl?.isNotEmpty == true
+            ? currentUser!.avatarUrl
+            : profileData.avatarUrl,
+      ),
+      location: boat.location,
+      price: boat.price,
+      displayTitle: boat.displayTitle,
+      media: boat.media,
+      likesCount: boat.likesCount,
+      commentsCount: boat.commentsCount,
+      shareCount: boat.shareCount,
+      isLiked: boat.isLiked,
+      isSaved: boat.isSaved,
+      createdAt: boat.createdAt,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -234,21 +271,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
             PagedSliverList<int, BoatItem>(
               pagingController: controller.pagingController,
               builderDelegate: PagedChildBuilderDelegate<BoatItem>(
-                itemBuilder: (context, boat, index) => BoatListingCard(
-                  boat: boat,
-                  onCardTap: () =>
-                      AppRouter.route.pushNamed(RoutePath.detailsPostScreen),
-                  onCommentTap: () =>
-                      AppRouter.route.pushNamed(RoutePath.commentsScreen, extra: boat.id),
-                  onShareTap: () {
-                    SharePlus.instance.share(
-                      ShareParams(
-                        text:
-                            'Check out this boat: ${boat.displayTitle} for \$${boat.price} on Boat Sells App!',
-                      ),
-                    );
-                  },
-                ),
+                itemBuilder: (context, boat, index) {
+                  final patchedBoat = _patchBoatUser(boat);
+                  return BoatListingCard(
+                    boat: patchedBoat,
+                    onCardTap: () =>
+                        AppRouter.route.pushNamed(RoutePath.detailsPostScreen),
+                    onCommentTap: () =>
+                        AppRouter.route.pushNamed(RoutePath.commentsScreen, extra: boat.id),
+                    onShareTap: () {
+                      SharePlus.instance.share(
+                        ShareParams(
+                          text:
+                              'Check out this boat: ${boat.displayTitle} for \$${boat.price} on Boat Sells App!',
+                        ),
+                      );
+                    },
+                  );
+                },
                 firstPageProgressIndicatorBuilder: (_) => Column(
                   children: List.generate(
                     3,

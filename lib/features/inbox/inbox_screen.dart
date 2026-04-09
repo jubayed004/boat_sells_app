@@ -1,5 +1,6 @@
 import 'package:boat_sells_app/features/inbox/controller/inbox_controller.dart';
 import 'package:boat_sells_app/features/inbox/widgets/chat_bubble.dart';
+import 'package:boat_sells_app/share/widgets/network_image/custom_network_image.dart';
 import 'package:boat_sells_app/utils/color/app_colors.dart';
 import 'package:boat_sells_app/utils/extension/base_extension.dart';
 import 'package:flutter/material.dart';
@@ -35,10 +36,17 @@ class _InboxScreenState extends State<InboxScreen> {
         titleSpacing: 0,
         title: Row(
           children: [
-            CircleAvatar(
-              radius: 18.r,
+            CustomNetworkImage(
+              imageUrl: controller.avatarUrl,
+              height: 36.r,
+              width: 36.r,
+              boxShape: BoxShape.circle,
               backgroundColor: AppColors.borderColor,
-              backgroundImage: NetworkImage(controller.avatarUrl),
+              errorWidget: Icon(
+                Icons.person,
+                color: AppColors.subHeadingText,
+                size: 18.sp,
+              ),
             ),
             SizedBox(width: 10.w),
             Text(

@@ -1,12 +1,13 @@
 import 'package:boat_sells_app/features/add_post/widgets/engine_info_section.dart';
 import 'package:boat_sells_app/share/widgets/align/custom_align_text.dart';
+import 'package:get/get.dart';
 import 'package:boat_sells_app/utils/color/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 
 class EnginesExpandedSection extends StatelessWidget {
-  final ValueNotifier<List<EngineInfoModel>> engines;
+  final Rx<List<EngineInfoModel>> engines;
   final VoidCallback onToggle;
   final VoidCallback onAddEngine;
   final void Function(int index) onRemoveEngine;
@@ -45,21 +46,19 @@ class EnginesExpandedSection extends StatelessWidget {
           ),
         ),
         Gap(16.h),
-        ValueListenableBuilder<List<EngineInfoModel>>(
-          valueListenable: engines,
-          builder: (context, engineList, child) {
-            return Column(
-              children: [
-                for (int i = 0; i < engineList.length; i++)
-                  EngineInfoSection(
-                    index: i,
-                    engine: engineList[i],
-                    onRemove: () => onRemoveEngine(i),
-                  ),
-              ],
-            );
-          },
-        ),
+        Obx(() {
+          final engineList = engines.value;
+          return Column(
+            children: [
+              for (int i = 0; i < engineList.length; i++)
+                EngineInfoSection(
+                  index: i,
+                  engine: engineList[i],
+                  onRemove: () => onRemoveEngine(i),
+                ),
+            ],
+          );
+        }),
         Align(
           alignment: Alignment.centerRight,
           child: GestureDetector(

@@ -1,4 +1,5 @@
 import 'package:boat_sells_app/features/followers/controller/followers_controller.dart';
+import 'package:boat_sells_app/share/widgets/network_image/custom_network_image.dart';
 import 'package:boat_sells_app/features/followers/model/follower_model.dart';
 import 'package:boat_sells_app/utils/color/app_colors.dart';
 import 'package:flutter/material.dart';
@@ -47,19 +48,17 @@ class UserRow extends StatelessWidget {
       child: Row(
         children: [
           // Avatar
-          CircleAvatar(
-            radius: 26.r,
+          CustomNetworkImage(
+            imageUrl: item.avatarUrl ?? '',
+            height: 52.r,
+            width: 52.r,
+            boxShape: BoxShape.circle,
             backgroundColor: AppColors.iconBg,
-            backgroundImage: item.avatarUrl != null
-                ? NetworkImage(item.avatarUrl!)
-                : null,
-            child: item.avatarUrl == null
-                ? Icon(
-                    Icons.person,
-                    color: AppColors.subHeadingText,
-                    size: 26.sp,
-                  )
-                : null,
+            errorWidget: Icon(
+              Icons.person,
+              color: AppColors.subHeadingText,
+              size: 26.sp,
+            ),
           ),
           Gap(12.w),
 

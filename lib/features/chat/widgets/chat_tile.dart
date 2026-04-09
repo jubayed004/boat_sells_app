@@ -1,4 +1,5 @@
 import 'package:boat_sells_app/features/chat/model/chat_model.dart';
+import 'package:boat_sells_app/share/widgets/network_image/custom_network_image.dart';
 import 'package:boat_sells_app/utils/color/app_colors.dart';
 import 'package:boat_sells_app/utils/extension/base_extension.dart';
 import 'package:flutter/material.dart';
@@ -20,10 +21,17 @@ class ChatTile extends StatelessWidget {
         child: Row(
           children: [
             // Avatar
-            CircleAvatar(
-              radius: 26.r,
+            CustomNetworkImage(
+              imageUrl: chat.avatarUrl,
+              height: 52.r,
+              width: 52.r,
+              boxShape: BoxShape.circle,
               backgroundColor: AppColors.borderColor,
-              backgroundImage: NetworkImage(chat.avatarUrl),
+              errorWidget: Icon(
+                Icons.person,
+                color: AppColors.subHeadingText,
+                size: 26.sp,
+              ),
             ),
             SizedBox(width: 14.w),
 

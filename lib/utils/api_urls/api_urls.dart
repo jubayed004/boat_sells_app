@@ -24,6 +24,15 @@ static String getDetailsPost({required String postId}) => '$base/posts/$postId';
 //add post
 static String addPost() => '$base/posts';
 
+//Search
+static String search({required int page,required String maxPrice,required String minPrice,required String boatType,required String search}) {
+  String url = '$base/posts/feed?page=$page&limit=10';
+  if (minPrice.isNotEmpty) url += '&minPrice=$minPrice';
+  if (maxPrice.isNotEmpty) url += '&maxPrice=$maxPrice';
+  if (boatType.isNotEmpty && boatType != 'All') url += '&boatType=$boatType';
+  if (search.isNotEmpty) url += '&search=$search';
+  return url;
+}
 //notification
 static String getNotifications({required int page}) => '$base/notifications?page=$page&limit=10';
 // Profile Screen

@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 
 import 'package:boat_sells_app/features/notification/model/notification_model.dart';
+import 'package:boat_sells_app/share/widgets/network_image/custom_network_image.dart';
 
 class NotificationTile extends StatelessWidget {
   final NotificationItem item;
@@ -30,19 +31,17 @@ class NotificationTile extends StatelessWidget {
       child: Row(
         children: [
           // Avatar
-          CircleAvatar(
-            radius: 24.r,
+          CustomNetworkImage(
+            imageUrl: item.user?.avatarUrl ?? '',
+            height: 48.r,
+            width: 48.r,
+            boxShape: BoxShape.circle,
             backgroundColor: AppColors.iconBg,
-            backgroundImage: item.user?.avatarUrl != null
-                ? NetworkImage(item.user!.avatarUrl!)
-                : null,
-            child: item.user?.avatarUrl == null
-                ? Icon(
-                    Icons.person,
-                    color: AppColors.subHeadingText,
-                    size: 24.sp,
-                  )
-                : null,
+            errorWidget: Icon(
+              Icons.person,
+              color: AppColors.subHeadingText,
+              size: 24.sp,
+            ),
           ),
           Gap(12.w),
 

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:boat_sells_app/features/details_post/controller/details_post_controller.dart';
+import 'package:boat_sells_app/utils/enum/app_enum.dart';
 
 class ViewFullDetailsScreen extends StatelessWidget {
   const ViewFullDetailsScreen({super.key});
@@ -21,7 +22,7 @@ class ViewFullDetailsScreen extends StatelessWidget {
         scrolledUnderElevation: 0,
       ),
       body: Obx(() {
-        if (controller.detailsPostLoading.value) {
+        if (controller.status.value == ApiStatus.loading) {
           return const Center(child: CircularProgressIndicator(color: AppColors.primaryBlue));
         }
 

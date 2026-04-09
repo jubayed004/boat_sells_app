@@ -8,6 +8,7 @@ import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 
 class NavigationControllerMain extends GetxController {
+   static NavigationControllerMain get to => Get.find();
   RxInt selectedNavIndex = 0.obs;
 
   List<Widget> getPages() {

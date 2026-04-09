@@ -11,9 +11,10 @@ import 'package:boat_sells_app/share/widgets/text_field/custom_text_field.dart';
 import 'package:boat_sells_app/utils/color/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:boat_sells_app/helper/toast/toast_helper.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
-import 'dart:io';
+import 'package:boat_sells_app/helper/validator/text_field_validator.dart';
 
 class AddPostScreen extends StatefulWidget {
   const AddPostScreen({super.key});
@@ -44,22 +45,21 @@ class _AddPostScreenState extends State<AddPostScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     // ─── Image Picker ───────────────────────────────────────
-                    ValueListenableBuilder<List<File>>(
-                      valueListenable: _controller.images,
-                      builder: (context, images, child) {
-                        return ImagePickerRow(
-                          images: images,
-                          onAddImage: _controller.pickImage,
-                          onRemoveImage: _controller.removeImage,
-                        );
-                      },
-                    ),
+                    Obx(() {
+                      final images = _controller.images.value;
+                      return ImagePickerRow(
+                        images: images,
+                        onAddImage: _controller.pickImage,
+                        onRemoveImage: _controller.removeImage,
+                      );
+                    }),
                     Gap(16.h),
                     // ─── Title ──────────────────────────────────────────────
                     CustomTextField(
                       title: 'Title',
                       controller: _controller.titleController,
                       hintText: 'Enter Title',
+                      validator: TextFieldValidator.requiredField(label: 'Title'),
                     ),
                     Gap(10.h),
 
@@ -72,6 +72,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
                         Icons.location_on_outlined,
                         color: AppColors.primaryBlue,
                       ),
+                      validator: TextFieldValidator.requiredField(label: 'Location'),
                     ),
                     Gap(10.h),
                     // ─── Price ──────────────────────────────────────────────
@@ -86,6 +87,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
                         Icons.attach_money,
                         color: AppColors.primaryBlue,
                       ),
+                      validator: TextFieldValidator.number(label: 'Price'),
                     ),
                     Gap(20.h),
 
@@ -94,32 +96,28 @@ class _AddPostScreenState extends State<AddPostScreen> {
                     Gap(16.h),
                     _buildInlineField(
                       label: 'Boat Type',
-                      child: ValueListenableBuilder<String?>(
-                        valueListenable: _controller.selectedBoatType,
-                        builder: (context, selectedType, child) {
-                          return CustomDropdownField<String>(
-                            hintText: _controller.boatTypes.first,
-                            value: selectedType,
-                            items: _controller.boatTypes,
-                            onChanged: _controller.setBoatType,
-                          );
-                        },
-                      ),
+                      child: Obx(() {
+                        final selectedType = _controller.selectedBoatType.value;
+                        return CustomDropdownField<String>(
+                          hintText: _controller.boatTypes.first,
+                          value: selectedType,
+                          items: _controller.boatTypes,
+                          onChanged: _controller.setBoatType,
+                        );
+                      }),
                     ),
                     Gap(10.h),
                     _buildInlineField(
                       label: 'Category',
-                      child: ValueListenableBuilder<String?>(
-                        valueListenable: _controller.selectedCategory,
-                        builder: (context, selectedCategory, child) {
-                          return CustomDropdownField<String>(
-                            hintText: _controller.categories.first,
-                            value: selectedCategory,
-                            items: _controller.categories,
-                            onChanged: _controller.setCategory,
-                          );
-                        },
-                      ),
+                      child: Obx(() {
+                        final selectedCategory = _controller.selectedCategory.value;
+                        return CustomDropdownField<String>(
+                          hintText: _controller.categories.first,
+                          value: selectedCategory,
+                          items: _controller.categories,
+                          onChanged: _controller.setCategory,
+                        );
+                      }),
                     ),
                     Gap(10.h),
                     _buildInlineField(
@@ -127,6 +125,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
                       child: CustomTextField(
                         controller: _controller.modelController,
                         hintText: 'Enter Model',
+                        validator: TextFieldValidator.requiredField(label: 'Model'),
                       ),
                     ),
                     Gap(10.h),
@@ -136,6 +135,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
                         controller: _controller.yearController,
                         hintText: 'Enter Year',
                         keyboardType: TextInputType.number,
+                        validator: TextFieldValidator.year(label: 'Year'),
                       ),
                     ),
                     Gap(10.h),
@@ -145,6 +145,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
                         controller: _controller.lengthController,
                         hintText: 'Enter Length',
                         keyboardType: TextInputType.number,
+                        validator: TextFieldValidator.number(label: 'Length'),
                       ),
                     ),
                     Gap(10.h),
@@ -154,6 +155,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
                         controller: _controller.capacityController,
                         hintText: 'Enter People Capacity',
                         keyboardType: TextInputType.number,
+                        validator: TextFieldValidator.number(label: 'Capacity'),
                       ),
                     ),
                     Gap(20.h),
@@ -174,78 +176,74 @@ class _AddPostScreenState extends State<AddPostScreen> {
                     Gap(10.h),
 
                     // ─── Engines Information ─────────────────────────────────
-                    ValueListenableBuilder<bool>(
-                      valueListenable: _controller.isEnginesExpanded,
-                      builder: (context, isExpanded, child) {
-                        if (!isExpanded) {
-                          return Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              MoreInfoTile(
-                                title: 'Engines Information',
-                                onTap: _controller.toggleEnginesExpanded,
-                              ),
-                              Gap(10.h),
-                            ],
-                          );
-                        }
-                        return EnginesExpandedSection(
-                          engines: _controller.engines,
-                          onToggle: _controller.toggleEnginesExpanded,
-                          onAddEngine: _controller.addEngine,
-                          onRemoveEngine: _controller.removeEngine,
+                    Obx(() {
+                      final isExpanded = _controller.isEnginesExpanded.value;
+                      if (!isExpanded) {
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            MoreInfoTile(
+                              title: 'Engines Information',
+                              onTap: _controller.toggleEnginesExpanded,
+                            ),
+                            Gap(10.h),
+                          ],
                         );
-                      },
-                    ),
+                      }
+                      return EnginesExpandedSection(
+                        engines: _controller.engines,
+                        onToggle: _controller.toggleEnginesExpanded,
+                        onAddEngine: _controller.addEngine,
+                        onRemoveEngine: _controller.removeEngine,
+                      );
+                    }),
 
                     // ─── Additional Information ──────────────────────────────
-                    ValueListenableBuilder<bool>(
-                      valueListenable: _controller.isAdditionalInfoExpanded,
-                      builder: (context, isExpanded, child) {
-                        if (!isExpanded) {
-                          return Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              MoreInfoTile(
-                                title: 'Additional Information',
-                                onTap: _controller.toggleAdditionalInfoExpanded,
-                              ),
-                              Gap(10.h),
-                            ],
-                          );
-                        }
-                        return AdditionalInfoSection(
-                          onToggle: _controller.toggleAdditionalInfoExpanded,
-                          manufacturerController:
-                              _controller.manufacturerController,
-                          bridgeClearanceController:
-                              _controller.bridgeClearanceController,
-                          engineModelController:
-                              _controller.addInfoEngineModelController,
-                          fuelCapacityController:
-                              _controller.fuelCapacityController,
-                          freshWaterTankController:
-                              _controller.freshWaterTankController,
-                          cruiseSpeedController:
-                              _controller.cruiseSpeedController,
-                          loaController: _controller.loaController,
-                          maxSpeedController: _controller.maxSpeedController,
-                          beamController: _controller.beamController,
-                          cabinController: _controller.cabinController,
-                          draftController: _controller.draftController,
-                          mechanicalEquipmentController:
-                              _controller.mechanicalEquipmentController,
-                          galleyEquipmentController:
-                              _controller.galleyEquipmentController,
-                          deskHullEquipmentController:
-                              _controller.deskHullEquipmentController,
-                          navigationSystemController:
-                              _controller.navigationSystemController,
-                          additionalEquipmentController:
-                              _controller.additionalEquipmentController,
+                    Obx(() {
+                      final isExpanded = _controller.isAdditionalInfoExpanded.value;
+                      if (!isExpanded) {
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            MoreInfoTile(
+                              title: 'Additional Information',
+                              onTap: _controller.toggleAdditionalInfoExpanded,
+                            ),
+                            Gap(10.h),
+                          ],
                         );
-                      },
-                    ),
+                      }
+                      return AdditionalInfoSection(
+                        onToggle: _controller.toggleAdditionalInfoExpanded,
+                        manufacturerController:
+                            _controller.manufacturerController,
+                        bridgeClearanceController:
+                            _controller.bridgeClearanceController,
+                        engineModelController:
+                            _controller.addInfoEngineModelController,
+                        fuelCapacityController:
+                            _controller.fuelCapacityController,
+                        freshWaterTankController:
+                            _controller.freshWaterTankController,
+                        cruiseSpeedController:
+                            _controller.cruiseSpeedController,
+                        loaController: _controller.loaController,
+                        maxSpeedController: _controller.maxSpeedController,
+                        beamController: _controller.beamController,
+                        cabinController: _controller.cabinController,
+                        draftController: _controller.draftController,
+                        mechanicalEquipmentController:
+                            _controller.mechanicalEquipmentController,
+                        galleyEquipmentController:
+                            _controller.galleyEquipmentController,
+                        deskHullEquipmentController:
+                            _controller.deskHullEquipmentController,
+                        navigationSystemController:
+                            _controller.navigationSystemController,
+                        additionalEquipmentController:
+                            _controller.additionalEquipmentController,
+                      );
+                    }),
                   ],
                 ),
               ),
@@ -258,11 +256,11 @@ class _AddPostScreenState extends State<AddPostScreen> {
                 isLoading: _controller.addPostLoading.value,
                 text: 'Share',
                 onTap: () {
+                 
                   if (_formKey.currentState!.validate()) {
-
-
-                    
                     _controller.addPost();
+                  } else {
+                    AppToast.error(message: "Please check the form for invalid or missing required fields.");
                   }
                 },
               ),

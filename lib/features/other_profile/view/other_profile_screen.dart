@@ -1,4 +1,5 @@
 import 'package:boat_sells_app/core/router/route_path.dart';
+import 'package:boat_sells_app/share/widgets/network_image/custom_network_image.dart';
 import 'package:boat_sells_app/core/router/routes.dart';
 import 'package:boat_sells_app/features/other_profile/controller/other_profile_controller.dart';
 import 'package:boat_sells_app/features/profile/widgets/profile_stat_item.dart';
@@ -104,10 +105,17 @@ class _OtherProfileScreenState extends State<OtherProfileScreen> {
                           width: 2.w,
                         ),
                       ),
-                      child: CircleAvatar(
-                        radius: 38.r,
+                      child: CustomNetworkImage(
+                        imageUrl: controller.avatarUrl,
+                        height: 76.r,
+                        width: 76.r,
+                        boxShape: BoxShape.circle,
                         backgroundColor: AppColors.borderColor,
-                        backgroundImage: NetworkImage(controller.avatarUrl),
+                        errorWidget: Icon(
+                          Icons.person,
+                          color: AppColors.subHeadingText,
+                          size: 38.sp,
+                        ),
                       ),
                     ),
                     SizedBox(width: 20.w),

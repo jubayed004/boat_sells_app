@@ -1,8 +1,8 @@
 import 'dart:io';
 import 'package:boat_sells_app/core/di/injection.dart';
-import 'package:boat_sells_app/core/router/routes.dart';
 import 'package:boat_sells_app/core/service/datasource/local/local_service.dart';
 import 'package:boat_sells_app/core/service/datasource/remote/api_client.dart';
+import 'package:boat_sells_app/features/nav_bar/controller/navigation_controller.dart';
 import 'package:boat_sells_app/helper/toast/toast_helper.dart';
 import 'package:boat_sells_app/utils/api_urls/api_urls.dart';
 import 'package:boat_sells_app/utils/config/app_config.dart';
@@ -42,9 +42,9 @@ class AddPostController extends GetxController {
   final navigationSystemController = TextEditingController();
   final additionalEquipmentController = TextEditingController();
 
-  final ValueNotifier<List<File>> images = ValueNotifier<List<File>>([]);
-  final ValueNotifier<String?> selectedBoatType = ValueNotifier<String?>(null);
-  final ValueNotifier<String?> selectedCategory = ValueNotifier<String?>(null);
+  final Rx<List<File>> images = Rx<List<File>>([]);
+  final Rx<String?> selectedBoatType = Rx<String?>(null);
+  final Rx<String?> selectedCategory = Rx<String?>(null);
 
   final List<String> boatTypes = ['Sail', 'Motor', 'Speed', 'Fishing', 'Yacht'];
 
@@ -56,13 +56,11 @@ class AddPostController extends GetxController {
     'Houseboat',
   ];
 
-  final ValueNotifier<List<EngineInfoModel>> engines =
-      ValueNotifier<List<EngineInfoModel>>([]);
+  final Rx<List<EngineInfoModel>> engines =
+      Rx<List<EngineInfoModel>>([]);
 
-  final ValueNotifier<bool> isEnginesExpanded = ValueNotifier<bool>(false);
-  final ValueNotifier<bool> isAdditionalInfoExpanded = ValueNotifier<bool>(
-    false,
-  );
+  final RxBool isEnginesExpanded = false.obs;
+  final RxBool isAdditionalInfoExpanded = false.obs;
 
   @override
   void onClose() {
@@ -93,15 +91,9 @@ class AddPostController extends GetxController {
     navigationSystemController.dispose();
     additionalEquipmentController.dispose();
 
-    images.dispose();
-    selectedBoatType.dispose();
-    selectedCategory.dispose();
     for (var engine in engines.value) {
       engine.dispose();
     }
-    engines.dispose();
-    isEnginesExpanded.dispose();
-    isAdditionalInfoExpanded.dispose();
     super.onClose();
   }
 
@@ -196,49 +188,91 @@ class AddPostController extends GetxController {
   Rx<XFile?> selectedImage = Rx<XFile?>(null);
 
   final addPostLoading = false.obs;
+
+  void _clearFields() {
+    titleController.clear();
+    locationController.clear();
+    priceController.clear();
+    modelController.clear();
+    yearController.clear();
+    lengthController.clear();
+    capacityController.clear();
+    descriptionController.clear();
+    
+    // Additional Information Fields
+    hullMaterialController.clear();
+    manufacturerController.clear();
+    bridgeClearanceController.clear();
+    addInfoEngineModelController.clear();
+    fuelCapacityController.clear();
+    freshWaterTankController.clear();
+    cruiseSpeedController.clear();
+    loaController.clear();
+    maxSpeedController.clear();
+    beamController.clear();
+    cabinController.clear();
+    draftController.clear();
+    mechanicalEquipmentController.clear();
+    galleyEquipmentController.clear();
+    deskHullEquipmentController.clear();
+    navigationSystemController.clear();
+    additionalEquipmentController.clear();
+
+    images.value = [];
+    selectedBoatType.value = null;
+    selectedCategory.value = null;
+    
+    for (var engine in engines.value) {
+      engine.dispose();
+    }
+    engines.value = [];
+    isEnginesExpanded.value = false;
+    isAdditionalInfoExpanded.value = false;
+  }
   bool loadingAddPostMethod(bool status) => addPostLoading.value = status;
   Future<void> addPost() async {
+    print("presssssssss");
  final body = {
-  "title": titleController.text,
-  "location": locationController.text,
-  "price": int.tryParse(priceController.text) ?? 0, // ❌ parse to number
+  "title": titleController.text.trim(),
+  "location": locationController.text.trim(),
+  "price": int.tryParse(priceController.text.trim()) ?? 0,
   "boat_info": {
     "boatType": selectedBoatType.value,
     "category": selectedCategory.value,
-    "hullMaterial": hullMaterialController.text,
-    "length": int.tryParse(lengthController.text) ?? 0,
-    "year": int.tryParse(yearController.text) ?? 0,
-    "model": modelController.text,
-    "peopleCapacity": int.tryParse(capacityController.text) ?? 0, // ✅ use this inside boat_info
-    "description": descriptionController.text,
+    "hullMaterial": hullMaterialController.text.trim(),
+    "length": int.tryParse(lengthController.text.trim()) ?? 0,
+    "year": int.tryParse(yearController.text.trim()) ?? 0,
+    "model": modelController.text.trim(),
+    "peopleCapacity": int.tryParse(capacityController.text.trim()) ?? 0,
+    "description": descriptionController.text.trim(),
   },
   "boat_engine_info": {
     "engines": engines.value.map((e) => {
-      "engineType": e.typeController.text,
-      "fuelType": e.fuelController.text,
-      "engineMake": e.makeController.text,
-      "engineModel": e.modelController.text,
-      "horsePower": int.tryParse(e.powerController.text) ?? 0,
-      "engineHours": int.tryParse(e.hoursController.text) ?? 0,
+      "engineType": e.typeController.text.trim(),
+      "fuelType": e.fuelController.text.trim(),
+      "engineMake": e.makeController.text.trim(),
+      "engineModel": e.modelController.text.trim(),
+      "horsePower": int.tryParse(e.powerController.text.trim()) ?? 0,
+      "engineHours": int.tryParse(e.hoursController.text.trim()) ?? 0,
     }).toList()
   },
   "boat_additional_info": {
-    "manufacturer": manufacturerController.text,
-    "engineModel": addInfoEngineModelController.text,
-    "fuelCapacity": int.tryParse(fuelCapacityController.text) ?? 0,
-    "freshWaterTank": int.tryParse(freshWaterTankController.text) ?? 0,
-    "additionalEquipment": additionalEquipmentController.text,
-    "beam": int.tryParse(beamController.text) ?? 0,
-    "bridgeClearance": int.tryParse(bridgeClearanceController.text) ?? 0,
-    "cabin": int.tryParse(cabinController.text) ?? 0,
-    "cruiseSpeed": int.tryParse(cruiseSpeedController.text) ?? 0,
-    "deckHullEquipment": deskHullEquipmentController.text,
-    "draft": int.tryParse(draftController.text) ?? 0,
-    "galleyEquipment": galleyEquipmentController.text,
-    "loa": int.tryParse(loaController.text) ?? 0,
-    "maxSpeed": int.tryParse(maxSpeedController.text) ?? 0,
-    "mechanicalEquipment": mechanicalEquipmentController.text,
-    "navigationSystem": navigationSystemController.text,
+    "manufacturer": manufacturerController.text.trim(),
+    "engineModel": addInfoEngineModelController.text.trim(),
+    "fuelCapacity": int.tryParse(fuelCapacityController.text.trim()) ?? 0,
+    "freshWaterTank": int.tryParse(freshWaterTankController.text.trim()) ?? 0,
+    "additionalEquipment": additionalEquipmentController.text.trim(),
+    "beam": int.tryParse(beamController.text.trim()) ?? 0,
+    "bridgeClearance": int.tryParse(bridgeClearanceController.text.trim()) ?? 0,
+    "cabin": int.tryParse(cabinController.text.trim()) ?? 0,
+    "cruiseSpeed": int.tryParse(cruiseSpeedController.text.trim()) ?? 0,
+    "deckHullEquipment": deskHullEquipmentController.text.trim(),
+    "draft": int.tryParse(draftController.text.trim()) ?? 0,
+    "galleyEquipment": galleyEquipmentController.text.trim(),
+    "loa": int.tryParse(loaController.text.trim()) ?? 0,
+    "maxSpeed": int.tryParse(maxSpeedController.text.trim()) ?? 0,
+    "mechanicalEquipment": mechanicalEquipmentController.text.trim(),
+    "navigationSystem": navigationSystemController.text.trim(),
   }
 };
     loadingAddPostMethod(true);
@@ -263,11 +297,11 @@ AppConfig.logger.i(body);
         fields: body,
       );
       AppConfig.logger.i(response.data);
-      if (response.statusCode == 200) {
+      if (response.statusCode == 200 || response.statusCode == 201) {
         loadingAddPostMethod(false);
         AppToast.success(message: response.data["message"].toString());
-        AppRouter.route.pop();
-        return;
+        _clearFields();
+        NavigationControllerMain.to.selectedNavIndex.value = 4;
       } else {
         loadingAddPostMethod(false);
         AppToast.error(message: response.data["message"].toString());

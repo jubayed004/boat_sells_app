@@ -11,6 +11,11 @@ import 'package:get/get.dart';
 
 import 'package:boat_sells_app/features/details_post/controller/details_post_controller.dart';
 import 'package:boat_sells_app/features/details_post/widgets/overview_shimmer.dart';
+import 'package:boat_sells_app/features/profile/controller/profile_controller.dart';
+import 'package:boat_sells_app/share/widgets/no_internet/error_card.dart';
+import 'package:boat_sells_app/share/widgets/no_internet/no_data_card.dart';
+import 'package:boat_sells_app/share/widgets/no_internet/no_internet_card.dart';
+import 'package:boat_sells_app/utils/enum/app_enum.dart';
 
 class DetailsPostScreen extends StatefulWidget {
   final String? postId;
@@ -37,6 +42,47 @@ void dispose() {
   Get.delete<DetailsPostController>();
   super.dispose();
 }
+
+  BoatItem _patchBoatUser(BoatItem boat) {
+    if (!Get.isRegistered<ProfileController>()) return boat;
+    final profileData = Get.find<ProfileController>().profile.value.data;
+    if (profileData == null) return boat;
+
+    final currentUser = boat.user;
+    if (currentUser != null && currentUser.id != null && currentUser.id != profileData.id) {
+          return boat;
+    }
+
+    final needsPatch =
+        (currentUser?.name?.isEmpty ?? true) ||
+        (currentUser?.avatarUrl?.isEmpty ?? true);
+
+    if (!needsPatch) return boat;
+
+    return BoatItem(
+      id: boat.id,
+      user: User(
+        id: currentUser?.id ?? profileData.id,
+        name: currentUser?.name?.isNotEmpty == true
+            ? currentUser!.name
+            : profileData.name,
+        avatarUrl: currentUser?.avatarUrl?.isNotEmpty == true
+            ? currentUser!.avatarUrl
+            : profileData.avatarUrl,
+      ),
+      location: boat.location,
+      price: boat.price,
+      displayTitle: boat.displayTitle,
+      media: boat.media,
+      likesCount: boat.likesCount,
+      commentsCount: boat.commentsCount,
+      shareCount: boat.shareCount,
+      isLiked: boat.isLiked,
+      isSaved: boat.isSaved,
+      createdAt: boat.createdAt,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -58,35 +104,60 @@ void dispose() {
           SizedBox(width: 8.w),
         ],
       ),
-      body: CustomScrollView(
-        physics: const BouncingScrollPhysics(),
-        slivers: [
-          // ── Boat Card ──
-          SliverToBoxAdapter(
-            child: Padding(
-              padding: EdgeInsets.only(top: 8.h),
-              child: Obx(() {
-                if (controller.detailsPostLoading.value) {
-                  return const BoatListingShimmerCard();
-                }
+      body: Obx(() {
+        switch (controller.status.value) {
+          case ApiStatus.internetError:
+            return NoInternetCard(
+              onTap: () {
+                if (widget.postId != null) controller.getDetailsPost(postId: widget.postId!);
+              },
+            );
+          case ApiStatus.error:
+            return ErrorCard(
+              title: controller.errorMessage.value,
+              onTap: () {
+                if (widget.postId != null) controller.getDetailsPost(postId: widget.postId!);
+              },
+            );
+          case ApiStatus.noDataFound:
+            return NoDataCard(
+              title: 'Post not found',
+              onTap: () {
+                if (widget.postId != null) controller.getDetailsPost(postId: widget.postId!);
+              },
+            );
+          case ApiStatus.loading:
+          case ApiStatus.completed:
+            return CustomScrollView(
+              physics: const BouncingScrollPhysics(),
+              slivers: [
+                // ── Boat Card ──
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: EdgeInsets.only(top: 8.h),
+                    child: Builder(builder: (_) {
+                      if (controller.status.value == ApiStatus.loading) {
+                        return const BoatListingShimmerCard();
+                      }
 
-                final data = controller.detailsPost.value.data;
-                final BoatItem boatToShow;
-                if (data != null) {
-                  boatToShow = BoatItem.fromJson(data.toJson());
-                } else {
-                  // Fallback
-                  boatToShow = _demoBoat;
-                }
+                      final data = controller.detailsPost.value.data;
+                      BoatItem boatToShow;
+                      if (data != null) {
+                        boatToShow = BoatItem.fromJson(data.toJson());
+                        boatToShow = _patchBoatUser(boatToShow);
+                      } else {
+                        // Fallback
+                        boatToShow = _demoBoat;
+                      }
 
-                return BoatListingCard(
-                  boat: boatToShow,
-                  onCommentTap: () =>
-                      AppRouter.route.pushNamed(RoutePath.commentsScreen, extra: boatToShow.id),
-                );
-              }),
-            ),
-          ),
+                      return BoatListingCard(
+                        boat: boatToShow,
+                        onCommentTap: () =>
+                            AppRouter.route.pushNamed(RoutePath.commentsScreen, extra: boatToShow.id),
+                      );
+                    }),
+                  ),
+                ),
 
           // ── Overview Title ──
           SliverToBoxAdapter(
@@ -103,10 +174,10 @@ void dispose() {
           ),
 
           // ── Overview Grid ──
-          Obx(() {
+          Builder(builder: (_) {
             final specs = _currentOverviewSpecs;
             
-            if (controller.detailsPostLoading.value || specs.isEmpty) {
+            if (controller.status.value == ApiStatus.loading || specs.isEmpty) {
               return const OverviewShimmer();
             }
 
@@ -166,7 +237,9 @@ void dispose() {
           // ── Bottom Padding ──
           SliverToBoxAdapter(child: SizedBox(height: 24.h)),
         ],
-      ),
+      );
+      }
+      }),
       // ── Fixed Bottom Actions ──
       bottomNavigationBar: Container(
         padding: EdgeInsets.fromLTRB(20.w, 16.h, 20.w, 32.h),
