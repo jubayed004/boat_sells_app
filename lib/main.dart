@@ -1,5 +1,6 @@
 import 'package:boat_sells_app/core/di/injection.dart';
 import 'package:boat_sells_app/core/router/routes.dart';
+import 'package:boat_sells_app/core/service/datasource/remote/socket_service.dart';
 import 'package:boat_sells_app/core/theme/light_theme.dart';
 import 'package:boat_sells_app/share/controller/language_controller.dart';
 import 'package:device_preview/device_preview.dart';
@@ -16,6 +17,7 @@ void main() async {
   DeviceUtils.lockDevicePortrait();
   initGetx();
   await initDependencies();
+  await SocketApi.init();
 
   Map<String, Map<String, String>>? languages =
   await LanguageController.getLanguages();

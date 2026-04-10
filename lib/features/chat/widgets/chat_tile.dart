@@ -6,10 +6,35 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ChatTile extends StatelessWidget {
-  final ChatModel chat;
+  final ChatItem chat;
   final VoidCallback? onTap;
 
   const ChatTile({super.key, required this.chat, this.onTap});
+
+  String get _avatarUrl {
+    return chat.participants?.lastOrNull?.image?.toString() ?? '';
+  }
+
+  String get _userName {
+    return chat.participants?.lastOrNull?.name ?? 'Unknown';
+  }
+
+  String get _lastMessage {
+    final text = chat.lastMessage?.text;
+    if (text != null && text.isNotEmpty) return text;
+    if (chat.lastMessage?.images != null && chat.lastMessage!.images!.isNotEmpty) return 'Sent an image';
+    return '';
+  }
+
+  String get _time {
+    final dateTime = chat.lastMessage?.createdAt?.toLocal();
+    if (dateTime != null) {
+      final hour = dateTime.hour == 0 ? 12 : (dateTime.hour > 12 ? dateTime.hour - 12 : dateTime.hour);
+      final amPm = dateTime.hour >= 12 ? 'PM' : 'AM';
+      return '$hour:${dateTime.minute.toString().padLeft(2, '0')} $amPm';
+    }
+    return '';
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +47,7 @@ class ChatTile extends StatelessWidget {
           children: [
             // Avatar
             CustomNetworkImage(
-              imageUrl: chat.avatarUrl,
+              imageUrl: _avatarUrl,
               height: 52.r,
               width: 52.r,
               boxShape: BoxShape.circle,
@@ -41,7 +66,7 @@ class ChatTile extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    chat.userName,
+                    _userName,
                     style: context.titleSmall.copyWith(
                       fontWeight: FontWeight.w700,
                       fontSize: 14.sp,
@@ -50,7 +75,7 @@ class ChatTile extends StatelessWidget {
                   ),
                   SizedBox(height: 3.h),
                   Text(
-                    chat.lastMessage,
+                    _lastMessage,
                     style: context.bodySmall.copyWith(
                       fontSize: 12.sp,
                       color: AppColors.hintTextColor,
@@ -64,7 +89,7 @@ class ChatTile extends StatelessWidget {
 
             // Time
             Text(
-              chat.time,
+              _time,
               style: context.bodySmall.copyWith(
                 fontSize: 11.sp,
                 color: AppColors.hintTextColor,

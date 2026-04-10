@@ -9,6 +9,7 @@ import 'package:boat_sells_app/features/comments/view/comments_screen.dart';
 import 'package:boat_sells_app/features/details_post/view/details_post_screen.dart';
 import 'package:boat_sells_app/features/details_post/view/view_full_details_screen.dart';
 import 'package:boat_sells_app/features/followers/view/followers_screen.dart';
+import 'package:boat_sells_app/features/chat/model/chat_model.dart';
 import 'package:boat_sells_app/features/inbox/inbox_screen.dart';
 import 'package:boat_sells_app/features/nav_bar/navigation_page.dart';
 import 'package:boat_sells_app/features/notification/view/notification_screen.dart';
@@ -187,7 +188,11 @@ class AppRouter {
         name: RoutePath.inboxScreen,
         path: RoutePath.inboxScreen.addBasePath,
         pageBuilder: (context, state) {
-          return _buildPageWithAnimation(child: InboxScreen(), state: state);
+          final chatItem = state.extra as ChatItem;
+          return _buildPageWithAnimation(
+            child: InboxScreen(chatItem: chatItem),
+            state: state,
+          );
         },
       ),
       GoRoute(

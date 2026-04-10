@@ -2,7 +2,7 @@ import 'package:boat_sells_app/utils/config/app_config.dart';
 
 class ApiUrls {
   static const base = AppConfig.baseURL;
-  static String socketUrl({required String id}) => 'http://13.50.247.46?id=$id';
+  static String socketUrl({required String token}) => 'https://pn9hvmp3-3007.asse.devtunnels.ms?token=$token';
   static String login() => '$base/auth/login';
   static String register() => '$base/auth/register';
   static String activeVerifyOtp() => '$base/auth/verify-otp';
@@ -33,6 +33,10 @@ static String search({required int page,required String maxPrice,required String
   if (search.isNotEmpty) url += '&search=$search';
   return url;
 }
+//chat
+static String getChat({required int page}) => '$base/chat/conversations?page=$page&limit=10';
+static String getChatMessages({required String conversationId,required int page}) => '$base/chat/messages/$conversationId?page=$page&limit=10';
+static String chatFileUpload() => '$base/chat/upload';
 //notification
 static String getNotifications({required int page}) => '$base/notifications?page=$page&limit=10';
 // Profile Screen

@@ -1,10 +1,11 @@
-/*
+
 
 
 import 'package:boat_sells_app/core/di/injection.dart';
 import 'package:boat_sells_app/core/service/datasource/local/local_service.dart';
 import 'package:boat_sells_app/utils/api_urls/api_urls.dart';
 import 'package:flutter/material.dart';
+import 'package:socket_io_client/socket_io_client.dart' as io;
 
 class SocketApi {
   factory SocketApi() {
@@ -25,14 +26,14 @@ class SocketApi {
     }
 
     final LocalService localService = sl<LocalService>();
-    String id = await localService.getUserId();
-    if (id.isEmpty || id == "null") {
+    String token = await localService.getToken();
+    if (token.isEmpty || token == "null") {
       debugPrint('Socket Connected >>>>>>>>>>>> FALSE userId.isEmpty <<<<<<<<<<<<');
       return;
     }
 
     _socket = io.io(
-      ApiUrls.socketUrl(id: id),
+      ApiUrls.socketUrl(token: token),
       io.OptionBuilder()
           .setTransports(['websocket'])
           .enableAutoConnect()
@@ -42,7 +43,7 @@ class SocketApi {
           .build(),
     );
 
-    debugPrint('$id=============> Socket initialization, connected: ${_socket?.connected}');
+    debugPrint('${_socket?.id}=============> Socket initialization, connected: ${_socket?.connected}');
 
     // Listen for socket connection
     _socket?.onConnect((_) {
@@ -80,4 +81,4 @@ class SocketApi {
   }
 
   static final SocketApi _socketApi = SocketApi._internal();
-}*/
+}

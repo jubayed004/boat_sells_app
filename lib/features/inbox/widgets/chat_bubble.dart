@@ -5,13 +5,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ChatBubble extends StatelessWidget {
-  final InboxMessageModel message;
+  /// A single message datum from the inbox.
+  final InboxMessageDatum message;
 
-  const ChatBubble({super.key, required this.message});
+  /// The logged-in user's ID, used to decide which side to render the bubble.
+  final String currentUserId;
+
+  const ChatBubble({
+    super.key,
+    required this.message,
+    required this.currentUserId,
+  });
 
   @override
   Widget build(BuildContext context) {
-    final isSent = message.isSent;
+    // A message is "sent" (right-aligned) if the sender id matches the current user.
+    final isSent = message.sender?.id == currentUserId;
 
     return Align(
       alignment: isSent ? Alignment.centerRight : Alignment.centerLeft,
@@ -33,7 +42,7 @@ class ChatBubble extends StatelessWidget {
           ),
         ),
         child: Text(
-          message.text,
+          message.text ?? '',
           style: context.bodySmall.copyWith(
             fontSize: 13.sp,
             color: isSent ? AppColors.white : AppColors.headingText,
