@@ -306,6 +306,9 @@ AppConfig.logger.i(body);
         loadingAddPostMethod(false);
         AppToast.error(message: response.data["message"].toString());
       }
+
+
+      
     } catch (e) {
       loadingAddPostMethod(false);
       AppToast.error(message: e.toString());
