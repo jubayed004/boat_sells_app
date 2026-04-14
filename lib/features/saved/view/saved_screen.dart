@@ -76,7 +76,7 @@ class _SavedScreenState extends State<SavedScreen> {
                   onCommentTap: () =>
                       AppRouter.route.pushNamed(RoutePath.commentsScreen, extra: boat.id),
                   imageOnTap: () =>
-                      AppRouter.route.pushNamed(RoutePath.otherProfileScreen),
+                      AppRouter.route.pushNamed(RoutePath.otherProfileScreen,extra: boat.user?.id),
                   onUnsaved: () => controller.removeSaved(boat.id ?? ''),
                 ),
                 firstPageProgressIndicatorBuilder: (_) => Column(

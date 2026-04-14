@@ -149,7 +149,7 @@ class ApiClient {
     required String url,
     required List<MultipartBody> files,
     required String method,
-    required String token,
+    String? token,
     Map<String, dynamic>? fields,
   }) async {
     if (!await _hasConnection()) {

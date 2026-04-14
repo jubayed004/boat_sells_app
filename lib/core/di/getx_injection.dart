@@ -3,6 +3,7 @@ import 'package:boat_sells_app/features/auth/controller/auth_controller.dart';
 import 'package:boat_sells_app/features/chat/controller/chat_controller.dart';
 import 'package:boat_sells_app/features/followers/controller/followers_controller.dart';
 import 'package:boat_sells_app/features/home/controller/home_controller.dart';
+import 'package:boat_sells_app/features/inbox/controller/inbox_controller.dart';
 import 'package:boat_sells_app/features/nav_bar/controller/navigation_controller.dart';
 import 'package:boat_sells_app/features/other/controller/other_controller.dart';
 import 'package:boat_sells_app/features/profile/controller/profile_controller.dart';
@@ -26,5 +27,4 @@ void initGetx() {
   Get.lazyPut(() => AddPostController(), fenix: true);
   Get.lazyPut(() => FollowersController(), fenix: true);
   Get.lazyPut(() => SearchController(), fenix: true);
-
 }

@@ -15,9 +15,11 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 class InboxScreen extends StatefulWidget {
   /// The conversation that was tapped in ChatScreen, passed via route extra.
-  final ChatItem chatItem;
+  /// Or the user id from the other profile screen.
+  final String? userId;
+  final ChatItem? chatItem;
 
-  const InboxScreen({super.key, required this.chatItem});
+  const InboxScreen({super.key, this.chatItem, this.userId});
 
   @override
   State<InboxScreen> createState() => _InboxScreenState();
@@ -33,33 +35,52 @@ class _InboxScreenState extends State<InboxScreen> {
     super.initState();
     controller = Get.put(InboxController());
 
-    // Seed header (avatar / name) from the passed ChatItem.
-    controller.initWith(widget.chatItem);
+    // Seed header (avatar / name) from the passed ChatItem or userId.
+    controller.initWith(
+      chatItem: widget.chatItem,
+      overrideUserId: widget.userId,
+    );
 
     pagingController = PagingController<int, InboxMessageDatum>(
       firstPageKey: 1,
     );
     pagingController.addPageRequestListener((pageKey) {
-      controller.getChatList(
-        pageKey: pageKey,
-        id: widget.chatItem.id ?? '',
-        pagingController: pagingController,
-      );
+      if (widget.chatItem?.id != null && widget.chatItem!.id!.isNotEmpty) {
+        controller.getChatList(
+          pageKey: pageKey,
+          id: widget.chatItem!.id!,
+          pagingController: pagingController,
+        );
+      } else {
+        // If there's no conversation ID yet (new chat), just append empty page
+        pagingController.appendLastPage([]);
+      }
     });
 
     _setupSocketListeners();
+    controller.markAsRead();
+
+    messageController.addListener(_onTextChanged);
+  }
+
+  void _onTextChanged() {
+    if (messageController.text.isNotEmpty) {
+      if (!controller.isTyping.value) controller.emitTyping();
+    } else {
+      controller.emitStopTyping();
+    }
   }
 
   Future<void> _setupSocketListeners() async {
     await SocketApi.init();
     controller.listenForNewMessages(
-      senderId: widget.chatItem.id ?? '',
       pagingController: pagingController,
     );
   }
 
   @override
   void dispose() {
+    messageController.removeListener(_onTextChanged);
     messageController.dispose();
     pagingController.dispose();
     Get.delete<InboxController>();
@@ -91,12 +112,30 @@ class _InboxScreenState extends State<InboxScreen> {
                 ),
               ),
               SizedBox(width: 10.w),
-              Text(
-                controller.userName.value,
-                style: context.titleSmall.copyWith(
-                  fontWeight: FontWeight.w700,
-                  fontSize: 15.sp,
-                  color: AppColors.headingText,
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      controller.userName.value,
+                      style: context.titleSmall.copyWith(
+                        fontWeight: FontWeight.w700,
+                        fontSize: 15.sp,
+                        color: AppColors.headingText,
+                      ),
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    if (controller.isTyping.value)
+                      Text(
+                        'typing...',
+                        style: context.bodySmall.copyWith(
+                          fontSize: 12.sp,
+                          color: AppColors.primaryBlue,
+                          fontStyle: FontStyle.italic,
+                        ),
+                      ),
+                  ],
                 ),
               ),
             ],

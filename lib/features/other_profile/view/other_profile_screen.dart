@@ -14,7 +14,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 class OtherProfileScreen extends StatefulWidget {
-  const OtherProfileScreen({super.key});
+  final String userId;
+  const OtherProfileScreen({super.key, required this.userId});
 
   @override
   State<OtherProfileScreen> createState() => _OtherProfileScreenState();
@@ -22,6 +23,15 @@ class OtherProfileScreen extends StatefulWidget {
 
 class _OtherProfileScreenState extends State<OtherProfileScreen> {
   final OtherProfileController controller = Get.put(OtherProfileController());
+
+  @override
+  void initState() {
+    super.initState();
+    // Fetch the profile data when the screen initializes
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      controller.getOtherProfile(userId: widget.userId);
+    });
+  }
 
   @override
   void dispose() {
@@ -86,8 +96,12 @@ class _OtherProfileScreenState extends State<OtherProfileScreen> {
           ),
         ],
       ),
-      body: Obx(
-        () => CustomScrollView(
+      body: Obx(() {
+        if (controller.profileLoading.value) {
+          return const Center(child: CircularProgressIndicator());
+        }
+
+        return CustomScrollView(
           physics: const BouncingScrollPhysics(),
           slivers: [
             // ── Profile Head (Avatar and Stats) ──
@@ -144,14 +158,14 @@ class _OtherProfileScreenState extends State<OtherProfileScreen> {
                                 value: '${controller.postCount}',
                                 label: 'Posts',
                               ),
-                              ProfileStatItem(
-                                value: '${controller.followersCount}',
-                                label: 'Followers',
-                              ),
-                              ProfileStatItem(
-                                value: '${controller.followingCount}',
-                                label: 'Following',
-                              ),
+                              // ProfileStatItem(
+                              //   value: '${controller.followersCount}',
+                              //   label: 'Followers',
+                              // ),
+                              // ProfileStatItem(
+                              //   value: '${controller.followingCount}',
+                              //   label: 'Following',
+                              // ),
                             ],
                           ),
                         ],
@@ -184,55 +198,60 @@ class _OtherProfileScreenState extends State<OtherProfileScreen> {
                 child: Row(
                   children: [
                     // FB, IN, X
-                    SocialCircle(label: 'FB', onTap: () {}),
+                    SocialCircle(
+                        label: 'FB',
+                        onTap: () => controller.launchSocial(controller.facebook)),
                     SizedBox(width: 8.w),
-                    SocialCircle(label: 'IN', onTap: () {}),
+                    SocialCircle(
+                        label: 'IN',
+                        onTap: () => controller.launchSocial(controller.instagram)),
                     SizedBox(width: 8.w),
-                    SocialCircle(label: 'X', onTap: () {}),
+                    SocialCircle(
+                        label: 'X',
+                        onTap: () => controller.launchSocial(controller.twitter)),
 
                     SizedBox(width: 16.w),
 
-                    // Follow Button
-                    Expanded(
-                      child: SizedBox(
-                        height: 40.h,
-                        child: OutlinedButton(
-                          style: OutlinedButton.styleFrom(
-                            side: BorderSide(
-                              color: controller.isFollowing.value
-                                  ? AppColors.borderColor
-                                  : AppColors.primaryBlue,
-                              width: 1.w,
-                            ),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20.r),
-                            ),
-                            padding: EdgeInsets.zero,
-                          ),
-                          onPressed: controller.toggleFollow,
-                          child: Text(
-                            controller.isFollowing.value
-                                ? 'Following'
-                                : 'Follow',
-                            style: context.titleSmall.copyWith(
-                              color: controller.isFollowing.value
-                                  ? AppColors.subHeadingText
-                                  : AppColors.primaryBlue,
-                              fontSize: 14.sp,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-
+                    // // Follow Button
+                    // Expanded(
+                    //   child: SizedBox(
+                    //     height: 40.h,
+                    //     child: OutlinedButton(
+                    //       style: OutlinedButton.styleFrom(
+                    //         side: BorderSide(
+                    //           color: controller.isFollowing.value
+                    //               ? AppColors.borderColor
+                    //               : AppColors.primaryBlue,
+                    //           width: 1.w,
+                    //         ),
+                    //         shape: RoundedRectangleBorder(
+                    //           borderRadius: BorderRadius.circular(20.r),
+                    //         ),
+                    //         padding: EdgeInsets.zero,
+                    //       ),
+                    //       onPressed: controller.toggleFollow,
+                    //       child: Text(
+                    //         controller.isFollowing.value
+                    //             ? 'Following'
+                    //             : 'Follow',
+                    //         style: context.titleSmall.copyWith(
+                    //           color: controller.isFollowing.value
+                    //               ? AppColors.subHeadingText
+                    //               : AppColors.primaryBlue,
+                    //           fontSize: 14.sp,
+                    //           fontWeight: FontWeight.w600,
+                    //         ),
+                    //       ),
+                    //     ),
+                    //   ),
+                    // ),
                     SizedBox(width: 10.w),
 
                     // Chat Button
                     Expanded(
                       child: CustomButton(
                         onTap: () {
-                          AppRouter.route.pushNamed(RoutePath.inboxScreen);
+                          AppRouter.route.pushNamed(RoutePath.inboxScreen, extra: controller.otherProfile.value.data?.id);
                         },
                         text: 'Chat',
                       ),
@@ -279,8 +298,10 @@ class _OtherProfileScreenState extends State<OtherProfileScreen> {
                     boat: controller.userPosts[index],
                     onCardTap: () =>
                         AppRouter.route.pushNamed(RoutePath.detailsPostScreen),
-                    onCommentTap: () =>
-                        AppRouter.route.pushNamed(RoutePath.commentsScreen, extra: controller.userPosts[index].id),
+                    onCommentTap: () => AppRouter.route.pushNamed(
+                      RoutePath.commentsScreen,
+                      extra: controller.userPosts[index].id,
+                    ),
                   );
                 }, childCount: controller.userPosts.length),
               ),
@@ -288,8 +309,8 @@ class _OtherProfileScreenState extends State<OtherProfileScreen> {
             // Bottom padding
             SliverToBoxAdapter(child: SizedBox(height: 30.h)),
           ],
-        ),
-      ),
+        );
+      }),
     );
   }
 }

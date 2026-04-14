@@ -334,7 +334,7 @@ class _SearchScreenState extends State<SearchScreen> {
                         );
                       },
                       imageOnTap: () => AppRouter.route
-                          .pushNamed(RoutePath.otherProfileScreen),
+                          .pushNamed(RoutePath.otherProfileScreen,extra: item.user?.id),
                     );
                   },
 

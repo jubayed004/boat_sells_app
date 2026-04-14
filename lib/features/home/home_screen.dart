@@ -114,7 +114,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       );
                     },
                     imageOnTap: () {
-                      AppRouter.route.pushNamed(RoutePath.otherProfileScreen);
+                      AppRouter.route.pushNamed(RoutePath.otherProfileScreen,extra: item.user?.id);
                     },
                   );
                 },

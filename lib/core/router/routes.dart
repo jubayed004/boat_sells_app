@@ -188,9 +188,18 @@ class AppRouter {
         name: RoutePath.inboxScreen,
         path: RoutePath.inboxScreen.addBasePath,
         pageBuilder: (context, state) {
-          final chatItem = state.extra as ChatItem;
+          final extra = state.extra;
+          ChatItem? chatItem;
+          String? userId;
+
+          if (extra is ChatItem) {
+            chatItem = extra;
+          } else if (extra is String) {
+            userId = extra;
+          }
+
           return _buildPageWithAnimation(
-            child: InboxScreen(chatItem: chatItem),
+            child: InboxScreen(chatItem: chatItem, userId: userId),
             state: state,
           );
         },
@@ -199,8 +208,9 @@ class AppRouter {
         name: RoutePath.otherProfileScreen,
         path: RoutePath.otherProfileScreen.addBasePath,
         pageBuilder: (context, state) {
+          final userId = state.extra as String? ?? '';
           return _buildPageWithAnimation(
-            child: const OtherProfileScreen(),
+            child: OtherProfileScreen(userId: userId),
             state: state,
           );
         },

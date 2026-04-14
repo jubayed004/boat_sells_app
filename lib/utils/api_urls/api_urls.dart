@@ -2,7 +2,8 @@ import 'package:boat_sells_app/utils/config/app_config.dart';
 
 class ApiUrls {
   static const base = AppConfig.baseURL;
-  static String socketUrl({required String token}) => 'https://pn9hvmp3-3007.asse.devtunnels.ms?token=$token';
+  /// Socket base URL — token is passed via setAuth, NOT as a query param.
+  static const socketBaseUrl = 'https://pn9hvmp3-3007.asse.devtunnels.ms';
   static String login() => '$base/auth/login';
   static String register() => '$base/auth/register';
   static String activeVerifyOtp() => '$base/auth/verify-otp';
@@ -12,6 +13,7 @@ class ApiUrls {
   static String resetPassword() => '$base/auth/reset-password';
   // =========== Customer Api Urls ===========
   static String getProfile() => '$base/users/me';
+  static String getOtherProfile({required String userId}) => '$base/users/$userId';
   static String updateProfile() => '$base/users/update-profile';
 
 // Home Screen
@@ -34,9 +36,10 @@ static String search({required int page,required String maxPrice,required String
   return url;
 }
 //chat
-static String getChat({required int page}) => '$base/chat/conversations?page=$page&limit=10';
-static String getChatMessages({required String conversationId,required int page}) => '$base/chat/messages/$conversationId?page=$page&limit=10';
-static String chatFileUpload() => '$base/chat/upload';
+  static String getChat({required int page}) => '$base/chat/conversations?page=$page&limit=10';
+  static String getChatMessages({required String conversationId, required int page}) => '$base/chat/messages/$conversationId?page=$page&limit=50';
+  static String chatFileUpload() => '$base/chat/upload';
+  static String markAsRead({required String conversationId}) => '$base/chat/read/$conversationId';
 //notification
 static String getNotifications({required int page}) => '$base/notifications?page=$page&limit=10';
 // Profile Screen

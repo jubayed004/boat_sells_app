@@ -205,9 +205,10 @@ class AuthController extends GetxController {
         final data = response.data['data'];
         final token = data['accessToken']?.toString() ?? "";
         final refreshToken = data['refreshToken']?.toString() ?? "";
-        final userId = data['user']['_id']?.toString() ?? "";
+        final userId = data['user']['userId']?.toString() ?? "";
         final role = data['user']['role']?.toString() ?? "";
-
+        print("User ID $userId");
+        
         await localService.saveUserdata(
           token: token,
           refreshToken: refreshToken,
